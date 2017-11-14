@@ -22,11 +22,11 @@
 
 \subsection*{Overview}
 
-The goal of this project is to create a top-down racing game inspired by Micro Machines. The objective of the game is to finish a specified amount of laps before opponent players. The levels consist of roads and other material types which the players can drive on, and checkpoints which have to be reached in a certain order. In addition, the levels include physical objects (e.g., rocks, railings) with which the players can collide.
+The goal of this project is to create a top-down racing game inspired by Micro Machines. The objective of the game is to finish a specified amount of laps before opponent players. The levels consist of roads and other material types which the players can drive on, and checkpoints which have to be reached in a certain order. In addition, the levels include physical objects (e.g., rocks, railings) with which the players can collide. The players may also collide with each other.
 
-The initial plan is to use cars as the vehicle types, and plan the levels accordingly. Additional vehicle types and levels for them may be added if we have enough time. Other possible additions are weapons for disrupting other players, a level editor for easy level creation, AI and online multiplayer.
+The initial plan is to use cars as the vehicle types, and plan the levels accordingly. Additional vehicle types and levels for them may be added if we have enough time. Other possible additions are weapons (for example mines, missiles or other types of guns) for disrupting other players, a level editor for easy level creation, AI and online multiplayer.
 
-The game will have a menu screen, consisting of at least a start game button, an options menu and an exit button. Possible options are changing the control scheme of the players and the sound settings (if sounds are implemented).
+The game will have a menu screen, consisting of at least a start game button, an options menu and an exit button. Possible options are changing the control scheme of the players and the sound settings (if sounds are implemented). Our plan is to implement the actual gaming screen such that the whole racing track is visible at the same time. This means that the screen will not be "moving" with the player. We will use this approach beacause all the players will need to see themselves on the track at the same time.
 
 The driving physics of the vehicles and collision detection will be handled by the Box2D physics engine. The user interface and graphics will be drawn using SFML.
 
@@ -38,13 +38,13 @@ The level class will contain a matrix of block types, where each element of the 
 The objects in the level which use features from the Box2D library will be physics objects. The purpose of this class is to tie the body of the object created using Box2D to the graphics created using SFML, to allow easy drawing of the objects. Vehicles and static obstacles such as rocks inherit from this class.
 
 \subsubsection*{Vehicle, Car, Boat etc.}
-Vehicle is an abstract class which defines some common properties and methods of all vehicles (asking coordinates, for example). The child classes have different values for vehicle type specific constants, such as max speed and friction.
+Vehicle is an abstract class which defines some common properties and methods of all vehicles (asking coordinates, for example). The child classes have different values for vehicle type specific constants, such as max speed and friction. We believe that this is the best approach because all the different types of vehicles work according to the same principle. Thus, there is no need to make a completely individual class for each vehicle type.
 
 \subsubsection*{StaticObstacle}
-Static obstacles are objects which have collision properties and are placed on the level.
+Static obstacles are objects which have collision properties and are placed on the level. These could include rocks, trees and so on. The idea is that static obstacles do not move under collisions, so the players have to dodge them.
 
 \subsubsection*{Player}
-The player class will contain information about the player, such as their name, control scheme and currently used vehicle.
+The player class represents the player of the game. It will contain information about the player, such as their name, control scheme and currently used vehicle.
 
 \begin{figure}[h]
 \centering
