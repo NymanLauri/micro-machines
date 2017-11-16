@@ -46,6 +46,10 @@ Static obstacles are objects which have collision properties and are placed on t
 \subsubsection*{Player}
 The player class represents the player of the game. It will contain information about the player, such as their name, control scheme and currently used vehicle.
 
+\subsubsection*{Design rationale}
+The presented design for the project is rather intuitive to us. In addition to rationale provided above, we suspect that our design of updating the game by calling functions of each object in the level's list and then drawing the level is common practice in these types of games. We also suspect that a level's list could be a place to try using smart pointers in order to ensure proper memory management. Also, having PhysicsObject as a base class of StaticObstacle and Vehicle provides a natural setting for using (pure) virtual functions. Furthermore, despite the player class not being necessary at all, we think it's an easy way of implementing some enjoyable features (such as setting names and keys).
+
+\newpage
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=\textwidth]{classes.pdf}
