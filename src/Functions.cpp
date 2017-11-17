@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 
+// We will enter this function when the user clicks on the Options-button in the first menu-screen. This function works almost exactly same way than the code that maintains the firs menu window.
 int OptionsWindow(sf::Event e, sf::RenderWindow *w, sf::Font f)
 {
   w->setFramerateLimit(80);
