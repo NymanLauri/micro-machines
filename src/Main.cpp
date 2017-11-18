@@ -83,9 +83,15 @@ int main()
 		  window.close();
 		  break;
 		}
+	      
 	      else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= OptionsButton.getPosition().x*1.01 && MousePosX <= OptionsButton.getPosition().x+OptionsButton.getLocalBounds().width*1.1 && MousePosY >= OptionsButton.getPosition().y*1.03 && MousePosY <= OptionsButton.getPosition().y+OptionsButton.getLocalBounds().height*1.5) // If the user clicks the left mouse button and the mouse is on top of the Options-button.
 		{
 		  OptionsWindow(event, &window, font); // Go to function OptionsWindow (found in Functions.cpp) that opens a window where the player can adjust settings.
+		}
+
+	      else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= StartButton.getPosition().x*1.01 && MousePosX <= StartButton.getPosition().x+StartButton.getLocalBounds().width*1.1 && MousePosY >= StartButton.getPosition().y*1.03 && MousePosY <= StartButton.getPosition().y+StartButton.getLocalBounds().height*1.5)
+		{
+		  StartWindow(event, &window, font);
 		}
 	      
 	    default:
