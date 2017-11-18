@@ -40,7 +40,7 @@ int main()
 	  ExitButton.setColor(sf::Color::Black);
 	}
       
-      if (MousePosX >= OptionsButton.getPosition().x*1.01 && MousePosX <= OptionsButton.getPosition().x+OptionsButton.getLocalBounds().width*1.1 && MousePosY >= OptionsButton.getPosition().y*1.03 && MousePosY <= OptionsButton.getPosition().y+ExitButton.getLocalBounds().height*1.5) // If the position of the mouse is on top of the Options-button.
+      if (MousePosX >= OptionsButton.getPosition().x*1.01 && MousePosX <= OptionsButton.getPosition().x+OptionsButton.getLocalBounds().width*1.1 && MousePosY >= OptionsButton.getPosition().y*1.03 && MousePosY <= OptionsButton.getPosition().y+OptionsButton.getLocalBounds().height*1.5) // If the position of the mouse is on top of the Options-button.
 	{
 	  OptionsButton.setColor(sf::Color::Blue);
 	}
@@ -83,7 +83,7 @@ int main()
 		  window.close();
 		  break;
 		}
-	      else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= OptionsButton.getPosition().x*1.01 && MousePosX <= OptionsButton.getPosition().x+OptionsButton.getLocalBounds().width*1.1 && MousePosY >= OptionsButton.getPosition().y*1.03 && OptionsButton.getPosition().y+OptionsButton.getLocalBounds().height*1.5) // If the user clicks the left mouse button and the mouse is on top of the Options-button.
+	      else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= OptionsButton.getPosition().x*1.01 && MousePosX <= OptionsButton.getPosition().x+OptionsButton.getLocalBounds().width*1.1 && MousePosY >= OptionsButton.getPosition().y*1.03 && MousePosY <= OptionsButton.getPosition().y+OptionsButton.getLocalBounds().height*1.5) // If the user clicks the left mouse button and the mouse is on top of the Options-button.
 		{
 		  OptionsWindow(event, &window, font); // Go to function OptionsWindow (found in Functions.cpp) that opens a window where the player can adjust settings.
 		}
