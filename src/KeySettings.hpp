@@ -1,3 +1,6 @@
+#ifndef KEYSETTINGS_HPP
+#define KEYSETTINGS_HPP
+
 #include <SFML/Window.hpp>
 
 struct KeySettings {
@@ -6,3 +9,5 @@ struct KeySettings {
     sf::Keyboard::Key left;
     sf::Keyboard::Key right;
 };
+
+#endif

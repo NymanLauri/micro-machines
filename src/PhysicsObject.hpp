@@ -9,6 +9,9 @@
  * will create a new sf::ConvexShape from it.
  * Optionally, a color for the shape can be given (defaults to white). */
 
+#ifndef PHYSICSOBJECT_HPP
+#define PHYSICSOBJECT_HPP
+
 #include <vector>
 #include <memory>
 #include <SFML/Graphics.hpp>
@@ -16,14 +19,18 @@
 
 class PhysicsObject {
     public:
-        PhysicsObject(b2Body* body, b2FixtureDef fixtureDef, std::shared_ptr<sf::CircleShape> shape, const double scaling, sf::Color color = sf::Color::White);
-        PhysicsObject(b2Body* body, b2FixtureDef fixtureDef, std::shared_ptr<sf::RectangleShape> shape, const double scaling, sf::Color color = sf::Color::White);
-        PhysicsObject(b2Body* body, b2FixtureDef fixtureDef, std::vector<std::pair<int,int>>& vertices, const double scaling, sf::Color color = sf::Color::White);
+        PhysicsObject(b2World& world, std::shared_ptr<sf::CircleShape> shape, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
+        PhysicsObject(b2World& world, std::shared_ptr<sf::RectangleShape> shape, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
+        PhysicsObject(b2World& world, std::vector<std::pair<int,int>>& vertices, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
         b2Vec2 getPosition() const;
         float32 getAngle() const;
+        //Temporary method, this will be removed later.
+        b2Body* getBody() const { return body; }
         void drawTo(sf::RenderWindow& window);
     private:
         b2Body* body;
         std::shared_ptr<sf::Shape> shape;
         double scaling;
 };
+
+#endif

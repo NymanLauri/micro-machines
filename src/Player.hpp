@@ -1,3 +1,6 @@
+#ifndef PLAYER_HPP
+#define PLAYER_HPP
+
 #include "KeySettings.hpp"
 
 class Player {
@@ -8,3 +11,5 @@ class Player {
     private:
         KeySettings keys;
 };
+
+#endif

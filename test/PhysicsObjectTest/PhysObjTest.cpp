@@ -1,15 +1,13 @@
 /* This is a test program for the PhysicsObject class.
  * Creates some dynamic physics objects to the screen
- * and a controllable square for poking them around. */
+ * and a controllable circle for poking them around. */
 
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include "Box2D/Box2D.h"
 #include "PhysicsObject.hpp"
 #include "Player.hpp"
-
-#define PIXTOMETERS (1.0/20.0)
-#define METERSTOPIX (20.0/1.0)
+#include "Settings.hpp"
 
 int main(void) {
     b2Vec2 gravity(0.0f, 0.0f);
@@ -33,7 +31,6 @@ int main(void) {
     b2BodyDef bodyDef1;
     bodyDef1.type = b2_dynamicBody;
     bodyDef1.position.Set(500 * PIXTOMETERS, 500 * PIXTOMETERS);
-    b2Body* body1 = world.CreateBody(&bodyDef1);
 
     b2FixtureDef fixtureDef1;
     fixtureDef1.density = 1.0;
@@ -46,13 +43,12 @@ int main(void) {
         std::make_pair(40,20)
     };
 
-    PhysicsObject physObj1(body1, fixtureDef1, bodyVertices1, METERSTOPIX, sf::Color::Green);
+    PhysicsObject physObj1(world, bodyVertices1, bodyDef1, fixtureDef1, sf::Color::Green);
 
     // physObj2 should be a tall red triangle (using vertex constructor) in the top left corner of the screen.
     b2BodyDef bodyDef2;
     bodyDef2.type = b2_dynamicBody;
     bodyDef2.position.Set(200 * PIXTOMETERS, 800 * PIXTOMETERS);
-    b2Body* body2 = world.CreateBody(&bodyDef2);
 
     b2FixtureDef fixtureDef2;
     fixtureDef2.density = 1.0;
@@ -64,13 +60,12 @@ int main(void) {
         std::make_pair(60, 60),
     };
 
-    PhysicsObject physObj2(body2, fixtureDef2, bodyVertices2, METERSTOPIX, sf::Color::Red);
+    PhysicsObject physObj2(world, bodyVertices2, bodyDef2, fixtureDef2, sf::Color::Red);
 
     // physObj3 should be a heavy blue irregular object (using vertex constructor) in the bottom right corner of the screen.
     b2BodyDef bodyDef3;
     bodyDef3.type = b2_dynamicBody;
     bodyDef3.position.Set(800 * PIXTOMETERS, 200 * PIXTOMETERS);
-    b2Body* body3 = world.CreateBody(&bodyDef3);
 
     b2FixtureDef fixtureDef3;
     fixtureDef3.density = 3.0;
@@ -85,13 +80,12 @@ int main(void) {
         std::make_pair(10, 30),
     };
 
-    PhysicsObject physObj3(body3, fixtureDef3, bodyVertices3, METERSTOPIX, sf::Color::Blue);
+    PhysicsObject physObj3(world, bodyVertices3, bodyDef3, fixtureDef3, sf::Color::Blue);
     
     // physObj4 should be a lightweight yellow rectangle (using rectangle constructor) in the bottom left corner of the screen.
     b2BodyDef bodyDef4;
     bodyDef4.type = b2_dynamicBody;
     bodyDef4.position.Set(200 * PIXTOMETERS, 200 * PIXTOMETERS);
-    b2Body* body4 = world.CreateBody(&bodyDef4);
 
     b2FixtureDef fixtureDef4;
     fixtureDef4.density = 0.2;
@@ -99,13 +93,12 @@ int main(void) {
 
     std::shared_ptr<sf::RectangleShape> bodyShape4 = std::make_shared<sf::RectangleShape>(sf::Vector2f(80, 40));
 
-    PhysicsObject physObj4(body4, fixtureDef4, bodyShape4, METERSTOPIX, sf::Color::Yellow);
+    PhysicsObject physObj4(world, bodyShape4, bodyDef4, fixtureDef4, sf::Color::Yellow);
     
     // physObj5 should be a white circle (using circle constructor and default color) in the top right corner of the screen.
     b2BodyDef bodyDef5;
     bodyDef5.type = b2_dynamicBody;
     bodyDef5.position.Set(800 * PIXTOMETERS, 800 * PIXTOMETERS);
-    b2Body* body5 = world.CreateBody(&bodyDef5);
 
     b2FixtureDef fixtureDef5;
     fixtureDef5.density = 1.0;
@@ -113,25 +106,25 @@ int main(void) {
 
     std::shared_ptr<sf::CircleShape> bodyShape5 = std::make_shared<sf::CircleShape>(30);
 
-    PhysicsObject physObj5(body5, fixtureDef5, bodyShape5, METERSTOPIX);
+    PhysicsObject physObj5(world, bodyShape5, bodyDef5, fixtureDef5);
 
     // playerObj should be a movable cyan circle (using circle constructor)
-    b2BodyDef bodyDef6;
-    bodyDef6.type = b2_dynamicBody;
-    bodyDef6.position.Set(500 * PIXTOMETERS, 900 * PIXTOMETERS);
-    b2Body* body6 = world.CreateBody(&bodyDef6);
+    b2BodyDef bodyDefPlayer;
+    bodyDefPlayer.type = b2_dynamicBody;
+    bodyDefPlayer.position.Set(500 * PIXTOMETERS, 900 * PIXTOMETERS);
 
-    b2FixtureDef fixtureDef6;
-    fixtureDef6.density = 1.0;
-    fixtureDef6.friction = 0.3;
+    b2FixtureDef fixtureDefPlayer;
+    fixtureDefPlayer.density = 1.0;
+    fixtureDefPlayer.friction = 0.3;
 
-    std::shared_ptr<sf::CircleShape> bodyShape6 = std::make_shared<sf::CircleShape>(30);
+    std::shared_ptr<sf::CircleShape> bodyShapePlayer = std::make_shared<sf::CircleShape>(30);
 
-    PhysicsObject playerObj(body6, fixtureDef6, bodyShape6, METERSTOPIX, sf::Color::Cyan);
+    PhysicsObject playerObj(world, bodyShapePlayer, bodyDefPlayer, fixtureDefPlayer, sf::Color::Cyan);
 
     // Create player for moving the playerObj.
     Player player1;
     KeySettings p1keys = player1.getKeys();
+    b2Body* playerBody = playerObj.getBody();
 
     sf::RenderWindow window(videomode, "PhysObjTest");
     while (window.isOpen()) {
@@ -146,10 +139,10 @@ int main(void) {
             }
         }
 
-        if (sf::Keyboard::isKeyPressed(p1keys.up)) body6->ApplyLinearImpulse(b2Vec2(0.00f, 0.01f), body6->GetWorldCenter(), true);
-        if (sf::Keyboard::isKeyPressed(p1keys.down)) body6->ApplyLinearImpulse(b2Vec2(0.00f, -0.01f), body6->GetWorldCenter(), true);
-        if (sf::Keyboard::isKeyPressed(p1keys.left)) body6->ApplyLinearImpulse(b2Vec2(-0.01f, 0.00f), body6->GetWorldCenter(), true);
-        if (sf::Keyboard::isKeyPressed(p1keys.right)) body6->ApplyLinearImpulse(b2Vec2(0.01f, 0.00f), body6->GetWorldCenter(), true);
+        if (sf::Keyboard::isKeyPressed(p1keys.up)) playerBody->ApplyLinearImpulse(b2Vec2(0.00f, 0.01f), playerBody->GetWorldCenter(), true);
+        if (sf::Keyboard::isKeyPressed(p1keys.down)) playerBody->ApplyLinearImpulse(b2Vec2(0.00f, -0.01f), playerBody->GetWorldCenter(), true);
+        if (sf::Keyboard::isKeyPressed(p1keys.left)) playerBody->ApplyLinearImpulse(b2Vec2(-0.01f, 0.00f), playerBody->GetWorldCenter(), true);
+        if (sf::Keyboard::isKeyPressed(p1keys.right)) playerBody->ApplyLinearImpulse(b2Vec2(0.01f, 0.00f), playerBody->GetWorldCenter(), true);
 
         world.Step(1.0/60.0, 8, 3); 
         window.clear();
