@@ -19,18 +19,17 @@
 
 class PhysicsObject {
     public:
-        PhysicsObject(b2World& world, std::shared_ptr<sf::CircleShape> shape, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
-        PhysicsObject(b2World& world, std::shared_ptr<sf::RectangleShape> shape, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
-        PhysicsObject(b2World& world, std::vector<std::pair<int,int>>& vertices, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
+        PhysicsObject(b2World& world, float32 radius, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
+        PhysicsObject(b2World& world, b2Vec2 rectDims, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
+        PhysicsObject(b2World& world, std::vector<std::pair<float,float>>& vertices, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
         b2Vec2 getPosition() const;
+        b2Vec2 getWorldCenter() const;
         float32 getAngle() const;
-        //Temporary method, this will be removed later.
-        b2Body* getBody() const { return body; }
+        void applyLinearImpulse(b2Vec2 impulse, b2Vec2 point, bool wake);
         void drawTo(sf::RenderWindow& window);
     private:
         b2Body* body;
         std::shared_ptr<sf::Shape> shape;
-        double scaling;
 };
 
 #endif

@@ -8,6 +8,7 @@
 #include "PhysicsObject.hpp"
 #include "Player.hpp"
 #include "Settings.hpp"
+#include <iostream>
 
 int main(void) {
     b2Vec2 gravity(0.0f, 0.0f);
@@ -36,11 +37,11 @@ int main(void) {
     fixtureDef1.density = 1.0;
     fixtureDef1.friction = 0.3;
 
-    std::vector<std::pair<int,int>> bodyVertices1 = {
-        std::make_pair(20,40),
-        std::make_pair(0,20),
-        std::make_pair(20,0),
-        std::make_pair(40,20)
+    std::vector<std::pair<float,float>> bodyVertices1 = {
+        std::make_pair(1.0, 2.0),
+        std::make_pair(0.0, 1.0),
+        std::make_pair(1.0, 0.0),
+        std::make_pair(2.0, 1.0)
     };
 
     PhysicsObject physObj1(world, bodyVertices1, bodyDef1, fixtureDef1, sf::Color::Green);
@@ -54,10 +55,10 @@ int main(void) {
     fixtureDef2.density = 1.0;
     fixtureDef2.friction = 0.3;
 
-    std::vector<std::pair<int,int>> bodyVertices2 = {
-        std::make_pair(0,60),
-        std::make_pair(30, 0),
-        std::make_pair(60, 60),
+    std::vector<std::pair<float,float>> bodyVertices2 = {
+        std::make_pair(0.0, 0.0),
+        std::make_pair(1.5, 3.0),
+        std::make_pair(3.0, 0.0),
     };
 
     PhysicsObject physObj2(world, bodyVertices2, bodyDef2, fixtureDef2, sf::Color::Red);
@@ -71,13 +72,13 @@ int main(void) {
     fixtureDef3.density = 3.0;
     fixtureDef3.friction = 0.3;
 
-    std::vector<std::pair<int,int>> bodyVertices3 = {
-        std::make_pair(0,0),
-        std::make_pair(30, -10),
-        std::make_pair(60, 10),
-        std::make_pair(80, 50),
-        std::make_pair(40, 50),
-        std::make_pair(10, 30),
+    std::vector<std::pair<float,float>> bodyVertices3 = {
+        std::make_pair(0.0, 0.0),
+        std::make_pair(1.5, -0.5),
+        std::make_pair(3.0, 0.5),
+        std::make_pair(4.0, 2.5),
+        std::make_pair(2.0, 2.5),
+        std::make_pair(0.5, 1.5),
     };
 
     PhysicsObject physObj3(world, bodyVertices3, bodyDef3, fixtureDef3, sf::Color::Blue);
@@ -91,9 +92,7 @@ int main(void) {
     fixtureDef4.density = 0.2;
     fixtureDef4.friction = 0.3;
 
-    std::shared_ptr<sf::RectangleShape> bodyShape4 = std::make_shared<sf::RectangleShape>(sf::Vector2f(80, 40));
-
-    PhysicsObject physObj4(world, bodyShape4, bodyDef4, fixtureDef4, sf::Color::Yellow);
+    PhysicsObject physObj4(world, b2Vec2(4.0, 2.0), bodyDef4, fixtureDef4, sf::Color::Yellow);
     
     // physObj5 should be a white circle (using circle constructor and default color) in the top right corner of the screen.
     b2BodyDef bodyDef5;
@@ -104,9 +103,7 @@ int main(void) {
     fixtureDef5.density = 1.0;
     fixtureDef5.friction = 0.3;
 
-    std::shared_ptr<sf::CircleShape> bodyShape5 = std::make_shared<sf::CircleShape>(30);
-
-    PhysicsObject physObj5(world, bodyShape5, bodyDef5, fixtureDef5);
+    PhysicsObject physObj5(world, 1.5, bodyDef5, fixtureDef5);
 
     // playerObj should be a movable cyan circle (using circle constructor)
     b2BodyDef bodyDefPlayer;
@@ -117,15 +114,12 @@ int main(void) {
     fixtureDefPlayer.density = 1.0;
     fixtureDefPlayer.friction = 0.3;
 
-    std::shared_ptr<sf::CircleShape> bodyShapePlayer = std::make_shared<sf::CircleShape>(30);
-
-    PhysicsObject playerObj(world, bodyShapePlayer, bodyDefPlayer, fixtureDefPlayer, sf::Color::Cyan);
-
+    PhysicsObject playerObj(world, 1.5, bodyDefPlayer, fixtureDefPlayer, sf::Color::Cyan);
+    
     // Create player for moving the playerObj.
     Player player1;
     KeySettings p1keys = player1.getKeys();
-    b2Body* playerBody = playerObj.getBody();
-
+    
     sf::RenderWindow window(videomode, "PhysObjTest");
     while (window.isOpen()) {
         sf::Event event;
@@ -135,14 +129,17 @@ int main(void) {
             } else if (event.type == sf::Event::KeyPressed) {
                 if (event.key.code == sf::Keyboard::Escape) {
                     window.close();
+                } else if (event.key.code == sf::Keyboard::I) {
+                    std::cout << physObj3.getPosition().x * METERSTOPIX << " " << physObj3.getPosition().y * METERSTOPIX << std::endl;
+                    std::cout << physObj3.getWorldCenter().x * METERSTOPIX << " " << physObj3.getWorldCenter(). y * METERSTOPIX << std::endl;
                 }
             }
         }
 
-        if (sf::Keyboard::isKeyPressed(p1keys.up)) playerBody->ApplyLinearImpulse(b2Vec2(0.00f, 0.01f), playerBody->GetWorldCenter(), true);
-        if (sf::Keyboard::isKeyPressed(p1keys.down)) playerBody->ApplyLinearImpulse(b2Vec2(0.00f, -0.01f), playerBody->GetWorldCenter(), true);
-        if (sf::Keyboard::isKeyPressed(p1keys.left)) playerBody->ApplyLinearImpulse(b2Vec2(-0.01f, 0.00f), playerBody->GetWorldCenter(), true);
-        if (sf::Keyboard::isKeyPressed(p1keys.right)) playerBody->ApplyLinearImpulse(b2Vec2(0.01f, 0.00f), playerBody->GetWorldCenter(), true);
+        if (sf::Keyboard::isKeyPressed(p1keys.up)) playerObj.applyLinearImpulse(b2Vec2(0.00f, 0.01f), playerObj.getWorldCenter(), true);
+        if (sf::Keyboard::isKeyPressed(p1keys.down)) playerObj.applyLinearImpulse(b2Vec2(0.00f, -0.01f), playerObj.getWorldCenter(), true);
+        if (sf::Keyboard::isKeyPressed(p1keys.left)) playerObj.applyLinearImpulse(b2Vec2(-0.01f, 0.00f), playerObj.getWorldCenter(), true);
+        if (sf::Keyboard::isKeyPressed(p1keys.right)) playerObj.applyLinearImpulse(b2Vec2(0.01f, 0.00f), playerObj.getWorldCenter(), true);
 
         world.Step(1.0/60.0, 8, 3); 
         window.clear();
