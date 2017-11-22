@@ -121,6 +121,7 @@ int main(void) {
     KeySettings p1keys = player1.getKeys();
     
     sf::RenderWindow window(videomode, "PhysObjTest");
+    window.setFramerateLimit(60);
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -136,10 +137,10 @@ int main(void) {
             }
         }
 
-        if (sf::Keyboard::isKeyPressed(p1keys.up)) playerObj.applyLinearImpulse(b2Vec2(0.00f, 0.01f), playerObj.getWorldCenter(), true);
-        if (sf::Keyboard::isKeyPressed(p1keys.down)) playerObj.applyLinearImpulse(b2Vec2(0.00f, -0.01f), playerObj.getWorldCenter(), true);
-        if (sf::Keyboard::isKeyPressed(p1keys.left)) playerObj.applyLinearImpulse(b2Vec2(-0.01f, 0.00f), playerObj.getWorldCenter(), true);
-        if (sf::Keyboard::isKeyPressed(p1keys.right)) playerObj.applyLinearImpulse(b2Vec2(0.01f, 0.00f), playerObj.getWorldCenter(), true);
+        if (sf::Keyboard::isKeyPressed(p1keys.up)) playerObj.applyLinearImpulse(b2Vec2(0.0f, 3.0f), playerObj.getWorldCenter(), true);
+        if (sf::Keyboard::isKeyPressed(p1keys.down)) playerObj.applyLinearImpulse(b2Vec2(0.0f, -3.0f), playerObj.getWorldCenter(), true);
+        if (sf::Keyboard::isKeyPressed(p1keys.left)) playerObj.applyLinearImpulse(b2Vec2(-3.0f, 0.0f), playerObj.getWorldCenter(), true);
+        if (sf::Keyboard::isKeyPressed(p1keys.right)) playerObj.applyLinearImpulse(b2Vec2(3.0f, 0.0f), playerObj.getWorldCenter(), true);
 
         world.Step(1.0/60.0, 8, 3); 
         window.clear();

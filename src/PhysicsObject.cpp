@@ -68,6 +68,10 @@ void PhysicsObject::drawTo(sf::RenderWindow& window) {
     window.draw(*shape);
 }
 
+b2Body* const PhysicsObject::getBody() const {
+    return body;
+}
+
 b2Vec2 PhysicsObject::getPosition() const {
     return body->GetPosition();
 }

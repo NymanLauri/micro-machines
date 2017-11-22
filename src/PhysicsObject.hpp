@@ -22,6 +22,7 @@ class PhysicsObject {
         PhysicsObject(b2World& world, float32 radius, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
         PhysicsObject(b2World& world, b2Vec2 rectDims, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
         PhysicsObject(b2World& world, std::vector<std::pair<float,float>>& vertices, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
+        b2Body* const getBody() const;
         b2Vec2 getPosition() const;
         b2Vec2 getWorldCenter() const;
         float32 getAngle() const;
