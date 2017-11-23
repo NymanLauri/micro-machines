@@ -12,6 +12,7 @@
 int Game(sf::Event event, sf::RenderWindow &window, sf::Font font, Player &player1, Player &player2, Player &player3, Player &player4);
 int menu(Player &player1, Player &player2, Player &player3, Player &player4);
 
+// In this function we initialize 4 players. We do not have to use them all.
 int main()
 {
   Player player1;
@@ -30,11 +31,12 @@ int main()
   return 0;
 }
 
+// This loop controls the menu-windows. The players are given as parameters so that we can adjust their properties.
 int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 {
   sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Micro Machines", sf::Style::Fullscreen); // Create a window in fullscreen mode.
   sf::Event event; // Create an event that stores the actions that the user does.
-  //window.setFramerateLimit(80);
+  window.setFramerateLimit(60);
   int MousePosX = 0;
   int MousePosY = 0;
   sf::Font font;
@@ -53,6 +55,7 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
   StartButton.setColor(sf::Color::Black);
   StartButton.setPosition(window.getSize().x/2-StartButton.getLocalBounds().width/2, window.getSize().y-StartButton.getLocalBounds().height*7);
   Title.setColor(sf::Color::Red);
+  Title.setStyle(sf::Text::Underlined);
   Title.setPosition(window.getSize().x/2-Title.getLocalBounds().width/2, window.getSize().y-Title.getLocalBounds().height*7.5);
 
   
@@ -107,23 +110,23 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 		}
 	      
 	    case sf::Event::MouseButtonPressed: // If some mouse button is pressed.
-	      if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= ExitButton.getPosition().x*1.01 && MousePosX <= ExitButton.getPosition().x+ExitButton.getLocalBounds().width*1.2 && MousePosY >= ExitButton.getPosition().y*1.03 && MousePosY <= ExitButton.getPosition().y+ExitButton.getLocalBounds().height*1.5) // If the user clicks the left mouse button and the mouse is on top of the Exit-button.
+	      if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= ExitButton.getPosition().x*1.01 && MousePosX <= ExitButton.getPosition().x+ExitButton.getLocalBounds().width*1.2 && MousePosY >= ExitButton.getPosition().y*1.03 && MousePosY <= ExitButton.getPosition().y+ExitButton.getLocalBounds().height*1.5) // If the user clicks on the Exit-button.
 		{
 		  window.close();
 		  break;
 		}
 	      
-	      else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= OptionsButton.getPosition().x*1.01 && MousePosX <= OptionsButton.getPosition().x+OptionsButton.getLocalBounds().width*1.1 && MousePosY >= OptionsButton.getPosition().y*1.03 && MousePosY <= OptionsButton.getPosition().y+OptionsButton.getLocalBounds().height*1.5) // If the user clicks the left mouse button and the mouse is on top of the Options-button.
+	      else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= OptionsButton.getPosition().x*1.01 && MousePosX <= OptionsButton.getPosition().x+OptionsButton.getLocalBounds().width*1.1 && MousePosY >= OptionsButton.getPosition().y*1.03 && MousePosY <= OptionsButton.getPosition().y+OptionsButton.getLocalBounds().height*1.5) // If the user clicks the options-button.
 		{
 		  OptionsWindow(event, window, font, player1, player2, player3, player4); // Go to function OptionsWindow (found in Functions.cpp) that opens a window where the player can adjust settings
 		}
 
-	      else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= StartButton.getPosition().x*1.01 && MousePosX <= StartButton.getPosition().x+StartButton.getLocalBounds().width*1.1 && MousePosY >= StartButton.getPosition().y*1.03 && MousePosY <= StartButton.getPosition().y+StartButton.getLocalBounds().height*1.5)
+	      else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= StartButton.getPosition().x*1.01 && MousePosX <= StartButton.getPosition().x+StartButton.getLocalBounds().width*1.1 && MousePosY >= StartButton.getPosition().y*1.03 && MousePosY <= StartButton.getPosition().y+StartButton.getLocalBounds().height*1.5) // If the user clicks on the "Start game"-button.
 		{
-		  retValue = StartWindow(event, window, font);
+		  retValue = StartWindow(event, window, font); // Go to function StartWindow (found in Functions.cpp) that opens a window where the player will for example choose the maps.
 		  if (retValue == 1)
 		    {
-		      Game(event, window, font, player1, player2, player3, player4);
+		      Game(event, window, font, player1, player2, player3, player4); // Go to Game-function that controls the actual game.
 		      retValue = 0;
 		    }
 		}
@@ -146,17 +149,10 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
     }
   return 0;
 }
-  
+
+// This function handles the actual gaming.
 int Game(sf::Event event, sf::RenderWindow &window, sf::Font font, Player &player1, Player &player2, Player &player3, Player &player4)
 {
-  //KeySettings p1keys = {sf::Keyboard::Up, sf::Keyboard::Down, sf::Keyboard::Left, sf::Keyboard::Right};
-  //player1.setKeys(p1keys);
-  //KeySettings p2keys = {sf::Keyboard::W, sf::Keyboard::S, sf::Keyboard::A, sf::Keyboard::D};
-  //player2.setKeys(p2keys);
-  //KeySettings p3keys = {sf::Keyboard::T, sf::Keyboard::G, sf::Keyboard::F, sf::Keyboard::H};
-  //player3.setKeys(p3keys);
-  //KeySettings p4keys = {sf::Keyboard::I, sf::Keyboard::K, sf::Keyboard::J, sf::Keyboard::L};
-  //player4.setKeys(p4keys);
   b2Vec2 gravity(0.0f, 0.0f);
   b2World world(gravity);
   
@@ -261,6 +257,17 @@ int Game(sf::Event event, sf::RenderWindow &window, sf::Font font, Player &playe
   fixtureDefPlayer.friction = 0.3;
   
   PhysicsObject playerObj(world, 1.5, bodyDefPlayer, fixtureDefPlayer, sf::Color::Cyan);
+
+  // Create another player
+  b2BodyDef bodyDefPlayer2;
+  bodyDefPlayer2.type = b2_dynamicBody;
+  bodyDefPlayer2.position.Set(100 * PIXTOMETERS, 100 * PIXTOMETERS);
+
+  b2FixtureDef fixtureDefPlayer2;
+  fixtureDefPlayer2.density = 1.0;
+  fixtureDefPlayer2.friction = 0.3;
+
+  PhysicsObject playerObj2(world, 1.5, bodyDefPlayer2, fixtureDefPlayer, sf::Color::Red);
   
   // Create player for moving the playerObj.
   //Player player1()
@@ -279,8 +286,9 @@ int Game(sf::Event event, sf::RenderWindow &window, sf::Font font, Player &playe
 	  window.close();
 	}
 	
-	else if (event.key.code == sf::Keyboard::P)
+	else if (event.key.code == sf::Keyboard::P) // If the player pauses the game.
 	  {
+	    // Create some texts and set their positions etc.
 	    sf::Text ContinueButton("Continue", font, 80);
 	    sf::Text QuitButton("Exit", font, 80);
 	    sf::Text MenuButton("Main Menu", font, 80);
@@ -290,12 +298,12 @@ int Game(sf::Event event, sf::RenderWindow &window, sf::Font font, Player &playe
 	    QuitButton.setPosition(window.getSize().x/2-QuitButton.getLocalBounds().width/2, window.getSize().y-QuitButton.getLocalBounds().height*4);
 	    MenuButton.setPosition(window.getSize().x/2-MenuButton.getLocalBounds().width/2, window.getSize().y-MenuButton.getLocalBounds().height*7);
 	    ContinueButton.setPosition(window.getSize().x/2-ContinueButton.getLocalBounds().width/2, window.getSize().y-ContinueButton.getLocalBounds().height*10);
-	    int pauseVar = 0;
-	    while (1)
+	    int pauseVar = 0; // This is a variable that controls when to exit the pause-loop.
+	    while (1) // Start the pause-loop.
 	      {
 		int MousePosX = sf::Mouse::getPosition(window).x;
 		int MousePosY = sf::Mouse::getPosition(window).y;
-		if (MousePosX >= QuitButton.getPosition().x*1.01 && MousePosX <= QuitButton.getPosition().x+QuitButton.getLocalBounds().width*1.2 && MousePosY >= QuitButton.getPosition().y*1.03 && MousePosY <= QuitButton.getPosition().y+QuitButton.getLocalBounds().height*1.5)
+		if (MousePosX >= QuitButton.getPosition().x*1.01 && MousePosX <= QuitButton.getPosition().x+QuitButton.getLocalBounds().width*1.2 && MousePosY >= QuitButton.getPosition().y*1.03 && MousePosY <= QuitButton.getPosition().y+QuitButton.getLocalBounds().height*1.5) // If the mouse is on top of the Exit-button.
 		  {
 		    QuitButton.setColor(sf::Color::Blue);
 		  }
@@ -304,7 +312,7 @@ int Game(sf::Event event, sf::RenderWindow &window, sf::Font font, Player &playe
 		    QuitButton.setColor(sf::Color::White);
 		  }
 		
-		if (MousePosX >= MenuButton.getPosition().x*1.01 && MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 && MousePosY >= MenuButton.getPosition().y*1.03 && MousePosY <= MenuButton.getPosition().y+MenuButton.getLocalBounds().height*1.5)
+		if (MousePosX >= MenuButton.getPosition().x*1.01 && MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 && MousePosY >= MenuButton.getPosition().y*1.03 && MousePosY <= MenuButton.getPosition().y+MenuButton.getLocalBounds().height*1.5) // If the mouse is on top of the "Main menu"-button.
 		  {
 		    MenuButton.setColor(sf::Color::Blue);
 		  }
@@ -320,6 +328,7 @@ int Game(sf::Event event, sf::RenderWindow &window, sf::Font font, Player &playe
 		physObj4.drawTo(window);
 		physObj5.drawTo(window);
 		playerObj.drawTo(window);
+		playerObj2.drawTo(window);
 		window.draw(QuitButton);
 		window.draw(MenuButton);
 		window.display();
@@ -327,7 +336,7 @@ int Game(sf::Event event, sf::RenderWindow &window, sf::Font font, Player &playe
 		  {
 		    if (event.type == sf::Event::KeyPressed)
 		      {
-			if (event.key.code == sf::Keyboard::P)
+			if (event.key.code == sf::Keyboard::P) // If the user presses p to continue the game.
 			  {
 			    pauseVar = 1;
 			    break;
@@ -341,14 +350,14 @@ int Game(sf::Event event, sf::RenderWindow &window, sf::Font font, Player &playe
 		      }
 		    else if (event.type == sf::Event::MouseButtonPressed)
 		      {
-			if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= QuitButton.getPosition().x*1.01 && MousePosX <= QuitButton.getPosition().x+QuitButton.getLocalBounds().width*1.2 && MousePosY >= QuitButton.getPosition().y*1.03 && MousePosY <= QuitButton.getPosition().y+QuitButton.getLocalBounds().height*1.5)
+			if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= QuitButton.getPosition().x*1.01 && MousePosX <= QuitButton.getPosition().x+QuitButton.getLocalBounds().width*1.2 && MousePosY >= QuitButton.getPosition().y*1.03 && MousePosY <= QuitButton.getPosition().y+QuitButton.getLocalBounds().height*1.5) // If the user clicks on the Exit-button.
 			  {
 			    pauseVar = 1;
 			    window.close();
 			    break;
 			  }
 			
-			else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= MenuButton.getPosition().x*1.01 && MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 && MousePosY >= MenuButton.getPosition().y*1.03 && MousePosY <= MenuButton.getPosition().y+MenuButton.getLocalBounds().height*1.5)
+			else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= MenuButton.getPosition().x*1.01 && MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 && MousePosY >= MenuButton.getPosition().y*1.03 && MousePosY <= MenuButton.getPosition().y+MenuButton.getLocalBounds().height*1.5) // If the user clicks on the "Main menu"-button.
 			  {
 			    return 0;
 			  }
@@ -367,11 +376,18 @@ int Game(sf::Event event, sf::RenderWindow &window, sf::Font font, Player &playe
 	}
       }
     }
-    
-    if (sf::Keyboard::isKeyPressed(player1.getKeys().up)) playerObj.applyLinearImpulse(b2Vec2(0.00f, 0.01f), playerObj.getWorldCenter(), true);
-    if (sf::Keyboard::isKeyPressed(player1.getKeys().down)) playerObj.applyLinearImpulse(b2Vec2(0.00f, -0.01f), playerObj.getWorldCenter(), true);
-    if (sf::Keyboard::isKeyPressed(player1.getKeys().left)) playerObj.applyLinearImpulse(b2Vec2(-0.01f, 0.00f), playerObj.getWorldCenter(), true);
-    if (sf::Keyboard::isKeyPressed(player1.getKeys().right)) playerObj.applyLinearImpulse(b2Vec2(0.01f, 0.00f), playerObj.getWorldCenter(), true);
+
+    // Control the movement of player 1.
+    if (sf::Keyboard::isKeyPressed(player1.getKeys().up)) playerObj.applyLinearImpulse(b2Vec2(0.0f, 3.0f), playerObj.getWorldCenter(), true);
+    if (sf::Keyboard::isKeyPressed(player1.getKeys().down)) playerObj.applyLinearImpulse(b2Vec2(0.0f, -3.0f), playerObj.getWorldCenter(), true);
+    if (sf::Keyboard::isKeyPressed(player1.getKeys().left)) playerObj.applyLinearImpulse(b2Vec2(-3.0f, 0.0f), playerObj.getWorldCenter(), true);
+    if (sf::Keyboard::isKeyPressed(player1.getKeys().right)) playerObj.applyLinearImpulse(b2Vec2(3.0f, 0.0f), playerObj.getWorldCenter(), true);
+
+    // Control the movement of player 2.
+    if (sf::Keyboard::isKeyPressed(player2.getKeys().up)) playerObj2.applyLinearImpulse(b2Vec2(0.0f, 3.0f), playerObj2.getWorldCenter(), true);
+    if (sf::Keyboard::isKeyPressed(player2.getKeys().down)) playerObj2.applyLinearImpulse(b2Vec2(0.0f, -3.0f), playerObj2.getWorldCenter(), true);
+    if (sf::Keyboard::isKeyPressed(player2.getKeys().left)) playerObj2.applyLinearImpulse(b2Vec2(-3.0f, 0.0f), playerObj2.getWorldCenter(), true);
+    if (sf::Keyboard::isKeyPressed(player2.getKeys().right)) playerObj2.applyLinearImpulse(b2Vec2(3.0f, 0.0f), playerObj2.getWorldCenter(), true);
     
     world.Step(1.0/60.0, 8, 3); 
     window.clear();
@@ -381,6 +397,7 @@ int Game(sf::Event event, sf::RenderWindow &window, sf::Font font, Player &playe
     physObj4.drawTo(window);
     physObj5.drawTo(window);
     playerObj.drawTo(window);
+    playerObj2.drawTo(window);
     window.display();
   }
   return 0;
