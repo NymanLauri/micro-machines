@@ -1,0 +1,97 @@
+#include "Car.hpp"
+#include "Settings.hpp"
+#include <iostream>
+Car::Car(b2World& world, b2Vec2 position, sf::Color color) {
+    b2BodyDef bodyDef;
+    bodyDef.type = b2_dynamicBody;
+    bodyDef.position = position;
+    b2FixtureDef fixtureDef;
+    fixtureDef.density = 1.0;
+    fixtureDef.friction = 0.3;
+    std::vector<std::pair<float,float>> bodyVertices = {
+        std::make_pair(0.5, 0.0),
+        std::make_pair(0.25, 1.25),
+        std::make_pair(0.25, 1.75),
+        std::make_pair(0.75, 3.0),
+        std::make_pair(1.25, 3.0),
+        std::make_pair(1.75, 1.75),
+        std::make_pair(1.75, 1.25),
+        std::make_pair(1.5, 0.0)
+    };
+    bodyObject = std::make_shared<PhysicsObject>(world, bodyVertices, bodyDef, fixtureDef, color);
+    //Set the positions of the tires relative to the center of the mass of the car's body.
+    std::vector<std::pair<float,float>> tireOffsets = {
+        std::make_pair(-1.0, 1.25),
+        std::make_pair(1.0, 1.25),
+        std::make_pair(-1.0, -1.0),
+        std::make_pair(1.0, -1.0)
+    };
+    b2Vec2 bodyPos = bodyObject->getBody()->GetWorldCenter();
+    for (auto it : tireOffsets) {
+        Tire newTire(world, b2Vec2(bodyPos.x + it.first, bodyPos.y + it.second));
+        b2RevoluteJointDef jointDef;
+        jointDef.bodyA = bodyObject->getBody();
+        jointDef.bodyB = newTire.getBody();
+        jointDef.enableLimit = true;
+        b2Vec2 tireRelativePosition(it.first, it.second);
+        tireRelativePosition += bodyObject->getBody()->GetLocalCenter();
+        jointDef.localAnchorA = tireRelativePosition;
+        jointDef.localAnchorB = newTire.getBody()->GetLocalCenter();
+        b2RevoluteJoint* newJoint = static_cast<b2RevoluteJoint*>(world.CreateJoint(&jointDef));
+        tireJoints.push_back(newJoint);
+        tires.push_back(newTire);
+    }
+}
+
+void Car::accelerate() {
+    for (size_t i = 0; i < 2; i++) {
+        tires.at(i).accelerate(acceleration, maxForwardSpeed);
+    }
+}
+
+void Car::decelerate() {
+    for (auto it : tires) {
+        it.decelerate(deceleration, maxReverseSpeed);
+    }
+}
+
+void Car::turnLeft() {
+    for (size_t i = 0; i < 2; i++) {
+        b2RevoluteJoint* joint = tireJoints.at(i);
+        float currentAngle = joint->GetJointAngle();
+        if (currentAngle < (maxTurnAngle * DEGTORAD)) {
+            float newAngle = currentAngle + turnPerStep * DEGTORAD;
+            currentAngle = newAngle;
+            joint->SetLimits(newAngle, newAngle);
+        }
+    }
+}
+
+void Car::turnRight() {
+    for (size_t i = 0; i < 2; i++) {
+        b2RevoluteJoint* joint = tireJoints.at(i);
+        float currentAngle = joint->GetJointAngle();
+        if (currentAngle > (-maxTurnAngle * DEGTORAD)) {
+            float newAngle = currentAngle - turnPerStep * DEGTORAD;
+            currentAngle = newAngle;
+            joint->SetLimits(newAngle, newAngle);
+        }
+    }
+}
+
+void Car::updateMovement() {
+    for (auto it : tires) {
+        it.updateMovement();
+    } 
+    for (size_t i = 0; i < 2; i++) {
+        b2RevoluteJoint* joint = tireJoints.at(i);
+        joint->SetLimits(0.85 * joint->GetUpperLimit(), 0.85 * joint->GetUpperLimit());
+    }
+}
+
+void Car::drawTo(sf::RenderWindow& window) {
+    bodyObject->drawTo(window);
+    for (auto it : tires) {
+        it.drawTo(window);
+    }
+}
