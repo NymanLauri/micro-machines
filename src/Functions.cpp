@@ -1,5 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <string>
+#include <map>
 #include "Player.hpp"
 #include "KeySettings.hpp"
 
@@ -117,14 +119,19 @@ int OptionsWindow(sf::Event e, sf::RenderWindow &w, sf::Font f, Player &p1, Play
   sf::Text ExitButton("Exit", f, 100);
   sf::Text Player1Opts("Player 1", f, 80);
   sf::Text Player2Opts("Player 2", f, 80);
+  sf::Text Player3Opts("Player 3", f, 80);
+  sf::Text Player4Opts("Player 4", f, 80);
   ReturnButton.setColor(sf::Color::Black);
   ExitButton.setColor(sf::Color::Black);
   Player1Opts.setColor(sf::Color::Black);
   Player2Opts.setColor(sf::Color::Black);
+  Player3Opts.setColor(sf::Color::Black);
   ReturnButton.setPosition(w.getSize().x/6-ReturnButton.getLocalBounds().width/2, w.getSize().y-ReturnButton.getLocalBounds().height*2.5);
   ExitButton.setPosition(w.getSize().x/1.15-ExitButton.getLocalBounds().width/2, w.getSize().y-ExitButton.getLocalBounds().height*2.5);
   Player1Opts.setPosition(w.getSize().x/7.5-Player1Opts.getLocalBounds().width/2, w.getSize().y-Player1Opts.getLocalBounds().height*13);
   Player2Opts.setPosition(w.getSize().x/7.5-Player2Opts.getLocalBounds().width/2, w.getSize().y-Player2Opts.getLocalBounds().height*11);
+  Player3Opts.setPosition(w.getSize().x/7.5-Player3Opts.getLocalBounds().width/2, w.getSize().y-Player3Opts.getLocalBounds().height*9);
+  Player4Opts.setPosition(w.getSize().x/7.5-Player4Opts.getLocalBounds().width/2, w.getSize().y-Player4Opts.getLocalBounds().height*7);
 
   while (w.isOpen())
     {
@@ -165,6 +172,24 @@ int OptionsWindow(sf::Event e, sf::RenderWindow &w, sf::Font f, Player &p1, Play
 	{
 	  Player2Opts.setColor(sf::Color::Black);
 	}
+
+      if (MousePosX >= Player3Opts.getPosition().x*1.01 && MousePosX <= Player3Opts.getPosition().x+Player3Opts.getLocalBounds().width*1.1 && MousePosY >= Player3Opts.getPosition().y*1.03 && MousePosY <= Player3Opts.getPosition().y+Player3Opts.getLocalBounds().height*1.5) // If the mouse is on top of the "player 2"-button.
+	{
+	  Player3Opts.setColor(sf::Color::Red);
+	}
+      else
+	{
+	  Player3Opts.setColor(sf::Color::Black);
+	}
+
+      if (MousePosX >= Player4Opts.getPosition().x*1.01 && MousePosX <= Player4Opts.getPosition().x+Player4Opts.getLocalBounds().width*1.1 && MousePosY >= Player4Opts.getPosition().y*1.03 && MousePosY <= Player4Opts.getPosition().y+Player4Opts.getLocalBounds().height*1.5) // If the mouse is on top of the "player 2"-button.
+	{
+	  Player4Opts.setColor(sf::Color::Red);
+	}
+      else
+	{
+	  Player4Opts.setColor(sf::Color::Black);
+	}
       
       while (w.pollEvent(e))
 	{
@@ -204,16 +229,78 @@ int OptionsWindow(sf::Event e, sf::RenderWindow &w, sf::Font f, Player &p1, Play
 		{
 		  select = 2;
 		}
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Player3Opts.getPosition().x*1.01 && MousePosX <= Player3Opts.getPosition().x+Player3Opts.getLocalBounds().width*1.1 && MousePosY >= Player3Opts.getPosition().y*1.03 && MousePosY <= Player3Opts.getPosition().y+Player3Opts.getLocalBounds().height*1.5) // If the user clicks on the "player 2"-button.
+		{
+		  select = 3;
+		}
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Player4Opts.getPosition().x*1.01 && MousePosX <= Player4Opts.getPosition().x+Player4Opts.getLocalBounds().width*1.1 && MousePosY >= Player4Opts.getPosition().y*1.03 && MousePosY <= Player4Opts.getPosition().y+Player4Opts.getLocalBounds().height*1.5) // If the user clicks on the "player 2"-button.
+		{
+		  select = 4;
+		}
+	      
 	      if (select != -1) // If the user had clicked on some "player i"-button. select 1 = player 1, select 2 = player 2, select 3 = player 3, select 4 = player 4.
 		{
+		  std::map <sf::Keyboard::Key, std::string> Keys{{sf::Keyboard::Q, "Q"}, {sf::Keyboard::W, "W"}, {sf::Keyboard::E, "E"}, {sf::Keyboard::R, "R"}, {sf::Keyboard::T, "T"}, {sf::Keyboard::Y, "Y"}, {sf::Keyboard::U, "U"}, {sf::Keyboard::I, "I"}, {sf::Keyboard::O, "O"}, {sf::Keyboard::P, "P"}, {sf::Keyboard::A, "A"}, {sf::Keyboard::S, "S"}, {sf::Keyboard::D, "D"}, {sf::Keyboard::F, "F"}, {sf::Keyboard::G, "G"}, {sf::Keyboard::H, "H"}, {sf::Keyboard::J, "J"}, {sf::Keyboard::K, "K"}, {sf::Keyboard::L, "L"}, {sf::Keyboard::Z, "Z"}, {sf::Keyboard::X, "X"}, {sf::Keyboard::C, "C"}, {sf::Keyboard::V, "V"}, {sf::Keyboard::B, "B"}, {sf::Keyboard::N, "N"}, {sf::Keyboard::M, "M"}, {sf::Keyboard::Up, "Up Arrow"}, {sf::Keyboard::Down, "Down Arrow"}, {sf::Keyboard::Left, "Left Arrow"}, {sf::Keyboard::Right, "Right Arrow"}, {sf::Keyboard::Numpad0, "0"}, {sf::Keyboard::Numpad1, "1"}, {sf::Keyboard::Numpad2, "2"}, {sf::Keyboard::Numpad3, "3"}, {sf::Keyboard::Numpad4, "4"}, {sf::Keyboard::Numpad5, "5"}, {sf::Keyboard::Numpad6, "6"}, {sf::Keyboard::Numpad7, "7"}, {sf::Keyboard::Numpad8, "8"}, {sf::Keyboard::Numpad9, "9"}};
 		  // Create some texts.
 		  sf::Text Return("Return", f, 100);
 		  sf::Text Up("Up", f, 80);
+		  sf::Text UpKey("None", f, 80);
+		  sf::Text DownKey("None", f, 80);
+		  sf::Text LeftKey("None", f, 80);
+		  sf::Text RightKey("None", f, 80);
+		  if (select == 1)
+		    {
+		      UpKey.setString(Keys.at(p1.getKeys().up));
+		      DownKey.setString(Keys.at(p1.getKeys().down));
+		      LeftKey.setString(Keys.at(p1.getKeys().left));
+		      RightKey.setString(Keys.at(p1.getKeys().right));
+		      UpKey.setPosition(w.getSize().x/3-UpKey.getLocalBounds().width/2, w.getSize().y/2-UpKey.getLocalBounds().height*5.5);
+		      DownKey.setPosition(w.getSize().x/3-DownKey.getLocalBounds().width/2, w.getSize().y/2-DownKey.getLocalBounds().height*4.5);
+		      LeftKey.setPosition(w.getSize().x/3-LeftKey.getLocalBounds().width/2, w.getSize().y/1.5-LeftKey.getLocalBounds().height*4.8);
+		      RightKey.setPosition(w.getSize().x/3-RightKey.getLocalBounds().width/2, w.getSize().y/1.5-RightKey.getLocalBounds().height*1.8);
+		    }
+		  else if (select == 2)
+		    {
+		      UpKey.setString(Keys.at(p2.getKeys().up));
+		      DownKey.setString(Keys.at(p2.getKeys().down));
+		      LeftKey.setString(Keys.at(p2.getKeys().left));
+		      RightKey.setString(Keys.at(p2.getKeys().right));
+		      UpKey.setPosition(w.getSize().x/3-UpKey.getLocalBounds().width/2, w.getSize().y/2-UpKey.getLocalBounds().height*7);
+		      DownKey.setPosition(w.getSize().x/3-DownKey.getLocalBounds().width/2, w.getSize().y/2-DownKey.getLocalBounds().height*4.5);
+		      LeftKey.setPosition(w.getSize().x/3-LeftKey.getLocalBounds().width/2, w.getSize().y/2-LeftKey.getLocalBounds().height*2);
+		      RightKey.setPosition(w.getSize().x/3-RightKey.getLocalBounds().width/2, w.getSize().y/1.8-RightKey.getLocalBounds().height*0.5);
+		    }
+		  else if (select == 3)
+		    {
+		      UpKey.setString(Keys.at(p3.getKeys().up));
+		      DownKey.setString(Keys.at(p3.getKeys().down));
+		      LeftKey.setString(Keys.at(p3.getKeys().left));
+		      RightKey.setString(Keys.at(p3.getKeys().right));
+		      UpKey.setPosition(w.getSize().x/3-UpKey.getLocalBounds().width/2, w.getSize().y/2-UpKey.getLocalBounds().height*7);
+		      DownKey.setPosition(w.getSize().x/3-DownKey.getLocalBounds().width/2, w.getSize().y/2-DownKey.getLocalBounds().height*4.5);
+		      LeftKey.setPosition(w.getSize().x/3-LeftKey.getLocalBounds().width/2, w.getSize().y/2-LeftKey.getLocalBounds().height*2);
+		      RightKey.setPosition(w.getSize().x/3-RightKey.getLocalBounds().width/2, w.getSize().y/1.8-RightKey.getLocalBounds().height*0.5);
+		    }
+		  else if (select == 4)
+		    {
+		      UpKey.setString(Keys.at(p4.getKeys().up));
+		      DownKey.setString(Keys.at(p4.getKeys().down));
+		      LeftKey.setString(Keys.at(p4.getKeys().left));
+		      RightKey.setString(Keys.at(p4.getKeys().right));
+		      UpKey.setPosition(w.getSize().x/3-UpKey.getLocalBounds().width/2, w.getSize().y/2-UpKey.getLocalBounds().height*7);
+		      DownKey.setPosition(w.getSize().x/3-DownKey.getLocalBounds().width/2, w.getSize().y/2-DownKey.getLocalBounds().height*4.5);
+		      LeftKey.setPosition(w.getSize().x/3-LeftKey.getLocalBounds().width/2, w.getSize().y/2-LeftKey.getLocalBounds().height*2);
+		      RightKey.setPosition(w.getSize().x/3-RightKey.getLocalBounds().width/2, w.getSize().y/1.8-RightKey.getLocalBounds().height*0.5);
+		    }
 		  sf::Text Down("Down", f, 80);
 		  sf::Text Left("Left", f, 80);
 		  sf::Text Right("Right", f, 80);
 		  sf::Text Controls("Controls", f, 80);
 		  Up.setColor(sf::Color::Black);
+		  UpKey.setColor(sf::Color::Black);
+		  DownKey.setColor(sf::Color::Black);
+		  LeftKey.setColor(sf::Color::Black);
+		  RightKey.setColor(sf::Color::Black);
 		  Down.setColor(sf::Color::Black);
 		  Left.setColor(sf::Color::Black);
 		  Right.setColor(sf::Color::Black);
@@ -331,25 +418,41 @@ int OptionsWindow(sf::Event e, sf::RenderWindow &w, sf::Font f, Player &p1, Play
 					    {
 					      if (select == 1) // If we want to adjust the controls of player 1.
 						{
-						  p1.getKeys().up = e.key.code; // Set up (throttle) to be the button that was just pressed on the keyboard.
+						  if (Keys.count(e.key.code) != 0)
+						    {
+						      p1.getKeys().up = e.key.code; // Set up (throttle) to be the button that was just pressed on the keyboard.
+						      UpKey.setString(Keys.at(p1.getKeys().up));
+						    }
 						  var = 1;
 						  break;
 						}
 					      else if (select == 2) // If we want to adjust the controls of player 2.
 						{
-						  p2.getKeys().up = e.key.code;
+						  if (Keys.count(e.key.code) != 0)
+						    {
+						      p2.getKeys().up = e.key.code;
+						      UpKey.setString(Keys.at(p2.getKeys().up));
+						    }
 						  var = 1;
 						  break;
 						}
 					      else if (select == 3) // If we want to adjust the controls of player 3. 
 						{
-						  p3.getKeys().up = e.key.code;
+						  if (Keys.count(e.key.code) != 0)
+						    {
+						      p3.getKeys().up = e.key.code;
+						      UpKey.setString(Keys.at(p3.getKeys().up));
+						    }
 						  var = 1;
 						  break;
 						}
 					      else if (select == 4) // If we want to adjust the controls of player 4.
 						{
-						  p3.getKeys().up = e.key.code;
+						  if (Keys.count(e.key.code) != 0)
+						    {
+						      p3.getKeys().up = e.key.code;
+						      UpKey.setString(Keys.at(p4.getKeys().up));
+						    }
 						  var = 1;
 						  break;
 						}
@@ -373,25 +476,41 @@ int OptionsWindow(sf::Event e, sf::RenderWindow &w, sf::Font f, Player &p1, Play
 					    {
 					      if (select == 1)
 						{
-						  p1.getKeys().down = e.key.code;
+						  if (Keys.count(e.key.code) != 0)
+						    {
+						      p1.getKeys().down = e.key.code;
+						      DownKey.setString(Keys.at(p1.getKeys().down));
+						    }
 						  var = 1;
 						  break;
 						}
 					      else if (select == 2)
 						{
-						  p2.getKeys().down = e.key.code;
+						  if (Keys.count(e.key.code) != 0)
+						    {
+						      p2.getKeys().down = e.key.code;
+						      DownKey.setString(Keys.at(p2.getKeys().down));
+						    }
 						  var = 1;
 						  break;
 						}
 					      else if (select == 3)
 						{
-						  p3.getKeys().down = e.key.code;
+						  if (Keys.count(e.key.code) != 0)
+						    {
+						      p3.getKeys().down = e.key.code;
+						      DownKey.setString(Keys.at(p3.getKeys().down));
+						    }
 						  var = 1;
 						  break;
 						}
 					      else if (select == 4)
 						{
-						  p4.getKeys().down = e.key.code;
+						  if (Keys.count(e.key.code) != 0)
+						    {
+						      p4.getKeys().down = e.key.code;
+						      DownKey.setString(Keys.at(p4.getKeys().down));
+						    }
 						  var = 1;
 						  break;
 						}
@@ -415,25 +534,41 @@ int OptionsWindow(sf::Event e, sf::RenderWindow &w, sf::Font f, Player &p1, Play
 					    {
 					      if (select == 1)
 						{
-						  p1.getKeys().left = e.key.code;
+						  if (Keys.count(e.key.code) != 0)
+						    {
+						      p1.getKeys().left = e.key.code;
+						      LeftKey.setString(Keys.at(p1.getKeys().left));
+						    }
 						  var = 1;
 						  break;
 						}
 					      else if (select == 2)
 						{
-						  p2.getKeys().left = e.key.code;
+						  if (Keys.count(e.key.code) != 0)
+						    {
+						      p2.getKeys().left = e.key.code;
+						      LeftKey.setString(Keys.at(p2.getKeys().left));
+						    }
 						  var = 1;
 						  break;
 						}
 					      else if (select == 3)
 						{
-						  p3.getKeys().left = e.key.code;
+						  if (Keys.count(e.key.code) != 0)
+						    {
+						      p3.getKeys().left = e.key.code;
+						      LeftKey.setString(Keys.at(p3.getKeys().left));
+						    }
 						  var = 1;
 						  break;
 						}
 					      else if (select == 4)
 						{
-						  p4.getKeys().left = e.key.code;
+						  if (Keys.count(e.key.code) != 0)
+						    {
+						      p4.getKeys().left = e.key.code;
+						      LeftKey.setString(Keys.at(p4.getKeys().left));
+						    }
 						  var = 1;
 						  break;
 						}
@@ -457,25 +592,41 @@ int OptionsWindow(sf::Event e, sf::RenderWindow &w, sf::Font f, Player &p1, Play
 					    {
 					      if (select == 1)
 						{
-						  p1.getKeys().right = e.key.code;
+						  if (Keys.count(e.key.code) != 0)
+						    {
+						      p1.getKeys().right = e.key.code;
+						      RightKey.setString(Keys.at(p1.getKeys().right));
+						    }
 						  var = 1;
 						  break;
 						}
 					      else if (select == 2)
 						{
-						  p2.getKeys().right = e.key.code;
+						  if (Keys.count(e.key.code) != 0)
+						    {
+						      p2.getKeys().right = e.key.code;
+						      RightKey.setString(Keys.at(p2.getKeys().right));
+						    }
 						  var = 1;
 						  break;
 						}
 					      else if (select == 3)
 						{
-						  p3.getKeys().right = e.key.code;
+						  if (Keys.count(e.key.code) != 0)
+						    {
+						      p3.getKeys().right = e.key.code;
+						      RightKey.setString(Keys.at(p3.getKeys().right));
+						    }
 						  var = 1;
 						  break;
 						}
 					      else if (select == 4)
 						{
-						  p4.getKeys().right = e.key.code;
+						  if (Keys.count(e.key.code) != 0)
+						    {
+						      p4.getKeys().right = e.key.code;
+						      RightKey.setString(Keys.at(p4.getKeys().right));
+						    }
 						  var = 1;
 						  break;
 						}
@@ -495,6 +646,10 @@ int OptionsWindow(sf::Event e, sf::RenderWindow &w, sf::Font f, Player &p1, Play
 		      w.draw(Return);
 		      w.draw(ExitButton);
 		      w.draw(Up);
+		      w.draw(UpKey);
+		      w.draw(DownKey);
+		      w.draw(LeftKey);
+		      w.draw(RightKey);
 		      w.draw(Down);
 		      w.draw(Left);
 		      w.draw(Right);
@@ -519,6 +674,8 @@ int OptionsWindow(sf::Event e, sf::RenderWindow &w, sf::Font f, Player &p1, Play
       w.draw(ExitButton);
       w.draw(Player1Opts);
       w.draw(Player2Opts);
+      w.draw(Player3Opts);
+      w.draw(Player4Opts);
       w.display();
     }
   return 0;
