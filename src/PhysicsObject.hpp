@@ -1,13 +1,20 @@
 /* PhysicsObject ties a physical Box2D body to a shape rendered using SFML.
  * The purpose of the class is to allow easy drawing of Box2D bodies.
- * PhysicsObjects are constructed using an existing b2Body,
- * a b2FixtureDef and a drawable SFML shape. The constructor assigns a Box2D shape
- * (which matches the drawable SFML shape) to the given b2FixtureDef, and creates the
- * new fixture on the body.
- * The SFML shape can be given as a shared pointer to an existing RectangleShape or CircleShape, 
- * or as a vector of the vertices of the desired shape, in which case the constructor 
- * will create a new sf::ConvexShape from it.
- * Optionally, a color for the shape can be given (defaults to white). */
+ * PhysicsObject constructor requires the following arguments:
+ *      - world is a reference to the b2World into which the object will be added
+ *      - one of the following parameters describing the shape of the object (all distances are in meters):
+ *          - a single float argument creates a circle of the given radius
+ *          - a b2Vec2 argument creates a rectangle using the dimensions given in the b2Vec2-vector
+ *          - a std::vector<std::pair<float,float>> creates an arbitrary convex polygon shape
+ *            whose vertex coordinates are the pairs given in the vector (assumes that the coordinates
+ *            in the vector are vertices of a convex polygon and that the coordinates are given in clockwise
+ *            or counter-clockwise order).
+ * and takes the following optional arguments:
+ *      - a b2BodyDef for the body (uses the default b2BodyDef if no def is given)
+ *      - a b2FixtureDef for the fixture created on the body (uses the default b2FixtureDef
+ *        if none is given, and ignores any existing shape-values of the def)
+ *      - an sf::Color for the SFML shape (defaults to white)
+ */
 
 #ifndef PHYSICSOBJECT_HPP
 #define PHYSICSOBJECT_HPP
@@ -19,14 +26,19 @@
 
 class PhysicsObject {
     public:
+        // The different constructors for circle, rectangle and convex polygon shaped objects.
         PhysicsObject(b2World& world, float32 radius, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
         PhysicsObject(b2World& world, b2Vec2 rectDims, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
         PhysicsObject(b2World& world, std::vector<std::pair<float,float>>& vertices, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
+        // The body of the object can be accessed and modified, but the pointer cannot be changed to another body.
         b2Body* const getBody() const;
-        b2Vec2 getPosition() const;
-        b2Vec2 getWorldCenter() const;
+        // Some (possibly temporary) methods for easier access to the properties of the body.
+        b2Vec2 getPosition() const; // Returns the origin of the body.
+        b2Vec2 getWorldCenter() const; // Returns the coordinates of the body's center of mass.
         float32 getAngle() const;
         void applyLinearImpulse(b2Vec2 impulse, b2Vec2 point, bool wake);
+        // The method for easy drawing of the Box2D object; automatically calculates the correct
+        // position of the SFML-shape before drawing.
         void drawTo(sf::RenderWindow& window);
     private:
         b2Body* body;

@@ -19,6 +19,8 @@ PhysicsObject::PhysicsObject(b2World& world, b2Vec2 rectDims, b2BodyDef bodyDef,
     shape->setFillColor(color);
     shape->setOrigin(0.5 * rectDims.x * METERSTOPIX, 0.5 * rectDims.y * METERSTOPIX);
     b2PolygonShape bodyShape;
+    // Dimensios multiplied by 0.5 because the rectangle created by SetAsBox has double the side
+    // lengths given as arguments.
     bodyShape.SetAsBox(0.5 * rectDims.x, 0.5 * rectDims.y);
     fixtureDef.shape = &bodyShape;
     body = world.CreateBody(&bodyDef);
@@ -27,40 +29,43 @@ PhysicsObject::PhysicsObject(b2World& world, b2Vec2 rectDims, b2BodyDef bodyDef,
 
 // Constructor for arbitrary convex polygon shapes.
 PhysicsObject::PhysicsObject(b2World& world, std::vector<std::pair<float,float>>& vertices, b2BodyDef bodyDef, b2FixtureDef fixtureDef, sf::Color color) {
+    // Create the SFML shape for the body.
     auto tempShape = std::make_shared<sf::ConvexShape>(vertices.size());
-    // Find the largest y coordinate value from the vertices vector
-    // to perform axis conversions between SFML and Box2D.
+    // Create vertex vector for the Box2D body's shape.
+    b2Vec2 bodyVertices[vertices.size()];
+    // Find the largest y coordinate value from the vertices vector to perform axis conversions between SFML and Box2D.
+    // (The y-coordinates have to be "flipped" for the SFML-shape because of the different y-axis directions.)
     const std::pair<float,float> maxYPair = *std::max_element(vertices.cbegin(), vertices.cend(),
         [](const std::pair<float,float> left, const std::pair<float,float> right){
             return left.second < right.second;
         });
     const float maxY = maxYPair.second;
+    // Create the Box2D body for the PhysicsObject.
     body = world.CreateBody(&bodyDef);
-    // Create vertex vector for the fixture's shape.
-    b2Vec2 bodyVertices[vertices.size()];
-    // Create the rendered shape object.
     for (size_t i = 0; i < vertices.size(); i++) {
         const std::pair<float, float> currentPair = vertices.at(i);
+        // Set the vertices of the Box2D body's shape.
         bodyVertices[i].Set(currentPair.first, currentPair.second);
+        // Set the vertices of the SFML shape, converting meters to pixels and flipping the y-axis.
         tempShape->setPoint(i, sf::Vector2f(currentPair.first * METERSTOPIX, (maxY - currentPair.second) * METERSTOPIX));
     }
-    // Define the physical body's shape using the body vertex vector and tie the shape
-    // to the body.
+    // Create the Box2D shape object from the vertex vector and assign the shape to the fixtureDef.
     b2PolygonShape bodyShape;
     bodyShape.Set(bodyVertices, vertices.size());
     fixtureDef.shape = &bodyShape;
     body->CreateFixture(&fixtureDef);
-    // Tie the rendered shape to the physical body.
+    // Set the origin of the SFML shape to the center of the mass of the Box2D body.
     tempShape->setOrigin(body->GetLocalCenter().x * METERSTOPIX, (maxY - body->GetLocalCenter().y) * METERSTOPIX);
     tempShape->setFillColor(color);
     shape = tempShape;
-    // Move the body so that the center of mass is at the given bodyDef coordinates,
+    // Move the Box2D body so that the center of mass is at the given bodyDef coordinates,
     // instead of the origin of the body (which is one of the vertices).
     b2Vec2 transformCoordinates = -body->GetLocalCenter();
     transformCoordinates += body->GetPosition();
     body->SetTransform(transformCoordinates, body->GetAngle());
 }
 
+// Calculate and set the correct position and rotation of the SFML shape and draw it.
 void PhysicsObject::drawTo(sf::RenderWindow& window) {
     b2Vec2 position = body->GetWorldCenter();
     shape->setRotation(-body->GetAngle() * RADTODEG);
