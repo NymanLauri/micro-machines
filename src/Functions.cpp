@@ -2,14 +2,18 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <vector>
+#include <algorithm>
 #include "Player.hpp"
 #include "KeySettings.hpp"
 
 
 // This loop controls the window in which the user chooses map etc. befor starting the game.
-int StartWindow(sf::Event e, sf::RenderWindow &w, sf::Font f)
+int StartWindow(sf::Event e, sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player &p3, Player &p4)
 {
   w.setFramerateLimit(60);
+  std::vector<sf::Keyboard::Key> playerKeys {p1.getKeys().up, p1.getKeys().down, p1.getKeys().left, p1.getKeys().right, p2.getKeys().up, p2.getKeys().down, p2.getKeys().left, p2.getKeys().right, p3.getKeys().up, p3.getKeys().down, p3.getKeys().left, p3.getKeys().right, p4.getKeys().up, p4.getKeys().down, p4.getKeys().left, p4.getKeys().right};
+  std::sort(playerKeys.begin(), playerKeys.end());
   int var = 0;
   int MousePosX = 0;
   int MousePosY = 0;
@@ -17,12 +21,27 @@ int StartWindow(sf::Event e, sf::RenderWindow &w, sf::Font f)
   sf::Text ReturnButton("Main Menu", f, 100);
   sf::Text ExitButton("Exit", f, 100);
   sf::Text StartButton("Start", f, 100);
+  sf::Text Heading1("Number of player", f, 80);
+  sf::Text Lkm1("1", f, 80);
+  sf::Text Lkm2("2", f, 80);
+  sf::Text Lkm3("3", f, 80);
+  sf::Text Lkm4("4", f, 80);
   ReturnButton.setColor(sf::Color::Black);
   ExitButton.setColor(sf::Color::Black);
   StartButton.setColor(sf::Color::Black);
+  Heading1.setColor(sf::Color::Red);
+  Lkm1.setColor(sf::Color::Black);
+  Lkm2.setColor(sf::Color::Black);
+  Lkm3.setColor(sf::Color::Black);
+  Lkm4.setColor(sf::Color::Black);
   ReturnButton.setPosition(w.getSize().x/6-ReturnButton.getLocalBounds().width/2, w.getSize().y-ReturnButton.getLocalBounds().height*2.5);
   ExitButton.setPosition(w.getSize().x/1.15-ExitButton.getLocalBounds().width/2, w.getSize().y-ExitButton.getLocalBounds().height*2.5);
   StartButton.setPosition(w.getSize().x/2-StartButton.getLocalBounds().width/2, w.getSize().y/2-StartButton.getLocalBounds().height/2);
+  Heading1.setPosition(w.getSize().x/5.5-Heading1.getLocalBounds().width/2, w.getSize().y/9-Heading1.getLocalBounds().height);
+  Lkm1.setPosition(w.getSize().x/5.5-Lkm1.getLocalBounds().width/2, w.getSize().y/5-Lkm1.getLocalBounds().height);
+  Lkm2.setPosition(w.getSize().x/5.5-Lkm2.getLocalBounds().width/2, w.getSize().y/3-Lkm2.getLocalBounds().height);
+  Lkm3.setPosition(w.getSize().x/5.5-Lkm3.getLocalBounds().width/2, w.getSize().y/2.1-Lkm3.getLocalBounds().height);
+  Lkm4.setPosition(w.getSize().x/5.5-Lkm4.getLocalBounds().width/2, w.getSize().y/1.6-Lkm4.getLocalBounds().height);
 
   while (w.isOpen())
     {
@@ -87,7 +106,10 @@ int StartWindow(sf::Event e, sf::RenderWindow &w, sf::Font f)
 		}
 	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= StartButton.getPosition().x && MousePosX <= StartButton.getPosition().x+StartButton.getLocalBounds().width*1.3 && MousePosY >= StartButton.getPosition().y*1.03 && MousePosY <= StartButton.getPosition().y+StartButton.getLocalBounds().height*1.5) // If the user clicks on the start-button.
 		{
-		  return 1; // This return value tells the menu()-function to start the game.
+		  if (std::unique(playerKeys.begin(), playerKeys.end()) == playerKeys.end())
+		    {
+		      return 1; // This return value tells the menu()-function to start the game.
+		    }
 		}
 	    default:
 	      break;
@@ -101,6 +123,11 @@ int StartWindow(sf::Event e, sf::RenderWindow &w, sf::Font f)
       w.draw(ReturnButton);
       w.draw(ExitButton);
       w.draw(StartButton);
+      w.draw(Heading1);
+      w.draw(Lkm1);
+      w.draw(Lkm2);
+      w.draw(Lkm3);
+      w.draw(Lkm4);
       w.display();
     }
   return 0;

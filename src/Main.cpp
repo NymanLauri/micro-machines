@@ -123,7 +123,7 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 
 	      else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= StartButton.getPosition().x*1.01 && MousePosX <= StartButton.getPosition().x+StartButton.getLocalBounds().width*1.1 && MousePosY >= StartButton.getPosition().y*1.03 && MousePosY <= StartButton.getPosition().y+StartButton.getLocalBounds().height*1.5) // If the user clicks on the "Start game"-button.
 		{
-		  retValue = StartWindow(event, window, font); // Go to function StartWindow (found in Functions.cpp) that opens a window where the player will for example choose the maps.
+		  retValue = StartWindow(event, window, font, player1, player2, player3, player4); // Go to function StartWindow (found in Functions.cpp) that opens a window where the player will for example choose the maps.
 		  if (retValue == 1)
 		    {
 		      Game(event, window, font, player1, player2, player3, player4); // Go to Game-function that controls the actual game.
