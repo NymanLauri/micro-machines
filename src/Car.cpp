@@ -1,6 +1,7 @@
 #include "Car.hpp"
 #include "Settings.hpp"
 #include <iostream>
+#include <algorithm>
 Car::Car(b2World& world, b2Vec2 position, sf::Color color) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
@@ -94,4 +95,19 @@ void Car::drawTo(sf::RenderWindow& window) {
     for (auto it : tires) {
         it.drawTo(window);
     }
+}
+
+void Car::addCheckpoint(unsigned int checkpoint, unsigned int numLevelCheckpoints){
+  if(std::find(this->checkpoints.begin(), this->checkpoints.end(), checkpoint) != this->checkpoints.end()){
+    
+  }
+  else {
+    if(this->checkpoints.size()  == checkpoint) {
+      this->checkpoints.push_back(checkpoint);
+      if(this->checkpoints.size() == numLevelCheckpoints){
+	this->addLap();
+	this->checkpoints.clear();
+      }
+    }
+  }
 }
