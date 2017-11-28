@@ -4,8 +4,8 @@
 
 class Tire {
     public:
-        Tire(b2World& world, b2Vec2 position, float drag = 1.0, float maxLateralImpulse = 10);
-        void drawTo(sf::RenderWindow& window) { tireObject->drawTo(window); }
+        Tire(b2World& world, Settings& s, b2Vec2 position, float drag = 1.0, float maxLateralImpulse = 10);
+        void drawTo(sf::RenderWindow& window, Settings& s) { tireObject->drawTo(window, s); }
         b2Body* const getBody() const { return tireObject->getBody(); }
         b2Vec2 getLateralVelocity() const;
         b2Vec2 getParallelVelocity() const;

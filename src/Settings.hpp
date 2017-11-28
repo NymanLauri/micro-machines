@@ -1,9 +1,19 @@
 #ifndef SETTINGS_HPP
 #define SETTINGS_HPP
 
-#define RADTODEG (180.0/3.14159265358979)
-#define DEGTORAD (3.14159265358979/180.0)
-#define METERSTOPIX (20.0)
-#define PIXTOMETERS (1.0/20.0)
+class Settings {
+    public:
+        Settings(const size_t sw, const size_t sh, const float ww, const float wh) :
+           screenWidth(sw), screenHeight(sh), worldWidth(ww), worldHeight(wh),
+           metersToPixels(sw/ww), pixelsToMeters(ww/sw), tileWidth(sw/ww), tileHeight(sh/wh) { }
+        const size_t screenWidth;
+        const size_t screenHeight;
+        const float worldWidth;
+        const float worldHeight;
+        const float metersToPixels;
+        const float pixelsToMeters;
+        const float tileWidth;
+        const float tileHeight;
+};
 
 #endif

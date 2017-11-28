@@ -2,6 +2,7 @@
  * The purpose of the class is to allow easy drawing of Box2D bodies.
  * PhysicsObject constructor requires the following arguments:
  *      - world is a reference to the b2World into which the object will be added
+ *      - settings is a reference to the scale settings defined at the start of the program
  *      - one of the following parameters describing the shape of the object (all distances are in meters):
  *          - a single float argument creates a circle of the given radius
  *          - a b2Vec2 argument creates a rectangle using the dimensions given in the b2Vec2-vector
@@ -23,13 +24,14 @@
 #include <memory>
 #include <SFML/Graphics.hpp>
 #include "Box2D/Box2D.h"
+#include "Settings.hpp"
 
 class PhysicsObject {
     public:
         // The different constructors for circle, rectangle and convex polygon shaped objects.
-        PhysicsObject(b2World& world, float32 radius, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
-        PhysicsObject(b2World& world, b2Vec2 rectDims, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
-        PhysicsObject(b2World& world, std::vector<std::pair<float,float>>& vertices, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
+        PhysicsObject(b2World& world, Settings& s, float32 radius, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
+        PhysicsObject(b2World& world, Settings& s, b2Vec2 rectDims, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
+        PhysicsObject(b2World& world, Settings& s, std::vector<std::pair<float,float>>& vertices, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
         // The body of the object can be accessed and modified, but the pointer cannot be changed to another body.
         b2Body* const getBody() const;
         // Some (possibly temporary) methods for easier access to the properties of the body.
@@ -39,7 +41,7 @@ class PhysicsObject {
         void applyLinearImpulse(b2Vec2 impulse, b2Vec2 point, bool wake);
         // The method for easy drawing of the Box2D object; automatically calculates the correct
         // position of the SFML-shape before drawing.
-        void drawTo(sf::RenderWindow& window);
+        void drawTo(sf::RenderWindow& window, Settings& s);
     private:
         b2Body* body;
         std::shared_ptr<sf::Shape> shape;

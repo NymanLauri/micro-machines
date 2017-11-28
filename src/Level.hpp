@@ -9,12 +9,11 @@
 
 class Level {
     public:
-        Level(std::string);
-        void drawTo(sf::RenderWindow& window);
+        Level(std::string, Settings& s);
+        void drawTo(sf::RenderWindow& window, Settings& s);
         void addCar(std::shared_ptr<Car>);
-        /*TODO
-        void saveTo(std::string outFileName);
-        void addObstacle(std::shared_ptr<PhysicsObject>);*/
+        void addObstacle(std::shared_ptr<PhysicsObject>);
+        //TODO: void saveTo(std::string outFileName);
     private:
         std::vector<std::shared_ptr<Tile>> tiles;
         std::vector<std::shared_ptr<Car>> cars;

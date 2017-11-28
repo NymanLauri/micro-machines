@@ -13,23 +13,28 @@ int main(void) {
     b2Vec2 gravity(0.0f, 0.0f);
     b2World world(gravity);
 
-    sf::VideoMode videomode = sf::VideoMode(1800,900);
+    sf::VideoMode videomode = sf::VideoMode(1800,1000);
+    
+    Settings s(videomode.width, //screenWidth
+               videomode.height, //screenHeight
+               90.0,            //worldWidth
+               50.0);           //worldHeight
 
     // Create screen borders
     b2BodyDef borderDef;
     b2Body* borderBody = world.CreateBody(&borderDef);
     b2Vec2 vertices[4];
     vertices[0].Set(0.0, 0.0);
-    vertices[1].Set(0.0, videomode.height * PIXTOMETERS);
-    vertices[2].Set(videomode.width * PIXTOMETERS, videomode.height * PIXTOMETERS);
-    vertices[3].Set(videomode.width * PIXTOMETERS, 0.0);
+    vertices[1].Set(0.0, videomode.height * s.pixelsToMeters);
+    vertices[2].Set(videomode.width * s.pixelsToMeters, videomode.height * s.pixelsToMeters);
+    vertices[3].Set(videomode.width * s.pixelsToMeters, 0.0);
     b2ChainShape screenBorders;
     screenBorders.CreateLoop(vertices, 4);
     borderBody->CreateFixture(&screenBorders, 1.0);
 
     // Create two cars in the middle of the screen
-    Car car1(world, b2Vec2((videomode.width/2 - 50)* PIXTOMETERS, videomode.height/2 * PIXTOMETERS), sf::Color::Red);
-    Car car2(world, b2Vec2((videomode.width/2 + 50) * PIXTOMETERS, videomode.height/2 * PIXTOMETERS), sf::Color::Blue);
+    Car car1(world, s, b2Vec2((videomode.width/2 - 50)* s.pixelsToMeters, videomode.height/2 * s.pixelsToMeters), sf::Color::Red);
+    Car car2(world, s, b2Vec2((videomode.width/2 + 50) * s.pixelsToMeters, videomode.height/2 * s.pixelsToMeters), sf::Color::Blue);
 
     // Create player for moving the car.
     Player player1(KeySettings{sf::Keyboard::W, sf::Keyboard::S, sf::Keyboard::A, sf::Keyboard::D});
@@ -67,8 +72,8 @@ int main(void) {
   
         world.Step(timeStep, 8, 3); 
         window.clear(sf::Color(170, 170, 170, 255));
-        car1.drawTo(window);
-        car2.drawTo(window);
+        car1.drawTo(window, s);
+        car2.drawTo(window, s);
         window.display();
     }
     return 0;

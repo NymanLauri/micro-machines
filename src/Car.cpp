@@ -1,8 +1,9 @@
 #include "Car.hpp"
 #include "Settings.hpp"
+#include "Constants.hpp"
 #include <iostream>
 #include <algorithm>
-Car::Car(b2World& world, b2Vec2 position, sf::Color color) {
+Car::Car(b2World& world, Settings& s, b2Vec2 position, sf::Color color) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position = position;
@@ -19,7 +20,7 @@ Car::Car(b2World& world, b2Vec2 position, sf::Color color) {
         std::make_pair(1.75, 1.25),
         std::make_pair(1.5, 0.0)
     };
-    bodyObject = std::make_shared<PhysicsObject>(world, bodyVertices, bodyDef, fixtureDef, color);
+    bodyObject = std::make_shared<PhysicsObject>(world, s, bodyVertices, bodyDef, fixtureDef, color);
     //Set the positions of the tires relative to the center of the mass of the car's body.
     std::vector<std::pair<float,float>> tireOffsets = {
         std::make_pair(-1.0, 1.25),
@@ -29,7 +30,7 @@ Car::Car(b2World& world, b2Vec2 position, sf::Color color) {
     };
     b2Vec2 bodyPos = bodyObject->getBody()->GetWorldCenter();
     for (auto it : tireOffsets) {
-        Tire newTire(world, b2Vec2(bodyPos.x + it.first, bodyPos.y + it.second));
+        Tire newTire(world, s, b2Vec2(bodyPos.x + it.first, bodyPos.y + it.second));
         b2RevoluteJointDef jointDef;
         jointDef.bodyA = bodyObject->getBody();
         jointDef.bodyB = newTire.getBody();
@@ -90,10 +91,10 @@ void Car::updateMovement() {
     }
 }
 
-void Car::drawTo(sf::RenderWindow& window) {
-    bodyObject->drawTo(window);
+void Car::drawTo(sf::RenderWindow& window, Settings& s) {
+    bodyObject->drawTo(window, s);
     for (auto it : tires) {
-        it.drawTo(window);
+        it.drawTo(window, s);
     }
 }
 

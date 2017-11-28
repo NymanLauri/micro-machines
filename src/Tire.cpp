@@ -8,14 +8,14 @@
 #include "Tire.hpp"
 #include "Settings.hpp"
 #include <iostream>
-Tire::Tire(b2World& world, b2Vec2 position, float drag, float mli) : drag(drag), maxLateralImpulse(mli) {
+Tire::Tire(b2World& world, Settings& s, b2Vec2 position, float drag, float mli) : drag(drag), maxLateralImpulse(mli) {
     b2BodyDef tireBodyDef;
     tireBodyDef.type = b2_dynamicBody;
     tireBodyDef.position = position;
     b2FixtureDef tireFixtureDef;
     tireFixtureDef.density = 1.0;
     tireFixtureDef.friction = 0.3;
-    tireObject = std::make_shared<PhysicsObject>(world, b2Vec2(0.25, 0.75), tireBodyDef, tireFixtureDef, sf::Color::Black);
+    tireObject = std::make_shared<PhysicsObject>(world, s, b2Vec2(0.25, 0.75), tireBodyDef, tireFixtureDef, sf::Color::Black);
 };
 
 b2Vec2 Tire::getLateralVelocity() const {
