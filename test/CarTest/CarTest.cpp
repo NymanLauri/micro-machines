@@ -17,8 +17,8 @@ int main(void) {
     
     Settings s(videomode.width, //screenWidth
                videomode.height, //screenHeight
-               90.0,            //worldWidth
-               50.0);           //worldHeight
+               180.0,            //worldWidth
+               90.0);           //worldHeight
 
     // Create screen borders
     b2BodyDef borderDef;

@@ -1,6 +1,8 @@
 #ifndef SETTINGS_HPP
 #define SETTINGS_HPP
 
+#include <iostream>
+
 class Settings {
     public:
         Settings(const size_t sw, const size_t sh, const float ww, const float wh) :

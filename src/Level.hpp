@@ -7,17 +7,22 @@
 #include "PhysicsObject.hpp"
 #include "Tile.hpp"
 
+class Car;
+class Tire;
 class Level {
     public:
-        Level(std::string, Settings& s);
-        void drawTo(sf::RenderWindow& window, Settings& s);
+        Level(std::string, b2World& world, Settings& s);
+        void createScreenBorders(b2World& world, Settings& s);
         void addCar(std::shared_ptr<Car>);
         void addObstacle(std::shared_ptr<PhysicsObject>);
+        float getFrictionMultiplier(b2Vec2 coordinates) const;
+        void drawTo(sf::RenderWindow& window, Settings& s);
         //TODO: void saveTo(std::string outFileName);
     private:
         std::vector<std::shared_ptr<Tile>> tiles;
         std::vector<std::shared_ptr<Car>> cars;
         std::vector<std::shared_ptr<PhysicsObject>> obstacles;
+        const Settings& s;
 };
 
 #endif

@@ -81,9 +81,9 @@ void Car::turnRight() {
     }
 }
 
-void Car::updateMovement() {
+void Car::updateMovement(const Level& level) {
     for (auto it : tires) {
-        it.updateMovement();
+        it.updateMovement(level);
     } 
     for (size_t i = 0; i < 2; i++) {
         b2RevoluteJoint* joint = tireJoints.at(i);

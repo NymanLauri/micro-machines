@@ -4,8 +4,11 @@
 #include <SFML/Graphics.hpp>
 #include "Box2D/Box2D.h"
 #include "PhysicsObject.hpp"
+#include "Level.hpp"
 #include "Tire.hpp"
 
+class Level;
+class Tire;
 class Car {
     public:
         Car(b2World& world, Settings& s, b2Vec2 position, sf::Color color = sf::Color::White);
@@ -14,7 +17,7 @@ class Car {
         void decelerate();
         void turnLeft();
         void turnRight();
-        void updateMovement();
+        void updateMovement(const Level& level);
         int getLap(){return this->lap;};
         void addLap(){this->lap += 1;};
         void addCheckpoint(unsigned int checkpoint, unsigned int numLevelCheckpoints);
