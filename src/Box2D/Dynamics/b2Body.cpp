@@ -213,7 +213,7 @@ b2Fixture* b2Body::CreateFixture(const b2Shape* shape, float32 density)
 
 void b2Body::DestroyFixture(b2Fixture* fixture)
 {
-	if (fixture == NULL)
+	if (fixture == nullptr)
 	{
 		return;
 	}
@@ -398,12 +398,17 @@ void b2Body::SetMassData(const b2MassData* massData)
 
 bool b2Body::ShouldCollide(const b2Body* other) const
 {
-	// At least one body should be dynamic.
-	if (m_type != b2_dynamicBody && other->m_type != b2_dynamicBody)
+	// At least one body should be dynamic or kinematic.
+	if (m_type == b2_staticBody && other->m_type == b2_staticBody)
 	{
 		return false;
 	}
 
+	return ShouldCollideConnected(other);
+}
+
+bool b2Body::ShouldCollideConnected(const b2Body* other) const
+{
 	// Does a joint prevent collision?
 	for (b2JointEdge* jn = m_jointList; jn; jn = jn->next)
 	{

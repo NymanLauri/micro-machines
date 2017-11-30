@@ -89,13 +89,11 @@ struct b2BodyDef
 	/// Linear damping is use to reduce the linear velocity. The damping parameter
 	/// can be larger than 1.0f but the damping effect becomes sensitive to the
 	/// time step when the damping parameter is large.
-	/// Units are 1/time
 	float32 linearDamping;
 
 	/// Angular damping is use to reduce the angular velocity. The damping parameter
 	/// can be larger than 1.0f but the damping effect becomes sensitive to the
 	/// time step when the damping parameter is large.
-	/// Units are 1/time
 	float32 angularDamping;
 
 	/// Set this flag to false if this body should never fall asleep. Note that
@@ -386,6 +384,9 @@ public:
 	b2World* GetWorld();
 	const b2World* GetWorld() const;
 
+	/// Does a joint prevent collision?
+	bool ShouldCollideConnected(const b2Body* other) const;
+
 	/// Dump this body to a log file
 	void Dump();
 
@@ -640,8 +641,11 @@ inline void b2Body::SetAwake(bool flag)
 {
 	if (flag)
 	{
-		m_flags |= e_awakeFlag;
-		m_sleepTime = 0.0f;
+		if ((m_flags & e_awakeFlag) == 0)
+		{
+			m_flags |= e_awakeFlag;
+			m_sleepTime = 0.0f;
+		}
 	}
 	else
 	{

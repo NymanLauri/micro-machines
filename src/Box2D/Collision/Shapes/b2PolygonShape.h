@@ -68,6 +68,12 @@ public:
 	/// @see b2Shape::ComputeMass
 	void ComputeMass(b2MassData* massData, float32 density) const override;
 
+	/// Get the vertex count.
+	int32 GetVertexCount() const { return m_count; }
+
+	/// Get a vertex by index.
+	const b2Vec2& GetVertex(int32 index) const;
+
 	/// Validate convexity. This is a very time consuming operation.
 	/// @returns true if valid
 	bool Validate() const;
@@ -84,6 +90,12 @@ inline b2PolygonShape::b2PolygonShape()
 	m_radius = b2_polygonRadius;
 	m_count = 0;
 	m_centroid.SetZero();
+}
+
+inline const b2Vec2& b2PolygonShape::GetVertex(int32 index) const
+{
+	b2Assert(0 <= index && index < m_count);
+	return m_vertices[index];
 }
 
 #endif
