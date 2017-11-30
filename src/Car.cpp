@@ -58,6 +58,7 @@ void Car::decelerate() {
 }
 
 void Car::turnLeft() {
+    turning = true;
     for (size_t i = 0; i < 2; i++) {
         b2RevoluteJoint* joint = tireJoints.at(i);
         float currentAngle = joint->GetJointAngle();
@@ -70,6 +71,7 @@ void Car::turnLeft() {
 }
 
 void Car::turnRight() {
+    turning = true;
     for (size_t i = 0; i < 2; i++) {
         b2RevoluteJoint* joint = tireJoints.at(i);
         float currentAngle = joint->GetJointAngle();
@@ -85,9 +87,13 @@ void Car::updateMovement(const Level& level) {
     for (auto it : tires) {
         it.updateMovement(level);
     } 
-    for (size_t i = 0; i < 2; i++) {
-        b2RevoluteJoint* joint = tireJoints.at(i);
-        joint->SetLimits(0.85 * joint->GetUpperLimit(), 0.85 * joint->GetUpperLimit());
+    if (turning) {
+        turning = false;
+    } else {
+        for (size_t i = 0; i < 2; i++) {
+            b2RevoluteJoint* joint = tireJoints.at(i);
+            joint->SetLimits(0.25 * joint->GetUpperLimit(), 0.25 * joint->GetUpperLimit());
+        }
     }
 }
 

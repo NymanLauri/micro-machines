@@ -1,6 +1,6 @@
 CPPFLAGS += -g -Wall -std=c++11
 INC = -I../../src -I../../src/Box2D
-LIB = -L../../src
+LIB = -L../../src/Box2D
 SRCDIR = ../../src
 TESTFILE = PhysObjTest.cpp
 EXTSRCFILES = PhysicsObject.cpp

@@ -34,7 +34,8 @@ class Car {
         float acceleration = 60.0;
         float deceleration = 60.0;
         float turnPerStep = 3.0;
-        float maxTurnAngle = 50.0;
+        float maxTurnAngle = 30.0;
+        bool turning = false;
 };
 
 #endif

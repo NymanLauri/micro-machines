@@ -1,5 +1,6 @@
 #include <fstream>
 #include "Level.hpp"
+#include "Constants.hpp"
 
 Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
     size_t x = static_cast<int>(s.worldWidth);
@@ -10,6 +11,11 @@ Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
         for (size_t i = 0; i < x; i++) {
             int tileNum;
             levelFile >> tileNum;
+            // Default settings for all static obstacles
+            b2BodyDef bd;
+            bd.position.Set(i, s.worldHeight - j);
+            b2FixtureDef fd;
+            fd.friction = 0.3;
             switch (tileNum) {
                 case 0:
                     tiles.push_back(Tile::createGrassTile(s, s.tileWidth*i, s.tileHeight*j));
@@ -20,15 +26,99 @@ Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
                 case 2:
                     tiles.push_back(Tile::createIceTile(s, s.tileWidth*i, s.tileHeight*j));
                     break;
-                case 10:
+                case 10: // A small brown static rock obstacle.
                     {
-                    // TEMPORARY TEST FOR ADDING PHYSICS OBJECTS
-                    tiles.push_back(Tile::createGrassTile(s, s.tileWidth*i, s.tileHeight*j));
-                    b2BodyDef bd;
-                    bd.position.Set(i, j);
-                    b2FixtureDef fd;
-                    fd.friction = 0.3;
-                    obstacles.push_back(std::make_shared<PhysicsObject>(world, s, 2.0, bd, fd, sf::Color::Blue));
+                        tiles.push_back(Tile::createGrassTile(s, s.tileWidth*i, s.tileHeight*j));
+                        std::vector<std::pair<float,float>> bodyVertices = {
+                            std::make_pair(0.0, -1.5),
+                            std::make_pair(-1.0, -1.3),
+                            std::make_pair(-2.0, -0.0),
+                            std::make_pair(-1.4, 0.5),
+                            std::make_pair(-0.4, 1.1),
+                            std::make_pair(1.0, 1.5),
+                            std::make_pair(2.0, 0.9),
+                            std::make_pair(1.0, -0.7)
+                        };
+                        obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
+                    }
+                    break;
+                case 11: // Another small brown static rock obstacle.
+                    {
+                        tiles.push_back(Tile::createGrassTile(s, s.tileWidth*i, s.tileHeight*j));
+                        std::vector<std::pair<float,float>> bodyVertices = {
+                            std::make_pair(1.0, -2.0),
+                            std::make_pair(0.0, -1.5),
+                            std::make_pair(-1.0, -0.7),
+                            std::make_pair(-2.0, 0.0),
+                            std::make_pair(-2.0, 0.5),
+                            std::make_pair(-1.0, 1.0),
+                            std::make_pair(0.5, 2.2),
+                            std::make_pair(2.0, -0.5)
+                        };
+                        obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
+                    }
+                    break;
+                case 12: // A larger version of case 10 rock.
+                    {
+                        tiles.push_back(Tile::createGrassTile(s, s.tileWidth*i, s.tileHeight*j));
+                        std::vector<std::pair<float,float>> bodyVertices = {
+                            std::make_pair(0.0, -3.0),
+                            std::make_pair(-2.0, -2.6),
+                            std::make_pair(-4.0, -0.0),
+                            std::make_pair(-2.8, 1.0),
+                            std::make_pair(-0.8, 2.2),
+                            std::make_pair(2.0, 3.0),
+                            std::make_pair(4.0, 1.8),
+                            std::make_pair(2.0, -1.4)
+                        };
+                        obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
+                    }
+                    break;
+                case 13: // A larger version of case 11 rock.
+                    {
+                        tiles.push_back(Tile::createGrassTile(s, s.tileWidth*i, s.tileHeight*j));
+                        std::vector<std::pair<float,float>> bodyVertices = {
+                            std::make_pair(2.0, -4.0),
+                            std::make_pair(0.0, -3.0),
+                            std::make_pair(-2.0, -1.4),
+                            std::make_pair(-4.0, 0.0),
+                            std::make_pair(-4.0, 1.0),
+                            std::make_pair(-2.0, 2.0),
+                            std::make_pair(1.0, 4.4),
+                            std::make_pair(4.0, -1.0)
+                        };
+                        obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
+
+                    }
+                    break;
+                case 20: // A horizontal rail.
+                    {
+                        tiles.push_back(Tile::createGrassTile(s, s.tileWidth*i, s.tileHeight*j));
+                        auto physObjPtr = std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255));
+
+                        obstacles.push_back(std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255)));
+                    }
+                    break;
+                case 21: // A vertical rail.
+                    {
+                        tiles.push_back(Tile::createGrassTile(s, s.tileWidth*i, s.tileHeight*j));
+                        obstacles.push_back(std::make_shared<PhysicsObject>(world, s, b2Vec2(1, 20), bd, fd, sf::Color(160,160,160,255)));
+                    }
+                    break;
+                case 22: // A diagonal rail from bottom right to top left.
+                    {
+                        tiles.push_back(Tile::createGrassTile(s, s.tileWidth*i, s.tileHeight*j));
+                        auto physObjPtr = std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255));
+                        physObjPtr->getBody()->SetTransform(b2Vec2(i, s.worldHeight-j), -45.0 * DEGTORAD);
+                        obstacles.push_back(physObjPtr);
+                    }
+                    break;
+                case 23: // A diagonal rail from bottom left to top right.
+                    {
+                        tiles.push_back(Tile::createGrassTile(s, s.tileWidth*i, s.tileHeight*j));
+                        auto physObjPtr = std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255));
+                        physObjPtr->getBody()->SetTransform(b2Vec2(i, s.worldHeight-j), 45.0 * DEGTORAD);
+                        obstacles.push_back(physObjPtr);
                     }
                     break;
                 default:
