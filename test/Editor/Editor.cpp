@@ -5,6 +5,9 @@
 #include <SFML/Graphics.hpp>
 #include "fstream"
 #include "Box2D/Box2D.h"
+#include "PhysicsObject.hpp"
+#include "Settings.hpp"
+#include "Constants.hpp"
 #define WIDTH 1800
 #define HEIGHT 1000
 #define boxwidth 10
@@ -15,47 +18,30 @@ int main() {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
     sf::RenderWindow window(sf::VideoMode(WIDTH,HEIGHT), "SFML test", sf::Style::Default, settings);
-
+	Settings s(WIDTH, HEIGHT, 180, 100);
     //The width and height in 10x10 tiles
-	int x = WIDTH/boxwidth;
-	int y = HEIGHT/boxwidth;
+	int x = s.screenWidth/boxwidth;
+	int y = s.screenHeight/boxwidth;
 
-	int A[y][x]; //If 1000x1000 pixels and 100x100 tiles
-	
+	int A[y][x]; //If 1800x1000 pixels and 180x100 tiles
+	std::vector<std::shared_ptr<PhysicsObject>> obstacles;
+
 	//Creating an empty level, x tiles wide, y tiles high
-	sf::RectangleShape tiles[y][x];
+	sf::RectangleShape* tiles[y][x];
 	for(int i = 0; i < y; i++)
 	  {
 	  for(int j = 0; j < x; j++)
 		{
-		sf::RectangleShape rectangle(sf::Vector2f(boxwidth, boxwidth));	
-		rectangle.setPosition((j)*boxwidth, i*boxwidth);
-		//rectangle.setOrigin((j+0.5)*boxwidth,(i+0.5)*boxwidth);
-		rectangle.setFillColor(sf::Color::Green);
+		sf::RectangleShape* rectangle = new sf::RectangleShape(sf::Vector2f(boxwidth, boxwidth));	
+		rectangle->setPosition((j)*boxwidth, i*boxwidth);
+		rectangle->setFillColor(sf::Color(0, 123, 12, 255));
 		tiles[i][j] = rectangle;
+		A[i][j] = 0;
 		}
 	  }
 
-	/*for(int i = 0; i < y; i++)
-	  {
-	  for(int j = 0; j < x; j++)
-		{
-	        tiles[i][j].setOrigin((j+0.5)*boxwidth,(i+0.5)*boxwidth);
-		}
-	  }*/
-
     window.setFramerateLimit(200); // Set fps to be 200.
 
-    //Initialize matrix as ones
-	for(int i = 0; i < y; i++)
-	  {
-	  for(int j = 0; j < x; j++)
-		{
-		  A[i][j] = 1;
-		  tiles[i][j].setFillColor(sf::Color::Green);
-		}
-	  }    
-    
     b2Vec2 gravity(0.f, 0.0f); // Define gravity, in this case it will be zero.
     b2World world(gravity); // Define world.
 
@@ -108,43 +94,142 @@ int main() {
 	int y2 = floor(mpos.y/boxwidth);
 
 	if (x2 >= 0 && x2<x && y2 >= 0 && y2 < y) {
-
+		// Default settings for all static obstacles
+            	b2BodyDef bd;
+            	bd.position.Set(x2, s.worldHeight - y2);
+            	b2FixtureDef fd;
+            	fd.friction = 0.3;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
 		{
-			tiles[y2][x2].setFillColor(sf::Color::Black);
-			tiles[y2][x2].setRotation(0);
+			tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
+			tiles[y2][x2]->setRotation(0);
 			A[y2][x2] = 0;
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
-			tiles[y2][x2].setFillColor(sf::Color::Green);
-			tiles[y2][x2].setRotation(0);
+			tiles[y2][x2]->setFillColor(sf::Color(128, 128, 128, 255));
+			tiles[y2][x2]->setRotation(0);
 			A[y2][x2] = 1;
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
 		  {
-		    tiles[y2][x2].setFillColor(sf::Color::White);
-		    tiles[y2][x2].setRotation(0);			
+		    tiles[y2][x2]->setFillColor(sf::Color::White);
+		    tiles[y2][x2]->setRotation(0);			
 		    A[y2][x2] = 2;	  
 		  }
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
 		  {
-		    tiles[y2][x2].setFillColor(sf::Color::Blue);
-		    tiles[y2][x2].setRotation(0);
-		    A[y2][x2] = 3;	  
+		    tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
+		    tiles[y2][x2]->setRotation(0);
+		    A[y2][x2] = 10;
+
+                    std::vector<std::pair<float,float>> bodyVertices = {
+                        std::make_pair(0.0, -1.5),
+                        std::make_pair(-1.0, -1.3),
+                        std::make_pair(-2.0, -0.0),
+                        std::make_pair(-1.4, 0.5),
+                        std::make_pair(-0.4, 1.1),
+                        std::make_pair(1.0, 1.5),
+                        std::make_pair(2.0, 0.9),
+                        std::make_pair(1.0, -0.7)
+                    };
+                    obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
 		  }
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5))
 		  {
-		    tiles[y2][x2].setFillColor(sf::Color(200,200,200,200));
-		    tiles[y2][x2].setRotation(0);
-		    A[y2][x2] = 10;  
+		    tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
+		    tiles[y2][x2]->setRotation(0);
+		    A[y2][x2] = 11;
+
+                        std::vector<std::pair<float,float>> bodyVertices = {
+                            std::make_pair(0.0, -3.0),
+                            std::make_pair(-2.0, -2.6),
+                            std::make_pair(-4.0, -0.0),
+                            std::make_pair(-2.8, 1.0),
+                            std::make_pair(-0.8, 2.2),
+                            std::make_pair(2.0, 3.0),
+                            std::make_pair(4.0, 1.8),
+                            std::make_pair(2.0, -1.4)
+                        };
+                        obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
+                    }
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
+		  {
+		    tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
+		    tiles[y2][x2]->setRotation(0);
+		    A[y2][x2] = 12;
+
+                        std::vector<std::pair<float,float>> bodyVertices = {
+                            std::make_pair(0.0, -3.0),
+                            std::make_pair(-2.0, -2.6),
+                            std::make_pair(-4.0, -0.0),
+                            std::make_pair(-2.8, 1.0),
+                            std::make_pair(-0.8, 2.2),
+                            std::make_pair(2.0, 3.0),
+                            std::make_pair(4.0, 1.8),
+                            std::make_pair(2.0, -1.4)
+                        };
+                        obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
+                    }
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num7))
+		  {
+		    tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
+		    tiles[y2][x2]->setRotation(0);
+		    A[y2][x2] = 13;
+
+                        std::vector<std::pair<float,float>> bodyVertices = {
+                            std::make_pair(2.0, -4.0),
+                            std::make_pair(0.0, -3.0),
+                            std::make_pair(-2.0, -1.4),
+                            std::make_pair(-4.0, 0.0),
+                            std::make_pair(-4.0, 1.0),
+                            std::make_pair(-2.0, 2.0),
+                            std::make_pair(1.0, 4.4),
+                            std::make_pair(4.0, -1.0)
+                        };
+                        obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
+
+                    }
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
+		  {
+		    tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
+		    tiles[y2][x2]->setRotation(0);
+		    A[y2][x2] = 20;
+
+		    auto physObjPtr = std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255));
+		    obstacles.push_back(std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255)));
 		  }
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num9))
 		  {
-		    tiles[y2][x2].setFillColor(sf::Color::Yellow);
-		    tiles[y2][x2].setRotation(0);
-		    A[y2][x2] = 9;  
+		    tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
+		    tiles[y2][x2]->setRotation(0);
+		    A[y2][x2] = 21;
+
+                        obstacles.push_back(std::make_shared<PhysicsObject>(world, s, b2Vec2(1, 20), bd, fd, sf::Color(160,160,160,255)));
 		  }
-		/*		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num0))
+		  {
+		    tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
+		    tiles[y2][x2]->setRotation(0);
+		    A[y2][x2] = 22;
+
+                        auto physObjPtr = std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255));
+                        physObjPtr->getBody()->SetTransform(b2Vec2(x2, s.worldHeight-y2), -45.0 * DEGTORAD);
+                        obstacles.push_back(physObjPtr);
+		  }
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSlash))
+		  {
+		    tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
+		    tiles[y2][x2]->setRotation(0);
+		    A[y2][x2] = 23;
+
+                        auto physObjPtr = std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255));
+                        physObjPtr->getBody()->SetTransform(b2Vec2(x2, s.worldHeight-y2), 45.0 * DEGTORAD);
+                        obstacles.push_back(physObjPtr);
+		  }
+
+		/*
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
 		{
 		  if((A[y2+1][x2] == 10 && A[y2][x2-1] == 10)){
 		        tiles[y2][x2].setScale(1.5,1.5);
@@ -180,10 +265,13 @@ int main() {
 	  	{
 	  		for(int j = 0; j < x; j++)
 			{
-				window.draw(tiles[i][j]);
+				window.draw(*tiles[i][j]);
 			}
 	  	}
         
+	for(auto i: obstacles)
+		i->drawTo(window,s);
+
         window.display();
     }
     return 0;

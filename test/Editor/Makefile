@@ -1,9 +1,9 @@
 CPPFLAGS += -g -Wall -std=c++11
 INC = -I../../src -I../../src/Box2D
-LIB = -L../../src
+LIB = -L../../src/lib
 SRCDIR = ../../src
 TESTFILE = Editor.cpp
-EXTSRCFILES = PhysicsObject.cpp
+EXTSRCFILES = PhysicsObject.cpp Tile.cpp Tire.cpp Car.cpp Level.cpp
 SOURCES = $(EXTSRCFILES:%.cpp=$(SRCDIR)/%.cpp)
 LIBS += -lsfml-graphics -lsfml-window -lsfml-system -lBox2D
 
