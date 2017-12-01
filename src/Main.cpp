@@ -4,6 +4,8 @@
 #include "PhysicsObject.hpp"
 #include <cmath>
 #include "Player.hpp"
+#include "Level.hpp"
+#include "Car.hpp"
 #include "Functions.hpp"
 #include "KeySettings.hpp"
 #include "Settings.hpp"
@@ -178,125 +180,31 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 // This function handles the actual gaming.
 int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &player2, Player &player3, Player &player4)
 {
-  b2Vec2 gravity(0.0f, 0.0f); // Create gravity for the game world. In this case, it is zero.
-  b2World world(gravity); // Create a world.
+  b2Vec2 gravity(0.0f, 0.0f);
+  b2World world(gravity);
   
-  sf::VideoMode videomode = sf::VideoMode(1800,1000);//sf::VideoMode::getDesktopMode();
-  sf::Event event;
-  Settings s(videomode.width, videomode.height, 50, 50);
-  
-  // Create screen borders
-  b2BodyDef borderDef;
-  b2Body* borderBody = world.CreateBody(&borderDef);
-  b2Vec2 vertices[4];
-  vertices[0].Set(0.0, 0.0);
-  vertices[1].Set(0.0, videomode.height * s.pixelsToMeters);
-  vertices[2].Set(videomode.width * s.pixelsToMeters, videomode.height * s.pixelsToMeters);
-  vertices[3].Set(videomode.width * s.pixelsToMeters, 0.0);
-  b2ChainShape screenBorders;
-  screenBorders.CreateLoop(vertices, 4);
-  borderBody->CreateFixture(&screenBorders, 1.0);
-  
-  // physObj1 should be a green rotated square (using vertex constructor) in the middle of the screen.
-  b2BodyDef bodyDef1;
-  bodyDef1.type = b2_dynamicBody;
-  bodyDef1.position.Set(500 * s.pixelsToMeters, 500 * s.pixelsToMeters);
-  
-  b2FixtureDef fixtureDef1;
-  fixtureDef1.density = 1.0;
-  fixtureDef1.friction = 0.3;
-  
-  std::vector<std::pair<float,float>> bodyVertices1 = {
-    std::make_pair(1.0, 2.0),
-    std::make_pair(0.0, 1.0),
-    std::make_pair(1.0, 0.0),
-    std::make_pair(2.0, 1.0)
-  };
-  
-  PhysicsObject physObj1(world, s, bodyVertices1, bodyDef1, fixtureDef1, sf::Color::Green);
-  
-  // physObj2 should be a tall red triangle (using vertex constructor) in the top left corner of the screen.
-  b2BodyDef bodyDef2;
-  bodyDef2.type = b2_dynamicBody;
-  bodyDef2.position.Set(200 * s.pixelsToMeters, 800 * s.pixelsToMeters);
-  
-  b2FixtureDef fixtureDef2;
-  fixtureDef2.density = 1.0;
-  fixtureDef2.friction = 0.3;
-  
-  std::vector<std::pair<float,float>> bodyVertices2 = {
-    std::make_pair(0.0, 0.0),
-    std::make_pair(1.5, 3.0),
-    std::make_pair(3.0, 0.0),
-  };
-  
-  PhysicsObject physObj2(world, s, bodyVertices2, bodyDef2, fixtureDef2, sf::Color::Red);
-  
-  // physObj3 should be a heavy blue irregular object (using vertex constructor) in the bottom right corner of the screen.
-  b2BodyDef bodyDef3;
-  bodyDef3.type = b2_dynamicBody;
-  bodyDef3.position.Set(800 * s.pixelsToMeters, 200 * s.pixelsToMeters);
-  
-  b2FixtureDef fixtureDef3;
-  fixtureDef3.density = 3.0;
-  fixtureDef3.friction = 0.3;
-  
-  std::vector<std::pair<float,float>> bodyVertices3 = {
-    std::make_pair(0.0, 0.0),
-    std::make_pair(1.5, -0.5),
-    std::make_pair(3.0, 0.5),
-    std::make_pair(4.0, 2.5),
-    std::make_pair(2.0, 2.5),
-    std::make_pair(0.5, 1.5),
-  };
-  
-  PhysicsObject physObj3(world, s, bodyVertices3, bodyDef3, fixtureDef3, sf::Color::Blue);
-  
-  // physObj4 should be a lightweight yellow rectangle (using rectangle constructor) in the bottom left corner of the screen.
-  b2BodyDef bodyDef4;
-  bodyDef4.type = b2_dynamicBody;
-  bodyDef4.position.Set(200 * s.pixelsToMeters, 200 * s.pixelsToMeters);
-  
-  b2FixtureDef fixtureDef4;
-  fixtureDef4.density = 0.2;
-  fixtureDef4.friction = 0.3;
-  
-  PhysicsObject physObj4(world, s, b2Vec2(4.0, 2.0), bodyDef4, fixtureDef4, sf::Color::Yellow);
-  
-  // physObj5 should be a white circle (using circle constructor and default color) in the top right corner of the screen.
-  b2BodyDef bodyDef5;
-  bodyDef5.type = b2_dynamicBody;
-  bodyDef5.position.Set(800 * s.pixelsToMeters, 800 * s.pixelsToMeters);
-  
-  b2FixtureDef fixtureDef5;
-  fixtureDef5.density = 1.0;
-  fixtureDef5.friction = 0.3;
-  
-  PhysicsObject physObj5(world, s, 1.5, bodyDef5, fixtureDef5);
-  
-  // playerObj should be a movable cyan circle (using circle constructor)
-  b2BodyDef bodyDefPlayer;
-  bodyDefPlayer.type = b2_dynamicBody;
-  bodyDefPlayer.position.Set(500 * s.pixelsToMeters, 900 * s.pixelsToMeters);
-  
-  b2FixtureDef fixtureDefPlayer;
-  fixtureDefPlayer.density = 1.0;
-  fixtureDefPlayer.friction = 0.3;
-  
-  PhysicsObject playerObj(world, s, 1.5, bodyDefPlayer, fixtureDefPlayer, sf::Color::Cyan);
+  sf::VideoMode videomode = sf::VideoMode(1800,1000);
 
-  // Create another player
-  b2BodyDef bodyDefPlayer2;
-  bodyDefPlayer2.type = b2_dynamicBody;
-  bodyDefPlayer2.position.Set(100 * s.pixelsToMeters, 100 * s.pixelsToMeters);
+  Settings s(videomode.width, videomode.height, 180, 100);
 
-  b2FixtureDef fixtureDefPlayer2;
-  fixtureDefPlayer2.density = 1.0;
-  fixtureDefPlayer2.friction = 0.3;
+  Level level("map1.txt", world, s);
+  level.createScreenBorders(world, s);
 
-  PhysicsObject playerObj2(world, s, 1.5, bodyDefPlayer2, fixtureDefPlayer, sf::Color::Red);
-  
+  auto car1 = std::make_shared<Car>(world, s, b2Vec2(0.12*s.worldWidth, 0.5*s.worldHeight), sf::Color::Red);
+  auto car2 = std::make_shared<Car>(world, s, b2Vec2(0.10*s.worldWidth, 0.5*s.worldHeight), sf::Color::Blue);
+  level.addCar(car1);
+  level.addCar(car2);
+    
+  //Player player;
+  //Player player2;
+  //KeySettings keys = player.getKeys();
+    
+  float timeStep = 1.0/60.0;
+
+  //sf::RenderWindow window(videomode, "LevelTest");
+  window.setFramerateLimit(60);
   while (window.isOpen()) {
+    sf::Event event;
     while (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed) {
 	window.close();
@@ -304,7 +212,6 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
 	if (event.key.code == sf::Keyboard::Escape) {
 	  window.close();
 	}
-	
 	else if (event.key.code == sf::Keyboard::P) // If the player pauses the game.
 	  {
 	    // Create some texts and set their positions etc.
@@ -341,13 +248,7 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
 		
 		window.clear();
 		// Draw all the player and some other textures to the screen.
-		physObj1.drawTo(window, s);
-		physObj2.drawTo(window, s);
-		physObj3.drawTo(window, s);
-		physObj4.drawTo(window, s);
-		physObj5.drawTo(window, s);
-		playerObj.drawTo(window, s);
-		playerObj2.drawTo(window, s);
+		level.drawTo(window, s);
 		window.draw(QuitButton);
 		window.draw(MenuButton);
 		window.display();
@@ -392,30 +293,27 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
 		  }
 	      }
 	  }
+	  
+
+	else if (event.key.code == sf::Keyboard::I) {
+	  std::cout << car1->getPosition().x << " " << car1->getPosition().y << std::endl;
+	  std::cout << level.getFrictionMultiplier(car1->getPosition()) << std::endl;
+	}
       }
     }
-
-    // Control the movement of player 1. This is done by applying impulses to the player according to pressed keys.
-    if (sf::Keyboard::isKeyPressed(player1.getKeys().up)) playerObj.applyLinearImpulse(b2Vec2(0.0f, 3.0f), playerObj.getWorldCenter(), true);
-    if (sf::Keyboard::isKeyPressed(player1.getKeys().down)) playerObj.applyLinearImpulse(b2Vec2(0.0f, -3.0f), playerObj.getWorldCenter(), true);
-    if (sf::Keyboard::isKeyPressed(player1.getKeys().left)) playerObj.applyLinearImpulse(b2Vec2(-3.0f, 0.0f), playerObj.getWorldCenter(), true);
-    if (sf::Keyboard::isKeyPressed(player1.getKeys().right)) playerObj.applyLinearImpulse(b2Vec2(3.0f, 0.0f), playerObj.getWorldCenter(), true);
-
-    // Control the movement of player 2.
-    if (sf::Keyboard::isKeyPressed(player2.getKeys().up)) playerObj2.applyLinearImpulse(b2Vec2(0.0f, 3.0f), playerObj2.getWorldCenter(), true);
-    if (sf::Keyboard::isKeyPressed(player2.getKeys().down)) playerObj2.applyLinearImpulse(b2Vec2(0.0f, -3.0f), playerObj2.getWorldCenter(), true);
-    if (sf::Keyboard::isKeyPressed(player2.getKeys().left)) playerObj2.applyLinearImpulse(b2Vec2(-3.0f, 0.0f), playerObj2.getWorldCenter(), true);
-    if (sf::Keyboard::isKeyPressed(player2.getKeys().right)) playerObj2.applyLinearImpulse(b2Vec2(3.0f, 0.0f), playerObj2.getWorldCenter(), true);
-    
-    world.Step(1.0/60.0, 8, 3); 
+    if (sf::Keyboard::isKeyPressed(player1.getKeys().up)) car1->accelerate();
+    if (sf::Keyboard::isKeyPressed(player1.getKeys().down)) car1->decelerate();
+    if (sf::Keyboard::isKeyPressed(player1.getKeys().left)) car1->turnLeft();
+    if (sf::Keyboard::isKeyPressed(player1.getKeys().right)) car1->turnRight();
+    car1->updateMovement(level);
+    if (sf::Keyboard::isKeyPressed(player2.getKeys().up)) car2->accelerate();
+    if (sf::Keyboard::isKeyPressed(player2.getKeys().down)) car2->decelerate();
+    if (sf::Keyboard::isKeyPressed(player2.getKeys().left)) car2->turnLeft();
+    if (sf::Keyboard::isKeyPressed(player2.getKeys().right)) car2->turnRight();
+    car2->updateMovement(level);
+    world.Step(timeStep, 8, 3);
     window.clear();
-    physObj1.drawTo(window, s);
-    physObj2.drawTo(window, s);
-    physObj3.drawTo(window, s);
-    physObj4.drawTo(window, s);
-    physObj5.drawTo(window, s);
-    playerObj.drawTo(window, s);
-    playerObj2.drawTo(window, s);
+    level.drawTo(window, s);
     window.display();
   }
   return 0;
