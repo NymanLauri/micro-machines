@@ -943,6 +943,13 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 
     w.display();
   }
+  for (int i = 0; i < y; i++)
+  {
+    for (int j = 0; j < x; j++)
+    {
+      delete tiles[i][j];
+    }
+  }
   return 0;
 }
 
