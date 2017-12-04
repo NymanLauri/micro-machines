@@ -31,3 +31,13 @@ std::shared_ptr<Tile> Tile::createIceTile(Settings& s, size_t xCoord, size_t yCo
     tile->shape.setFillColor(sf::Color::White);
     return tile;
 }
+
+std::shared_ptr<Tile> Tile::createCheckpointTile(Settings& s, size_t xCoord, size_t yCoord) {
+    std::shared_ptr<Tile> tile = std::make_shared<Tile>(100, s, xCoord, yCoord, 5.0);
+    tile->shape.setFillColor(sf::Color::Yellow);
+    //count++;
+    //tile->checkpointNum = count;
+    return tile;
+}
+
+//unsigned int Tile::count = 0;

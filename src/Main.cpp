@@ -301,6 +301,7 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
 	}
       }
     }
+    level.checkpointChecker();
     if (sf::Keyboard::isKeyPressed(player1.getKeys().up)) car1->accelerate();
     if (sf::Keyboard::isKeyPressed(player1.getKeys().down)) car1->decelerate();
     if (sf::Keyboard::isKeyPressed(player1.getKeys().left)) car1->turnLeft();
@@ -315,6 +316,7 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
     window.clear();
     level.drawTo(window, s);
     window.display();
+
   }
   return 0;
 }

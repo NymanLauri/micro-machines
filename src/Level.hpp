@@ -17,10 +17,13 @@ class Level {
         void addObstacle(std::shared_ptr<PhysicsObject>);
         float getFrictionMultiplier(b2Vec2 coordinates) const;
         void drawTo(sf::RenderWindow& window, Settings& s);
+        void checkpointChecker();
         //TODO: void saveTo(std::string outFileName);
     private:
+        unsigned int currentLap;
+  std::vector<std::pair<unsigned int, b2Vec2>> checkpointVector;
         std::vector<std::shared_ptr<Tile>> tiles;
-        std::vector<std::shared_ptr<Car>> cars;
+  std::vector<std::shared_ptr<Car>> cars;
         std::vector<std::shared_ptr<PhysicsObject>> obstacles;
         const Settings& s;
 };

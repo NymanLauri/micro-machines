@@ -965,11 +965,11 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 	      tiles[y2][x2].setRotation(0);
 	      A[y2][x2] = 10;  
 	    }
-	  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num9))
+	  if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
 	    {
 	      tiles[y2][x2].setFillColor(sf::Color::Yellow);
 	      tiles[y2][x2].setRotation(0);
-	      A[y2][x2] = 9;  
+	      A[y2][x2] = 100;  
 	    }
 	}
 	
