@@ -122,39 +122,11 @@ Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
                         obstacles.push_back(physObjPtr);
                     }
                     break;
-	    case 100: // A diagonal rail from bottom left to top right.
+	    case 100 ... 200: // A checkpoint with order of 0-100.
 	      {
 		tiles.push_back(Tile::createCheckpointTile(s, s.tileWidth*i, s.tileHeight*j));
 		b2Vec2 checkPointlocation(((i+0.5)*s.tileWidth)*s.pixelsToMeters, (s.screenHeight - (j+0.5)*s.tileHeight)*s.pixelsToMeters);
-		checkpointVector.push_back(std::make_pair(100,checkPointlocation));
-	      }
-	      break;
-	    case 101: // A diagonal rail from bottom left to top right.
-	      {
-		tiles.push_back(Tile::createCheckpointTile(s, s.tileWidth*i, s.tileHeight*j));
-		b2Vec2 checkPointlocation(((i+0.5)*s.tileWidth)*s.pixelsToMeters, (s.screenHeight - (j+0.5)*s.tileHeight)*s.pixelsToMeters);
-		checkpointVector.push_back(std::make_pair(101,checkPointlocation));
-	      }
-	      break;
-	    case 102: // A diagonal rail from bottom left to top right.
-	      {
-		tiles.push_back(Tile::createCheckpointTile(s, s.tileWidth*i, s.tileHeight*j));
-		b2Vec2 checkPointlocation(((i+0.5)*s.tileWidth)*s.pixelsToMeters, (s.screenHeight - (j+0.5)*s.tileHeight)*s.pixelsToMeters);
-		checkpointVector.push_back(std::make_pair(102,checkPointlocation));
-	      }
-	      break;
-	    case 103: // A diagonal rail from bottom left to top right.
-	      {
-		tiles.push_back(Tile::createCheckpointTile(s, s.tileWidth*i, s.tileHeight*j));
-		b2Vec2 checkPointlocation(((i+0.5)*s.tileWidth)*s.pixelsToMeters, (s.screenHeight - (j+0.5)*s.tileHeight)*s.pixelsToMeters);
-		checkpointVector.push_back(std::make_pair(103,checkPointlocation));
-	      }
-	      break;
-	    case 104: // A diagonal rail from bottom left to top right.
-	      {
-		tiles.push_back(Tile::createCheckpointTile(s, s.tileWidth*i, s.tileHeight*j));
-		b2Vec2 checkPointlocation(((i+0.5)*s.tileWidth)*s.pixelsToMeters, (s.screenHeight - (j+0.5)*s.tileHeight)*s.pixelsToMeters);
-		checkpointVector.push_back(std::make_pair(104,checkPointlocation));
+		checkpointVector.push_back(std::make_pair(tileNum, checkPointlocation));
 	      }
 	      break;
                 default:
