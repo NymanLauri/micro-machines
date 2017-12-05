@@ -635,7 +635,8 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
   //The width and height in 10x10 tiles
   int x = s.screenWidth/boxwidth;
   int y = s.screenHeight/boxwidth;
-
+  //Checkpoint counter
+  int checkpoint = 100;
   int A[y][x]; //If 1800x1000 pixels and 180x100 tiles
   std::vector<std::shared_ptr<PhysicsObject>> obstacles;
 
@@ -923,6 +924,15 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 	  auto physObjPtr = std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255));
 	  physObjPtr->getBody()->SetTransform(b2Vec2(x2, s.worldHeight-y2), 45.0 * DEGTORAD);
 	  obstacles.push_back(physObjPtr);
+	}
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
+	{
+	  tiles[y2][x2]->setFillColor(sf::Color::Yellow);
+	  tiles[y2][x2]->setRotation(0);
+	  if(A[y2][x2] < 100){
+	    A[y2][x2] = checkpoint;
+	    checkpoint += 1;
+	  }
 	}
     }
 	

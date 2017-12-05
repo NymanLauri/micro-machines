@@ -320,7 +320,6 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
 	  }
       }
     }
-
     level.checkpointChecker();
     for (int i = 0; i < Players.size(); ++i)
       {	
