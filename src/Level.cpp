@@ -1,6 +1,7 @@
 #include <fstream>
 #include "Level.hpp"
 #include "Constants.hpp"
+#include <algorithm>
 
 Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
     size_t x = static_cast<int>(s.worldWidth);
@@ -121,12 +122,51 @@ Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
                         obstacles.push_back(physObjPtr);
                     }
                     break;
+	    case 100: // A diagonal rail from bottom left to top right.
+	      {
+		tiles.push_back(Tile::createCheckpointTile(s, s.tileWidth*i, s.tileHeight*j));
+		b2Vec2 checkPointlocation(((i+0.5)*s.tileWidth)*s.pixelsToMeters, (s.screenHeight - (j+0.5)*s.tileHeight)*s.pixelsToMeters);
+		checkpointVector.push_back(std::make_pair(100,checkPointlocation));
+	      }
+	      break;
+	    case 101: // A diagonal rail from bottom left to top right.
+	      {
+		tiles.push_back(Tile::createCheckpointTile(s, s.tileWidth*i, s.tileHeight*j));
+		b2Vec2 checkPointlocation(((i+0.5)*s.tileWidth)*s.pixelsToMeters, (s.screenHeight - (j+0.5)*s.tileHeight)*s.pixelsToMeters);
+		checkpointVector.push_back(std::make_pair(101,checkPointlocation));
+	      }
+	      break;
+	    case 102: // A diagonal rail from bottom left to top right.
+	      {
+		tiles.push_back(Tile::createCheckpointTile(s, s.tileWidth*i, s.tileHeight*j));
+		b2Vec2 checkPointlocation(((i+0.5)*s.tileWidth)*s.pixelsToMeters, (s.screenHeight - (j+0.5)*s.tileHeight)*s.pixelsToMeters);
+		checkpointVector.push_back(std::make_pair(102,checkPointlocation));
+	      }
+	      break;
+	    case 103: // A diagonal rail from bottom left to top right.
+	      {
+		tiles.push_back(Tile::createCheckpointTile(s, s.tileWidth*i, s.tileHeight*j));
+		b2Vec2 checkPointlocation(((i+0.5)*s.tileWidth)*s.pixelsToMeters, (s.screenHeight - (j+0.5)*s.tileHeight)*s.pixelsToMeters);
+		checkpointVector.push_back(std::make_pair(103,checkPointlocation));
+	      }
+	      break;
+	    case 104: // A diagonal rail from bottom left to top right.
+	      {
+		tiles.push_back(Tile::createCheckpointTile(s, s.tileWidth*i, s.tileHeight*j));
+		b2Vec2 checkPointlocation(((i+0.5)*s.tileWidth)*s.pixelsToMeters, (s.screenHeight - (j+0.5)*s.tileHeight)*s.pixelsToMeters);
+		checkpointVector.push_back(std::make_pair(104,checkPointlocation));
+	      }
+	      break;
                 default:
                     //TODO throw error if the level file contains invalid numbers
                     tiles.push_back(Tile::createGrassTile(s, s.tileWidth*i, s.tileHeight*j));
             }
         }
     }
+    //std::sort(checkpointVector.begin(), checkpointVector.end());
+    std::sort(checkpointVector.begin(), checkpointVector.end(), [](std::pair<unsigned int, b2Vec2> &left, std::pair<unsigned int, b2Vec2> &right) {
+    return left.first < right.first;
+});
 }
 
 void Level::createScreenBorders(b2World& world, Settings& s) {
@@ -170,3 +210,12 @@ void Level::drawTo(sf::RenderWindow& window, Settings& s) {
     for (auto it : cars) it->drawTo(window, s);
 }
 
+void Level::checkpointChecker() {
+  for(auto it : checkpointVector){
+    for(auto ite : cars){
+      if(b2Distance(ite->getPosition(), it.second) < 10.0){
+	ite->addCheckpoint(std::find(checkpointVector.begin(), checkpointVector.end(), it) - checkpointVector.begin(), checkpointVector.size());
+      }
+    }
+  }
+}

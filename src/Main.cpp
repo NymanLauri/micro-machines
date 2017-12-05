@@ -320,6 +320,7 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
 	  }
       }
     }
+    level.checkpointChecker();
     for (int i = 0; i < Players.size(); ++i)
       {	
 	if (sf::Keyboard::isKeyPressed(Players[i].getKeys().up)) PlayersAndCars.at(i)->accelerate();
@@ -328,15 +329,11 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
 	if (sf::Keyboard::isKeyPressed(Players[i].getKeys().right)) PlayersAndCars.at(i)->turnRight();
 	PlayersAndCars.at(i)->updateMovement(level);
       }
-    /*if (sf::Keyboard::isKeyPressed(player2.getKeys().up)) car2->accelerate();
-    if (sf::Keyboard::isKeyPressed(player2.getKeys().down)) car2->decelerate();
-    if (sf::Keyboard::isKeyPressed(player2.getKeys().left)) car2->turnLeft();
-    if (sf::Keyboard::isKeyPressed(player2.getKeys().right)) car2->turnRight();
-    car2->updateMovement(level);*/
     world.Step(timeStep, 8, 3);
     window.clear();
     level.drawTo(window, s);
     window.display();
+
   }
   return 0;
 }
