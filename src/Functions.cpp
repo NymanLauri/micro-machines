@@ -304,23 +304,34 @@ int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Playe
   p4down.setPosition(w.getSize().x/1.2-p4down.getLocalBounds().width/2, w.getSize().y/3.05);
   p4left.setPosition(w.getSize().x/1.2-p4left.getLocalBounds().width/2, w.getSize().y/2.25);
   p4right.setPosition(w.getSize().x/1.2-p4right.getLocalBounds().width/2, w.getSize().y/1.75);
+  std::vector<sf::Text> Texts {p1up, p1down, p1left, p1right, p2up, p2down, p2left, p2right,
+      p3up, p3down, p3left, p3right, p4up, p4down, p4left, p4right};
+
 
   while (w.isOpen()) // This is the actual game loop.
     {
       MousePosX = sf::Mouse::getPosition(w).x;
       MousePosY = sf::Mouse::getPosition(w).y;
-      if (MousePosX >= ReturnButton.getPosition().x*1.01 && MousePosX <= ReturnButton.getPosition().x+ReturnButton.getLocalBounds().width*1.1 && MousePosY >= ReturnButton.getPosition().y*1.03 &&
-	  MousePosY <= ReturnButton.getPosition().y+ReturnButton.getLocalBounds().height*1.5) // If the mouse is on top of the "Main menu"-button.
+      for (auto it = Texts.begin(); it != Texts.end(); ++it)
 	{
-	  ReturnButton.setColor(sf::Color::Blue); // Set the color of the text to be blue.
+	  if (MousePosX >= it->getPosition().x && MousePosX <= it->getPosition().x+it->getLocalBounds().width && MousePosY >= it->getPosition().y*1.03 && MousePosY <= it->getPosition().y+it->getLocalBounds().height*1.5)
+	    {
+	      it->setColor(sf::Color::Blue);
+	    }
+	  else
+	    {
+	      it->setColor(sf::Color::Black);
+	    }
+	}
+      if (MousePosX >= ReturnButton.getPosition().x && MousePosX <= ReturnButton.getPosition().x+ReturnButton.getLocalBounds().width && MousePosY >= ReturnButton.getPosition().y*1.03 && MousePosY <= ReturnButton.getPosition().y+ReturnButton.getLocalBounds().width*1.5)
+	{
+	  ReturnButton.setColor(sf::Color::Blue);
 	}
       else
 	{
 	  ReturnButton.setColor(sf::Color::Black);
 	}
-
-      if (MousePosX >= ExitButton.getPosition().x && MousePosX <= ExitButton.getPosition().x+ExitButton.getLocalBounds().width*1.3 && MousePosY >= ExitButton.getPosition().y*1.03 &&
-	  MousePosY <= ExitButton.getPosition().y+ExitButton.getLocalBounds().height*1.5) // If the mouse is on top of the Exit-button.
+      if (MousePosX >= ExitButton.getPosition().x && MousePosX <= ExitButton.getPosition().x+ExitButton.getLocalBounds().width && MousePosY >= ExitButton.getPosition().y*1.03 && MousePosY <= ExitButton.getPosition().y+ExitButton.getLocalBounds().width*1.5)
 	{
 	  ExitButton.setColor(sf::Color::Blue);
 	}
@@ -328,135 +339,6 @@ int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Playe
 	{
 	  ExitButton.setColor(sf::Color::Black);
 	}
-      if (MousePosX >= p1up.getPosition().x && MousePosX <= p1up.getPosition().x+p1up.getLocalBounds().width && MousePosY >= p1up.getPosition().y && MousePosY <= p1up.getPosition().y+p1up.getLocalBounds().height)
-	{
-	  p1up.setColor(sf::Color::Blue);
-	}
-      else
-	{
-	  p1up.setColor(sf::Color::Black);
-	}
-      if (MousePosX >= p1down.getPosition().x && MousePosX <= p1down.getPosition().x+p1down.getLocalBounds().width && MousePosY >= p1down.getPosition().y && MousePosY <= p1down.getPosition().y+p1down.getLocalBounds().height)
-	{
-	  p1down.setColor(sf::Color::Blue);
-	}
-      else
-	{
-	  p1down.setColor(sf::Color::Black);
-	}
-      if (MousePosX >= p1left.getPosition().x && MousePosX <= p1left.getPosition().x+p1left.getLocalBounds().width && MousePosY >= p1left.getPosition().y && MousePosY <= p1left.getPosition().y+p1left.getLocalBounds().height)
-	{
-	  p1left.setColor(sf::Color::Blue);
-	}
-      else
-	{
-	  p1left.setColor(sf::Color::Black);
-	}
-      if (MousePosX >= p1right.getPosition().x && MousePosX <= p1right.getPosition().x+p1right.getLocalBounds().width && MousePosY >= p1right.getPosition().y && MousePosY <= p1right.getPosition().y+p1right.getLocalBounds().height)
-	{
-	  p1right.setColor(sf::Color::Blue);
-	}
-      else
-	{
-	  p1right.setColor(sf::Color::Black);
-	}
-      if (MousePosX >= p2up.getPosition().x && MousePosX <= p2up.getPosition().x+p2up.getLocalBounds().width && MousePosY >= p2up.getPosition().y && MousePosY <= p2up.getPosition().y+p2up.getLocalBounds().height)
-	{
-	  p2up.setColor(sf::Color::Blue);
-	}
-      else
-	{
-	  p2up.setColor(sf::Color::Black);
-	}
-      if (MousePosX >= p2down.getPosition().x && MousePosX <= p2down.getPosition().x+p2down.getLocalBounds().width && MousePosY >= p2down.getPosition().y && MousePosY <= p2down.getPosition().y+p2down.getLocalBounds().height)
-	{
-	  p2down.setColor(sf::Color::Blue);
-	}
-      else
-	{
-	  p2down.setColor(sf::Color::Black);
-	}
-      if (MousePosX >= p2left.getPosition().x && MousePosX <= p2left.getPosition().x+p2left.getLocalBounds().width && MousePosY >= p2left.getPosition().y && MousePosY <= p2left.getPosition().y+p2left.getLocalBounds().height)
-	{
-	  p2left.setColor(sf::Color::Blue);
-	}
-      else
-	{
-	  p2left.setColor(sf::Color::Black);
-	}
-      if (MousePosX >= p2right.getPosition().x && MousePosX <= p2right.getPosition().x+p2right.getLocalBounds().width && MousePosY >= p2right.getPosition().y && MousePosY <= p2right.getPosition().y+p2right.getLocalBounds().height)
-	{
-	  p2right.setColor(sf::Color::Blue);
-	}
-      else
-	{
-	  p2right.setColor(sf::Color::Black);
-	}
-      if (MousePosX >= p3up.getPosition().x && MousePosX <= p3up.getPosition().x+p3up.getLocalBounds().width && MousePosY >= p3up.getPosition().y && MousePosY <= p3up.getPosition().y+p3up.getLocalBounds().height)
-	{
-	  p3up.setColor(sf::Color::Blue);
-	}
-      else
-	{
-	  p3up.setColor(sf::Color::Black);
-	}
-      if (MousePosX >= p3down.getPosition().x && MousePosX <= p3down.getPosition().x+p3down.getLocalBounds().width && MousePosY >= p3down.getPosition().y && MousePosY <= p3down.getPosition().y+p3down.getLocalBounds().height)
-	{
-	  p3down.setColor(sf::Color::Blue);
-	}
-      else
-	{
-	  p3down.setColor(sf::Color::Black);
-	}
-      if (MousePosX >= p3left.getPosition().x && MousePosX <= p3left.getPosition().x+p3left.getLocalBounds().width && MousePosY >= p3left.getPosition().y && MousePosY <= p3left.getPosition().y+p3left.getLocalBounds().height)
-	{
-	  p3left.setColor(sf::Color::Blue);
-	}
-      else
-	{
-	  p3left.setColor(sf::Color::Black);
-	}
-      if (MousePosX >= p3right.getPosition().x && MousePosX <= p3right.getPosition().x+p3right.getLocalBounds().width && MousePosY >= p3right.getPosition().y && MousePosY <= p3right.getPosition().y+p3right.getLocalBounds().height)
-	{
-	  p3right.setColor(sf::Color::Blue);
-	}
-      else
-	{
-	  p3right.setColor(sf::Color::Black);
-	}
-      if (MousePosX >= p4up.getPosition().x && MousePosX <= p4up.getPosition().x+p4up.getLocalBounds().width && MousePosY >= p4up.getPosition().y && MousePosY <= p4up.getPosition().y+p4up.getLocalBounds().height)
-	{
-	  p4up.setColor(sf::Color::Blue);
-	}
-      else
-	{
-	  p4up.setColor(sf::Color::Black);
-	}
-      if (MousePosX >= p4down.getPosition().x && MousePosX <= p4down.getPosition().x+p4down.getLocalBounds().width && MousePosY >= p4down.getPosition().y && MousePosY <= p4down.getPosition().y+p4down.getLocalBounds().height)
-	{
-	  p4down.setColor(sf::Color::Blue);
-	}
-      else
-	{
-	  p4down.setColor(sf::Color::Black);
-	}
-      if (MousePosX >= p4left.getPosition().x && MousePosX <= p4left.getPosition().x+p4left.getLocalBounds().width && MousePosY >= p4left.getPosition().y && MousePosY <= p4left.getPosition().y+p4left.getLocalBounds().height)
-	{
-	  p4left.setColor(sf::Color::Blue);
-	}
-      else
-	{
-	  p4left.setColor(sf::Color::Black);
-	}
-      if (MousePosX >= p4right.getPosition().x && MousePosX <= p4right.getPosition().x+p4right.getLocalBounds().width && MousePosY >= p4right.getPosition().y && MousePosY <= p4right.getPosition().y+p4right.getLocalBounds().height)
-	{
-	  p4right.setColor(sf::Color::Blue);
-	}
-      else
-	{
-	  p4right.setColor(sf::Color::Black);
-	}
-      
       
       while (w.pollEvent(e)) // Loop through all events.
 	{
@@ -490,101 +372,117 @@ int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Playe
 		  w.close();
 		  break;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1up.getPosition().x && MousePosX <= p1up.getPosition().x+p1up.getLocalBounds().width && MousePosY >= p1up.getPosition().y && MousePosY <= p1up.getPosition().y+p1up.getLocalBounds().height)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1up.getPosition().x && MousePosX <= p1up.getPosition().x+p1up.getLocalBounds().width && MousePosY >= p1up.getPosition().y*1.03 && MousePosY <= p1up.getPosition().y+p1up.getLocalBounds().height*1.5)
 		{
 		  p1up.setColor(sf::Color::Blue);
 		  WaitForKey(w, p1, 1, Keys);
 		  p1up.setString(Keys.at(p1.getKeys().up));
+		  Texts[0] = p1up;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1down.getPosition().x && MousePosX <= p1down.getPosition().x+p1down.getLocalBounds().width && MousePosY >= p1down.getPosition().y && MousePosY <= p1down.getPosition().y+p1down.getLocalBounds().height)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1down.getPosition().x && MousePosX <= p1down.getPosition().x+p1down.getLocalBounds().width && MousePosY >= p1down.getPosition().y*1.03 && MousePosY <= p1down.getPosition().y+p1down.getLocalBounds().height*1.5)
 		{
 		  p1down.setColor(sf::Color::Blue);
 		  WaitForKey(w, p1, 2, Keys);
 		  p1down.setString(Keys.at(p1.getKeys().down));
+		  Texts[1] = p1down;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1left.getPosition().x && MousePosX <= p1left.getPosition().x+p1left.getLocalBounds().width && MousePosY >= p1left.getPosition().y && MousePosY <= p1left.getPosition().y+p1left.getLocalBounds().height)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1left.getPosition().x && MousePosX <= p1left.getPosition().x+p1left.getLocalBounds().width && MousePosY >= p1left.getPosition().y*1.03 && MousePosY <= p1left.getPosition().y+p1left.getLocalBounds().height*1.5)
 		{
 		  p1left.setColor(sf::Color::Blue);
 		  WaitForKey(w, p1, 3, Keys);
 		  p1left.setString(Keys.at(p1.getKeys().left));
+		  Texts[2] = p1left;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1right.getPosition().x && MousePosX <= p1right.getPosition().x+p1right.getLocalBounds().width && MousePosY >= p1right.getPosition().y && MousePosY <= p1right.getPosition().y+p1right.getLocalBounds().height)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1right.getPosition().x && MousePosX <= p1right.getPosition().x+p1right.getLocalBounds().width && MousePosY >= p1right.getPosition().y*1.03 && MousePosY <= p1right.getPosition().y+p1right.getLocalBounds().height*1.5)
 		{
 		  p1right.setColor(sf::Color::Blue);
 		  WaitForKey(w, p1, 4, Keys);
 		  p1right.setString(Keys.at(p1.getKeys().right));
+		  Texts[3] = p1right;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2up.getPosition().x && MousePosX <= p2up.getPosition().x+p2up.getLocalBounds().width && MousePosY >= p2up.getPosition().y && MousePosY <= p2up.getPosition().y+p2up.getLocalBounds().height)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2up.getPosition().x && MousePosX <= p2up.getPosition().x+p2up.getLocalBounds().width && MousePosY >= p2up.getPosition().y*1.03 && MousePosY <= p2up.getPosition().y+p2up.getLocalBounds().height*1.5)
 		{
 		  p2up.setColor(sf::Color::Blue);
 		  WaitForKey(w, p2, 1, Keys);
 		  p2up.setString(Keys.at(p2.getKeys().up));
+		  Texts[4] = p2up;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2down.getPosition().x && MousePosX <= p2down.getPosition().x+p2down.getLocalBounds().width && MousePosY >= p2down.getPosition().y && MousePosY <= p2down.getPosition().y+p2down.getLocalBounds().height)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2down.getPosition().x && MousePosX <= p2down.getPosition().x+p2down.getLocalBounds().width && MousePosY >= p2down.getPosition().y*1.03 && MousePosY <= p2down.getPosition().y+p2down.getLocalBounds().height*1.5)
 		{
 		  p2down.setColor(sf::Color::Blue);
 		  WaitForKey(w, p2, 2, Keys);
 		  p2down.setString(Keys.at(p2.getKeys().down));
+		  Texts[5] = p2down;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2left.getPosition().x && MousePosX <= p2left.getPosition().x+p2left.getLocalBounds().width && MousePosY >= p2left.getPosition().y && MousePosY <= p2left.getPosition().y+p2left.getLocalBounds().height)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2left.getPosition().x && MousePosX <= p2left.getPosition().x+p2left.getLocalBounds().width && MousePosY >= p2left.getPosition().y*1.03 && MousePosY <= p2left.getPosition().y+p2left.getLocalBounds().height*1.5)
 		{
 		  p2left.setColor(sf::Color::Blue);
 		  WaitForKey(w, p2, 3, Keys);
 		  p2left.setString(Keys.at(p2.getKeys().left));
+		  Texts[6] = p2left;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2right.getPosition().x && MousePosX <= p2right.getPosition().x+p2right.getLocalBounds().width && MousePosY >= p2right.getPosition().y && MousePosY <= p2right.getPosition().y+p2right.getLocalBounds().height)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2right.getPosition().x && MousePosX <= p2right.getPosition().x+p2right.getLocalBounds().width && MousePosY >= p2right.getPosition().y*1.03 && MousePosY <= p2right.getPosition().y+p2right.getLocalBounds().height*1.5)
 		{
 		  p2right.setColor(sf::Color::Blue);
 		  WaitForKey(w, p2, 4, Keys);
 		  p2right.setString(Keys.at(p2.getKeys().right));
+		  Texts[7] = p2right;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3up.getPosition().x && MousePosX <= p3up.getPosition().x+p3up.getLocalBounds().width && MousePosY >= p3up.getPosition().y && MousePosY <= p3up.getPosition().y+p3up.getLocalBounds().height)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3up.getPosition().x && MousePosX <= p3up.getPosition().x+p3up.getLocalBounds().width && MousePosY >= p3up.getPosition().y*1.03 && MousePosY <= p3up.getPosition().y+p3up.getLocalBounds().height*1.5)
 		{
 		  p3up.setColor(sf::Color::Blue);
 		  WaitForKey(w, p3, 1, Keys);
 		  p3up.setString(Keys.at(p3.getKeys().up));
+		  Texts[8] = p3up;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3down.getPosition().x && MousePosX <= p3down.getPosition().x+p3down.getLocalBounds().width && MousePosY >= p3down.getPosition().y && MousePosY <= p3down.getPosition().y+p3down.getLocalBounds().height)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3down.getPosition().x && MousePosX <= p3down.getPosition().x+p3down.getLocalBounds().width && MousePosY >= p3down.getPosition().y*1.03 && MousePosY <= p3down.getPosition().y+p3down.getLocalBounds().height*1.5)
 		{
 		  p3down.setColor(sf::Color::Blue);
 		  WaitForKey(w, p3, 2, Keys);
 		  p3down.setString(Keys.at(p3.getKeys().down));
+		  Texts[9] = p3down;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3left.getPosition().x && MousePosX <= p3left.getPosition().x+p3left.getLocalBounds().width && MousePosY >= p3left.getPosition().y && MousePosY <= p3left.getPosition().y+p3left.getLocalBounds().height)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3left.getPosition().x && MousePosX <= p3left.getPosition().x+p3left.getLocalBounds().width && MousePosY >= p3left.getPosition().y*1.03 && MousePosY <= p3left.getPosition().y+p3left.getLocalBounds().height*1.5)
 		{
 		  p3left.setColor(sf::Color::Blue);
 		  WaitForKey(w, p3, 3, Keys);
 		  p3left.setString(Keys.at(p3.getKeys().left));
+		  Texts[10] = p3left;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3right.getPosition().x && MousePosX <= p3right.getPosition().x+p3right.getLocalBounds().width && MousePosY >= p3right.getPosition().y && MousePosY <= p3right.getPosition().y+p3right.getLocalBounds().height)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3right.getPosition().x && MousePosX <= p3right.getPosition().x+p3right.getLocalBounds().width && MousePosY >= p3right.getPosition().y*1.03 && MousePosY <= p3right.getPosition().y+p3right.getLocalBounds().height*1.5)
 		{
 		  p3right.setColor(sf::Color::Blue);
 		  WaitForKey(w, p3, 4, Keys);
 		  p3right.setString(Keys.at(p3.getKeys().right));
+		  Texts[11] = p3right;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4up.getPosition().x && MousePosX <= p4up.getPosition().x+p4up.getLocalBounds().width && MousePosY >= p4up.getPosition().y && MousePosY <= p4up.getPosition().y+p4up.getLocalBounds().height)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4up.getPosition().x && MousePosX <= p4up.getPosition().x+p4up.getLocalBounds().width && MousePosY >= p4up.getPosition().y*1.03 && MousePosY <= p4up.getPosition().y+p4up.getLocalBounds().height*1.5)
 		{
 		  p4up.setColor(sf::Color::Blue);
 		  WaitForKey(w, p4, 1, Keys);
 		  p4up.setString(Keys.at(p4.getKeys().up));
+		  Texts[12] = p4up;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4down.getPosition().x && MousePosX <= p4down.getPosition().x+p4down.getLocalBounds().width && MousePosY >= p4down.getPosition().y && MousePosY <= p4down.getPosition().y+p4down.getLocalBounds().height)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4down.getPosition().x && MousePosX <= p4down.getPosition().x+p4down.getLocalBounds().width && MousePosY >= p4down.getPosition().y*1.03 && MousePosY <= p4down.getPosition().y+p4down.getLocalBounds().height*1.5)
 		{
 		  p4down.setColor(sf::Color::Blue);
 		  WaitForKey(w, p4, 2, Keys);
 		  p4down.setString(Keys.at(p4.getKeys().down));
+		  Texts[13] = p4down;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4left.getPosition().x && MousePosX <= p4left.getPosition().x+p4left.getLocalBounds().width && MousePosY >= p4left.getPosition().y && MousePosY <= p4left.getPosition().y+p4left.getLocalBounds().height)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4left.getPosition().x && MousePosX <= p4left.getPosition().x+p4left.getLocalBounds().width && MousePosY >= p4left.getPosition().y*1.03 && MousePosY <= p4left.getPosition().y+p4left.getLocalBounds().height*1.5)
 		{
 		  p4left.setColor(sf::Color::Blue);
 		  WaitForKey(w, p4, 3, Keys);
 		  p4left.setString(Keys.at(p4.getKeys().left));
+		  Texts[14] = p4left;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4right.getPosition().x && MousePosX <= p4right.getPosition().x+p4right.getLocalBounds().width && MousePosY >= p4right.getPosition().y && MousePosY <= p4right.getPosition().y+p4right.getLocalBounds().height)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4right.getPosition().x && MousePosX <= p4right.getPosition().x+p4right.getLocalBounds().width && MousePosY >= p4right.getPosition().y*1.03 && MousePosY <= p4right.getPosition().y+p4right.getLocalBounds().height*1.5)
 		{
 		  p4right.setColor(sf::Color::Blue);
 		  WaitForKey(w, p4, 4, Keys);
 		  p4right.setString(Keys.at(p4.getKeys().right));
+		  Texts[15] = p4right;
 		}
 	    }
 	  if (var == 1)
@@ -593,28 +491,16 @@ int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Playe
 	    }
 	}
       w.clear(sf::Color::White);
+      for (auto it = Texts.begin(); it != Texts.end(); ++it)
+	{
+	  w.draw(*it);
+	}
       w.draw(ReturnButton);
       w.draw(ExitButton);
       w.draw(Up);
       w.draw(Down);
       w.draw(Left);
       w.draw(Right);
-      w.draw(p1up);
-      w.draw(p1down);
-      w.draw(p1left);
-      w.draw(p1right);
-      w.draw(p2up);
-      w.draw(p2down);
-      w.draw(p2left);
-      w.draw(p2right);
-      w.draw(p3up);
-      w.draw(p3down);
-      w.draw(p3left);
-      w.draw(p3right);
-      w.draw(p4up);
-      w.draw(p4down);
-      w.draw(p4left);
-      w.draw(p4right);
       w.draw(Player1Opts);
       w.draw(Player2Opts);
       w.draw(Player3Opts);
