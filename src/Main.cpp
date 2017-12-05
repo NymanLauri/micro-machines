@@ -323,8 +323,8 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
     level.checkpointChecker();
     for (int i = 0; i < Players.size(); ++i)
       {	
-	if (sf::Keyboard::isKeyPressed(Players[i].getKeys().up)) PlayersAndCars.at(i)->accelerate();
-	if (sf::Keyboard::isKeyPressed(Players[i].getKeys().down)) PlayersAndCars.at(i)->decelerate();
+	if (sf::Keyboard::isKeyPressed(Players[i].getKeys().up)) PlayersAndCars.at(i)->accelerate(level);
+	if (sf::Keyboard::isKeyPressed(Players[i].getKeys().down)) PlayersAndCars.at(i)->decelerate(level);
 	if (sf::Keyboard::isKeyPressed(Players[i].getKeys().left)) PlayersAndCars.at(i)->turnLeft();
 	if (sf::Keyboard::isKeyPressed(Players[i].getKeys().right)) PlayersAndCars.at(i)->turnRight();
 	PlayersAndCars.at(i)->updateMovement(level);

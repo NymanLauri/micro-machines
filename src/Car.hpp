@@ -13,8 +13,8 @@ class Car {
     public:
         Car(b2World& world, Settings& s, b2Vec2 position, sf::Color color = sf::Color::White);
         void drawTo(sf::RenderWindow& window, Settings& s);
-        void accelerate();
-        void decelerate();
+        void accelerate(const Level& level);
+        void decelerate(const Level& level);
         void turnLeft();
         void turnRight();
         void updateMovement(const Level& level);

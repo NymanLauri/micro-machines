@@ -44,8 +44,8 @@ int main(void) {
                 }
             }
         }
-        if (sf::Keyboard::isKeyPressed(keys.up)) car1->accelerate();
-        if (sf::Keyboard::isKeyPressed(keys.down)) car1->decelerate();
+        if (sf::Keyboard::isKeyPressed(keys.up)) car1->accelerate(level);
+        if (sf::Keyboard::isKeyPressed(keys.down)) car1->decelerate(level);
         if (sf::Keyboard::isKeyPressed(keys.left)) car1->turnLeft();
         if (sf::Keyboard::isKeyPressed(keys.right)) car1->turnRight();
         car1->updateMovement(level);

@@ -45,15 +45,15 @@ Car::Car(b2World& world, Settings& s, b2Vec2 position, sf::Color color) {
     }
 }
 
-void Car::accelerate() {
+void Car::accelerate(const Level& level) {
     for (size_t i = 0; i < 2; i++) {
-        tires.at(i).accelerate(acceleration, maxForwardSpeed);
+        tires.at(i).accelerate(acceleration, maxForwardSpeed, level);
     }
 }
 
-void Car::decelerate() {
+void Car::decelerate(const Level& level) {
     for (auto it : tires) {
-        it.decelerate(deceleration, maxReverseSpeed);
+        it.decelerate(deceleration, maxReverseSpeed, level);
     }
 }
 

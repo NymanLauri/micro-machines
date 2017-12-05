@@ -5,7 +5,7 @@
 #include "Tire.hpp"
 #include "Settings.hpp"
 
-Tire::Tire(b2World& world, Settings& s, b2Vec2 position, float drag, float mli) : drag(drag), maxLateralImpulse(mli) {
+Tire::Tire(b2World& world, Settings& s, b2Vec2 position) {
     b2BodyDef tireBodyDef;
     tireBodyDef.type = b2_dynamicBody;
     tireBodyDef.position = position;
@@ -37,8 +37,13 @@ b2Vec2 Tire::getParallelVelocity() const {
 
 void Tire::applyFriction(const Level& level) {
     b2Body* const body = getBody();
-    float friction = drag * level.getFrictionMultiplier(getBody()->GetPosition());
+    float friction = level.getFrictionMultiplier(body->GetPosition());
     b2Vec2 impulse = body->GetMass() * -getLateralVelocity();
+    if (impulse.Length() > maxLateralImpulse * friction) {
+        impulse.Normalize();
+        impulse *= maxLateralImpulse * friction;
+    }
+    impulse *= 0.8;
     body->ApplyLinearImpulse(impulse, body->GetWorldCenter(), true);
     b2Vec2 direction = -getParallelVelocity();
     direction.Normalize();
@@ -47,7 +52,7 @@ void Tire::applyFriction(const Level& level) {
     body->ApplyForce(forceVec, body->GetWorldCenter(), true); 
 }
 
-void Tire::accelerate(float force, float maxFwdSpeed) {
+void Tire::accelerate(float force, float maxFwdSpeed, const Level& level) {
     if (getParallelVelocity().Length() < maxFwdSpeed) {
         b2Body* const body = getBody();
         b2Vec2 direction = body->GetWorldVector(b2Vec2(0.0, 1.0));
@@ -56,7 +61,9 @@ void Tire::accelerate(float force, float maxFwdSpeed) {
     }
 }
 
-void Tire::decelerate(float force, float maxRevSpeed) {
+void Tire::decelerate(float force, float maxRevSpeed, const Level& level) {
+    float friction = level.getFrictionMultiplier(getBody()->GetPosition());
+    friction = friction < 1.0 ? friction : 1.0;
     b2Vec2 moveDirection = getBody()->GetLinearVelocity();
     b2Vec2 forwardDirection = getBody()->GetWorldVector(b2Vec2(0.0, 1.0));
     // Check if the car is moving forwards or backwards using the cosine formula for vectors.
@@ -65,13 +72,13 @@ void Tire::decelerate(float force, float maxRevSpeed) {
     if (cosAngle > 0) {
         b2Vec2 direction = -moveDirection;
         direction.Normalize();
-        getBody()->ApplyForce(force * direction, getBody()->GetWorldCenter(), true);
+        getBody()->ApplyForce(force * friction * direction, getBody()->GetWorldCenter(), true);
     // If the car is moving backwards at less than maximum reverse speed, apply accelerating force
     // opposite to forward direction.
     } else if (getParallelVelocity().Length() < maxRevSpeed) {
         b2Vec2 direction = -forwardDirection;
         direction.Normalize();
-        getBody()->ApplyForce(force * direction, getBody()->GetWorldCenter(), true);
+        getBody()->ApplyForce(force * friction * direction, getBody()->GetWorldCenter(), true);
     }
 }
 
