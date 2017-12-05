@@ -274,5 +274,12 @@ int main() {
 
         window.display();
     }
+	for (int i = 0; i < y; i++)
+  		{	
+    			for (int j = 0; j < x; j++)
+    			{
+      				delete tiles[i][j];
+    			}
+  		}
     return 0;
 }

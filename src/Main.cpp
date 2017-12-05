@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include "PhysicsObject.hpp"
 #include <cmath>
+#include <vector>
+#include <map>
 #include "Player.hpp"
 #include "Level.hpp"
 #include "Car.hpp"
@@ -150,9 +152,9 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 		{
 		  // Go to function StartWindow (found in Functions.cpp) that opens a window where the player will for example choose the maps.
 		  retValue = StartWindow(window, font, player1, player2, player3, player4);
-		  if (retValue == 1) // retValue is 1 if the user clicked on the "Start"-button in the StartWindow.
+		  if (retValue != 0) // retValue is 1 if the user clicked on the "Start"-button in the StartWindow.
 		    {
-		      Game(window, font, player1, player2, player3, player4); // Go to Game-function that controls the actual game.
+		      Game(window, font, player1, player2, player3, player4, retValue); // Go to Game-function that controls the actual game.
 		      retValue = 0;
 		    }
 		}
@@ -178,7 +180,7 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 }
 
 // This function handles the actual gaming.
-int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &player2, Player &player3, Player &player4)
+int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &player2, Player &player3, Player &player4, int retValue)
 {
   b2Vec2 gravity(0.0f, 0.0f);
   b2World world(gravity);
@@ -190,14 +192,37 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
   Level level("map1.txt", world, s);
   level.createScreenBorders(world, s);
 
-  auto car1 = std::make_shared<Car>(world, s, b2Vec2(0.12*s.worldWidth, 0.5*s.worldHeight), sf::Color::Red);
-  auto car2 = std::make_shared<Car>(world, s, b2Vec2(0.10*s.worldWidth, 0.5*s.worldHeight), sf::Color::Blue);
-  level.addCar(car1);
-  level.addCar(car2);
-    
-  //Player player;
-  //Player player2;
-  //KeySettings keys = player.getKeys();
+  std::map <int, std::shared_ptr<Car>> PlayersAndCars;
+  std::vector<Player> Players;
+
+  if (retValue >= 1)
+    {
+      auto car1 = std::make_shared<Car>(world, s, b2Vec2(0.12*s.worldWidth, 0.5*s.worldHeight), sf::Color::Red);
+      level.addCar(car1);
+      PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(0, car1));
+      Players.push_back(player1);
+    }
+  if (retValue >= 2)
+    {
+      auto car2 = std::make_shared<Car>(world, s, b2Vec2(0.10*s.worldWidth, 0.5*s.worldHeight), sf::Color::Blue);
+      level.addCar(car2);
+      PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(1, car2));
+      Players.push_back(player2);
+    }
+  if (retValue >= 3)
+    {
+      auto car3 = std::make_shared<Car>(world, s, b2Vec2(0.08*s.worldWidth, 0.5*s.worldHeight), sf::Color::Green);
+      level.addCar(car3);
+      PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(2, car3));
+      Players.push_back(player3);
+    }
+  if (retValue >= 4)
+    {
+      auto car4 = std::make_shared<Car>(world, s, b2Vec2(0.06*s.worldWidth, 0.5*s.worldHeight), sf::Color::Yellow);
+      level.addCar(car4);
+      PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(3, car4));
+      Players.push_back(player4);
+    }
     
   float timeStep = 1.0/60.0;
 
@@ -293,25 +318,18 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
 		  }
 	      }
 	  }
-	  
-
-	else if (event.key.code == sf::Keyboard::I) {
-	  std::cout << car1->getPosition().x << " " << car1->getPosition().y << std::endl;
-	  std::cout << level.getFrictionMultiplier(car1->getPosition()) << std::endl;
-	}
       }
     }
+
     level.checkpointChecker();
-    if (sf::Keyboard::isKeyPressed(player1.getKeys().up)) car1->accelerate();
-    if (sf::Keyboard::isKeyPressed(player1.getKeys().down)) car1->decelerate();
-    if (sf::Keyboard::isKeyPressed(player1.getKeys().left)) car1->turnLeft();
-    if (sf::Keyboard::isKeyPressed(player1.getKeys().right)) car1->turnRight();
-    car1->updateMovement(level);
-    if (sf::Keyboard::isKeyPressed(player2.getKeys().up)) car2->accelerate();
-    if (sf::Keyboard::isKeyPressed(player2.getKeys().down)) car2->decelerate();
-    if (sf::Keyboard::isKeyPressed(player2.getKeys().left)) car2->turnLeft();
-    if (sf::Keyboard::isKeyPressed(player2.getKeys().right)) car2->turnRight();
-    car2->updateMovement(level);
+    for (int i = 0; i < Players.size(); ++i)
+      {	
+	if (sf::Keyboard::isKeyPressed(Players[i].getKeys().up)) PlayersAndCars.at(i)->accelerate();
+	if (sf::Keyboard::isKeyPressed(Players[i].getKeys().down)) PlayersAndCars.at(i)->decelerate();
+	if (sf::Keyboard::isKeyPressed(Players[i].getKeys().left)) PlayersAndCars.at(i)->turnLeft();
+	if (sf::Keyboard::isKeyPressed(Players[i].getKeys().right)) PlayersAndCars.at(i)->turnRight();
+	PlayersAndCars.at(i)->updateMovement(level);
+      }
     world.Step(timeStep, 8, 3);
     window.clear();
     level.drawTo(window, s);
