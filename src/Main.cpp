@@ -121,6 +121,8 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 		case sf::Keyboard::Escape: // If ESC is pressed.
 		  window.close();
 		  break;
+		case sf::Keyboard::X:
+		  EndWindow(window, font, 1);
 
 		default:
 		  break;
@@ -144,7 +146,11 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 	      else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= LevelButton.getPosition().x*1.01 && MousePosX <= LevelButton.getPosition().x+LevelButton.getLocalBounds().width*1.1 &&
 		       MousePosY >= LevelButton.getPosition().y*1.03 && MousePosY <= LevelButton.getPosition().y+LevelButton.getLocalBounds().height*1.5) // If the user clicks on the Level Editor -button
 		{
-		  EditorWindow(window, font); // Go to function EditorWindow (found in Functions.cpp) that opens a window where the user can create levels.
+		  int ret = EditorWindow(window, font); // Go to function EditorWindow (found in Functions.cpp) that opens a window where the user can create levels.
+		  if (ret == 1)
+		    {
+		      return 0;
+		    }
 		}
 
 	      else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= StartButton.getPosition().x*1.01 && MousePosX <= StartButton.getPosition().x+StartButton.getLocalBounds().width*1.1 &&
