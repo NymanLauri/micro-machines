@@ -122,6 +122,11 @@ Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
                         obstacles.push_back(physObjPtr);
                     }
                     break;
+	    case 3: // A diagonal rail from bottom left to top right.
+	      {
+		tiles.push_back(Tile::createOilTile(s, s.tileWidth*i, s.tileHeight*j));
+	      }
+	      break;
 	    case 100 ... 200: // A checkpoint with order of 0-100.
 	      {
 		tiles.push_back(Tile::createCheckpointTile(s, s.tileWidth*i, s.tileHeight*j));
