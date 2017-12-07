@@ -654,10 +654,10 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 		    }
 		}
 	    }
-	  case sf::Keyboard::S: //Saves matrix to the file "level1.txt"
+	  case sf::Keyboard::S: //Saves matrix to the ofstream f
 	    for(int i = 0; i < y; i++) {
 	      for(int j = 0; j < x; j++) {
-		f << A[i][j] << " ";
+					f << A[i][j] << " ";
 	      }
 	    }
 	    break;
