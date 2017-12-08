@@ -1,3 +1,8 @@
+/* The class for the tires of the car. Tires handle the movement of the car.
+ * Some methods of the Tire class are loosely based on the Box2D top-down car physics
+ * tutorial found at http://www.iforce2d.net/b2dtut/top-down-car
+ */
+
 #ifndef TIRE_HPP
 #define TIRE_HPP
 
@@ -9,18 +14,19 @@
 class Level;
 class Tire {
     public:
-        Tire(b2World& world, Settings& s, b2Vec2 position);
-        void drawTo(sf::RenderWindow& window, Settings& s);
+        Tire(b2World& world, const Settings& s, Level& l, b2Vec2 position);
+        void drawTo(sf::RenderWindow& window);
         b2Body* const getBody() const;
         b2Vec2 getLateralVelocity() const;
         b2Vec2 getParallelVelocity() const;
-        void applyFriction(const Level& level);
-        void accelerate(float force, float maxFwdSpeed, const Level& level);
-        void decelerate(float force, float maxRevSpeed, const Level& level);
-        void updateMovement(const Level& level);
+        void applyFriction();
+        void accelerate(float force, float maxFwdSpeed);
+        void decelerate(float force, float maxRevSpeed);
+        void updateMovement();
     private:
         std::shared_ptr<PhysicsObject> tireObject;
-        float drag = 0;
+        const Settings& s;
+        Level& level;
         float maxLateralImpulse = 5;
 };
 

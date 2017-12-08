@@ -18,44 +18,167 @@
 #define boxwidth 10
 
 
-// This loop controls the window in which the user chooses map etc. befor starting the game.
+// This window opens, when somebody wins the game.
+int EndWindow(sf::RenderWindow &w, sf::Font f, int player_num)
+{
+  w.setFramerateLimit(60);
+  int var = 0;
+  int MousePosX = 0;
+  int MousePosY = 0;
+  sf::Event e;
+  // Create some texts.
+  sf::Text MenuButton("Main Menu", f, 100);
+  sf::Text ExitButton("Exit", f, 100);
+  sf::Text EndText("None", f, 150);
+  // We print the right text depending on which player has won the game.
+  if (player_num == 1)
+    {
+      EndText.setString("Player 1 wins!");
+    }
+  else if (player_num == 2)
+    {
+      EndText.setString("Player 2 wins!");
+    }
+  else if (player_num == 3)
+    {
+      EndText.setString("Player 3 wins!");
+    }
+  else if (player_num == 4)
+    {
+      EndText.setString("Player 4 wins!");
+    }
+  // Set the colors and locations of the texts.
+  MenuButton.setColor(sf::Color::Black);
+  ExitButton.setColor(sf::Color::Black);
+  EndText.setColor(sf::Color::Red);
+  MenuButton.setPosition(w.getSize().x/6-MenuButton.getLocalBounds().width/2, w.getSize().y-MenuButton.getLocalBounds().height*2.5);
+  ExitButton.setPosition(w.getSize().x/1.15-ExitButton.getLocalBounds().width/2, w.getSize().y-ExitButton.getLocalBounds().height*2.5);
+  EndText.setPosition(w.getSize().x/2-EndText.getLocalBounds().width/2, w.getSize().y/2-EndText.getLocalBounds().height/2);
+  while (w.isOpen()) // The actual game loop that controls all the events done by the user.
+    {
+      MousePosX = sf::Mouse::getPosition(w).x;
+      MousePosY = sf::Mouse::getPosition(w).y;
+      if (MousePosX >= MenuButton.getPosition().x*1.01 && MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 && MousePosY >= MenuButton.getPosition().y*1.03 &&
+	  MousePosY <= MenuButton.getPosition().y+MenuButton.getLocalBounds().height*1.5) // If the mouse is on top of the "Main menu"-button.
+	{
+	  MenuButton.setColor(sf::Color::Blue); // Set the color of the text to be blue.
+	}
+      else
+	{
+	  MenuButton.setColor(sf::Color::Black); // Set the color of the text to be black.
+	}
+
+      if (MousePosX >= ExitButton.getPosition().x && MousePosX <= ExitButton.getPosition().x+ExitButton.getLocalBounds().width*1.3 && MousePosY >= ExitButton.getPosition().y*1.03 &&
+	  MousePosY <= ExitButton.getPosition().y+ExitButton.getLocalBounds().height*1.5) // If the mouse is on top of the Exit-button.
+	{
+	  ExitButton.setColor(sf::Color::Blue);
+	}
+      else
+	{
+	  ExitButton.setColor(sf::Color::Black);
+	}
+      while (w.pollEvent(e)) // Loop through all events.
+	{
+	  switch (e.type)
+	    {
+	    case sf::Event::Closed: // If the window is closed.
+	      w.close();
+	      break;
+
+	    case sf::Event::KeyPressed: // If some key is pressed.
+	      switch(e.key.code)
+		{
+		case sf::Keyboard::Escape: // If ESC is pressed.
+		  w.close();
+		  break;
+
+		default:
+		  break;
+		}
+
+	    case sf::Event::MouseButtonPressed:
+	      if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= MenuButton.getPosition().x*1.01 && MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 &&
+		  MousePosY >= MenuButton.getPosition().y*1.03 && MousePosY <= MenuButton.getPosition().y+MenuButton.getLocalBounds().height*1.5) // If the user clicks on the "Main menu"-button.
+		{
+		  var = 1; // This variable controls when to exit this function.
+		  break;
+		}
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= ExitButton.getPosition().x && MousePosX <= ExitButton.getPosition().x+ExitButton.getLocalBounds().width*1.3 &&
+		       MousePosY >= ExitButton.getPosition().y*1.03 && MousePosY <= ExitButton.getPosition().y+ExitButton.getLocalBounds().height*1.5) // If the user clicks on the Exit-button.
+		{
+		  w.close(); // Close the window.
+		  break;
+		}
+	    default:
+	      break;
+	    }
+	  if (var == 1)
+	    {
+	      return 0;
+	    }
+	}
+      // Refresh the screen.
+      w.clear(sf::Color::White);
+      w.draw(MenuButton);
+      w.draw(ExitButton);
+      w.draw(EndText);
+      w.display();
+    }
+  return 0;
+}
+
 int StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player &p3, Player &p4)
 {
   w.setFramerateLimit(60);
   // Create a vector playerKeys that contains keys of all the players. This is used to check that all keys are unqiue, that is, that many players do not try to use same keys.
-  std::vector<sf::Keyboard::Key> playerKeys {p1.getKeys().up, p1.getKeys().down, p1.getKeys().left, p1.getKeys().right, p2.getKeys().up, p2.getKeys().down, p2.getKeys().left, p2.getKeys().right,
-      p3.getKeys().up, p3.getKeys().down, p3.getKeys().left, p3.getKeys().right, p4.getKeys().up, p4.getKeys().down, p4.getKeys().left, p4.getKeys().right};
+  std::vector<sf::Keyboard::Key> playerKeys {p1.getKeys().up, p1.getKeys().down, p1.getKeys().left, p1.getKeys().right, p2.getKeys().up, p2.getKeys().down, p2.getKeys().left,
+      p2.getKeys().right, p3.getKeys().up, p3.getKeys().down, p3.getKeys().left, p3.getKeys().right, p4.getKeys().up, p4.getKeys().down, p4.getKeys().left, p4.getKeys().right};
   std::sort(playerKeys.begin(), playerKeys.end()); // Sort the vectror playerKeys.
   int var = 0;
   int numOfPlayers = 1;
   int MousePosX = 0;
   int MousePosY = 0;
   sf::Event e;
-  // Create some texts.
+  // Create some texts and set their color and locations.
   sf::Text ReturnButton("Main Menu", f, 100);
   sf::Text ExitButton("Exit", f, 100);
   sf::Text StartButton("Start", f, 100);
-  sf::Text Heading1("Number of player", f, 80);
+  sf::Text Heading1("Number of players", f, 80);
+  sf::Text Heading2("Choose the map", f, 80);
   sf::Text Lkm1("1", f, 80);
   sf::Text Lkm2("2", f, 80);
   sf::Text Lkm3("3", f, 80);
   sf::Text Lkm4("4", f, 80);
+  sf::Text Map1("Map 1", f, 80);
+  sf::Text Map2("Map 2", f, 80);
+  sf::Text Map3("Map 3", f, 80);
+  sf::Text Map4("Map 4", f, 80);
   ReturnButton.setColor(sf::Color::Black);
   ExitButton.setColor(sf::Color::Black);
   StartButton.setColor(sf::Color::Black);
   Heading1.setColor(sf::Color::Red);
+  Heading2.setColor(sf::Color::Red);
   Lkm1.setColor(sf::Color::Black);
   Lkm2.setColor(sf::Color::Black);
   Lkm3.setColor(sf::Color::Black);
   Lkm4.setColor(sf::Color::Black);
+  Map1.setColor(sf::Color::Black);
+  Map2.setColor(sf::Color::Black);
+  Map3.setColor(sf::Color::Black);
+  Map4.setColor(sf::Color::Black);
   ReturnButton.setPosition(w.getSize().x/6-ReturnButton.getLocalBounds().width/2, w.getSize().y-ReturnButton.getLocalBounds().height*2.5);
   ExitButton.setPosition(w.getSize().x/1.15-ExitButton.getLocalBounds().width/2, w.getSize().y-ExitButton.getLocalBounds().height*2.5);
   StartButton.setPosition(w.getSize().x/2-StartButton.getLocalBounds().width/2, w.getSize().y/2-StartButton.getLocalBounds().height/2);
-  Heading1.setPosition(w.getSize().x/5.5-Heading1.getLocalBounds().width/2, w.getSize().y/9-Heading1.getLocalBounds().height);
+  Heading1.setPosition(w.getSize().x/5.0-Heading1.getLocalBounds().width/2, w.getSize().y/9-Heading1.getLocalBounds().height);
+  Heading2.setPosition(w.getSize().x/1.22-Heading2.getLocalBounds().width/2, w.getSize().y/9-Heading2.getLocalBounds().height);
   Lkm1.setPosition(w.getSize().x/5.5-Lkm1.getLocalBounds().width/2, w.getSize().y/5-Lkm1.getLocalBounds().height);
   Lkm2.setPosition(w.getSize().x/5.5-Lkm2.getLocalBounds().width/2, w.getSize().y/3-Lkm2.getLocalBounds().height);
   Lkm3.setPosition(w.getSize().x/5.5-Lkm3.getLocalBounds().width/2, w.getSize().y/2.1-Lkm3.getLocalBounds().height);
   Lkm4.setPosition(w.getSize().x/5.5-Lkm4.getLocalBounds().width/2, w.getSize().y/1.6-Lkm4.getLocalBounds().height);
+  Map1.setPosition(w.getSize().x/1.2-Map1.getLocalBounds().width/2, w.getSize().y/5-Map1.getLocalBounds().height);
+  Map2.setPosition(w.getSize().x/1.2-Map2.getLocalBounds().width/2, w.getSize().y/3-Map2.getLocalBounds().height);
+  Map3.setPosition(w.getSize().x/1.2-Map3.getLocalBounds().width/2, w.getSize().y/2.1-Map3.getLocalBounds().height);
+  Map4.setPosition(w.getSize().x/1.2-Map4.getLocalBounds().width/2, w.getSize().y/1.6-Map4.getLocalBounds().height);
 
   while (w.isOpen()) // The actual game loop that controls all the events done by the user.
     {
@@ -90,7 +213,8 @@ int StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player 
 	{
 	  StartButton.setColor(sf::Color::Black);
 	}
-      if (MousePosX >= Lkm1.getPosition().x && MousePosX <= Lkm1.getPosition().x+Lkm1.getLocalBounds().width && MousePosY >= Lkm1.getPosition().y && MousePosY <= Lkm1.getPosition().y+Lkm1.getLocalBounds().height)
+      if (MousePosX >= Lkm1.getPosition().x && MousePosX <= Lkm1.getPosition().x+Lkm1.getLocalBounds().width && MousePosY >= Lkm1.getPosition().y*1.03 &&
+	  MousePosY <= Lkm1.getPosition().y+Lkm1.getLocalBounds().height*1.5) // If the mouse is on top of the number 1 under "Number of player".
 	{
 	  Lkm1.setColor(sf::Color::Red);
 	}
@@ -98,7 +222,8 @@ int StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player 
 	{
 	  Lkm1.setColor(sf::Color::Black);
 	}
-      if (MousePosX >= Lkm2.getPosition().x && MousePosX <= Lkm2.getPosition().x+Lkm2.getLocalBounds().width && MousePosY >= Lkm2.getPosition().y && MousePosY <= Lkm2.getPosition().y+Lkm2.getLocalBounds().height)
+      if (MousePosX >= Lkm2.getPosition().x && MousePosX <= Lkm2.getPosition().x+Lkm2.getLocalBounds().width && MousePosY >= Lkm2.getPosition().y*1.03 &&
+	  MousePosY <= Lkm2.getPosition().y+Lkm2.getLocalBounds().height*1.5) // If the mouse is on top of the number 2 under "Number of player".
 	{
 	  Lkm2.setColor(sf::Color::Red);
 	}
@@ -106,7 +231,8 @@ int StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player 
 	{
 	  Lkm2.setColor(sf::Color::Black);
 	}
-      if (MousePosX >= Lkm3.getPosition().x && MousePosX <= Lkm3.getPosition().x+Lkm3.getLocalBounds().width && MousePosY >= Lkm3.getPosition().y && MousePosY <= Lkm3.getPosition().y+Lkm3.getLocalBounds().height)
+      if (MousePosX >= Lkm3.getPosition().x && MousePosX <= Lkm3.getPosition().x+Lkm3.getLocalBounds().width && MousePosY >= Lkm3.getPosition().y*1.03 &&
+	  MousePosY <= Lkm3.getPosition().y+Lkm3.getLocalBounds().height*1.5) // If the mouse is on top of the number 3 under "Number of player".
 	{
 	  Lkm3.setColor(sf::Color::Red);
 	}
@@ -114,13 +240,50 @@ int StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player 
 	{
 	  Lkm3.setColor(sf::Color::Black);
 	}
-      if (MousePosX >= Lkm4.getPosition().x && MousePosX <= Lkm4.getPosition().x+Lkm4.getLocalBounds().width && MousePosY >= Lkm4.getPosition().y && MousePosY <= Lkm4.getPosition().y+Lkm4.getLocalBounds().height)
+      if (MousePosX >= Lkm4.getPosition().x && MousePosX <= Lkm4.getPosition().x+Lkm4.getLocalBounds().width && MousePosY >= Lkm4.getPosition().y*1.03 &&
+	  MousePosY <= Lkm4.getPosition().y+Lkm4.getLocalBounds().height*1.5) // If the mouse is on top of the number 4 under "Number of player".
 	{
 	  Lkm4.setColor(sf::Color::Red);
 	}
       else
 	{
 	  Lkm4.setColor(sf::Color::Black);
+	}
+      if (MousePosX >= Map1.getPosition().x && MousePosX <= Map1.getPosition().x+Map1.getLocalBounds().width && MousePosY >= Map1.getPosition().y*1.03 &&
+	  MousePosY <= Map1.getPosition().y+Map1.getLocalBounds().height*1.5) // If the mouse is on top of the text "Map 1".
+	{
+	  Map1.setColor(sf::Color::Red);
+	}
+      else
+	{
+	  Map1.setColor(sf::Color::Black);
+	}
+      if (MousePosX >= Map2.getPosition().x && MousePosX <= Map2.getPosition().x+Map2.getLocalBounds().width && MousePosY >= Map2.getPosition().y*1.03 &&
+	  MousePosY <= Map2.getPosition().y+Map2.getLocalBounds().height*1.5) // If the mouse is on top of the text "Map 2".
+	{
+	  Map2.setColor(sf::Color::Red);
+	}
+      else
+	{
+	  Map2.setColor(sf::Color::Black);
+	}
+      if (MousePosX >= Map3.getPosition().x && MousePosX <= Map3.getPosition().x+Map3.getLocalBounds().width && MousePosY >= Map3.getPosition().y*1.03 &&
+	  MousePosY <= Map3.getPosition().y+Map3.getLocalBounds().height*1.5) // If the mouse is on top of the text "Map 3".
+	{
+	  Map3.setColor(sf::Color::Red);
+	}
+      else
+	{
+	  Map3.setColor(sf::Color::Black);
+	}
+      if (MousePosX >= Map4.getPosition().x && MousePosX <= Map4.getPosition().x+Map4.getLocalBounds().width && MousePosY >= Map4.getPosition().y*1.03 &&
+	  MousePosY <= Map4.getPosition().y+Map4.getLocalBounds().height*1.5) // If the mouse is on top of the text "Map 4".
+	{
+	  Map4.setColor(sf::Color::Red);
+	}
+      else
+	{
+	  Map4.setColor(sf::Color::Black);
 	}
       
       while (w.pollEvent(e)) // Loop through all events.
@@ -161,28 +324,52 @@ int StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player 
 		  if (std::unique(playerKeys.begin(), playerKeys.end()) == playerKeys.end()) // If all the keys in the playerKeys-vector are unique.
 		    {
 		      std::cout << numOfPlayers << std::endl;
-		      return numOfPlayers; // This return value tells the menu()-function to start the game.
+		      return numOfPlayers; // This return value tells the menu()-function to start the game with right amount of players.
 		    }
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Lkm1.getPosition().x && MousePosX <= Lkm1.getPosition().x+Lkm1.getLocalBounds().width && MousePosY >= Lkm1.getPosition().y && MousePosY <= Lkm1.getPosition().y+Lkm1.getLocalBounds().height)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Lkm1.getPosition().x && MousePosX <= Lkm1.getPosition().x+Lkm1.getLocalBounds().width &&
+		       MousePosY >= Lkm1.getPosition().y*1.03 && MousePosY <= Lkm1.getPosition().y+Lkm1.getLocalBounds().height*1.5) // If the user clicks on 1 under "Number of players".
 		{
 		  Lkm1.setColor(sf::Color::Red);
 		  numOfPlayers = 1;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Lkm2.getPosition().x && MousePosX <= Lkm2.getPosition().x+Lkm2.getLocalBounds().width && MousePosY >= Lkm2.getPosition().y && MousePosY <= Lkm2.getPosition().y+Lkm2.getLocalBounds().height)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Lkm2.getPosition().x && MousePosX <= Lkm2.getPosition().x+Lkm2.getLocalBounds().width &&
+		       MousePosY >= Lkm2.getPosition().y*1.03 && MousePosY <= Lkm2.getPosition().y+Lkm2.getLocalBounds().height*1.5) // If the user clicks on 2 under "Number of players".
 		{
 		  Lkm2.setColor(sf::Color::Red);
 		  numOfPlayers = 2;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Lkm3.getPosition().x && MousePosX <= Lkm3.getPosition().x+Lkm3.getLocalBounds().width && MousePosY >= Lkm3.getPosition().y && MousePosY <= Lkm3.getPosition().y+Lkm3.getLocalBounds().height)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Lkm3.getPosition().x && MousePosX <= Lkm3.getPosition().x+Lkm3.getLocalBounds().width &&
+		       MousePosY >= Lkm3.getPosition().y*1.03 && MousePosY <= Lkm3.getPosition().y+Lkm3.getLocalBounds().height*1.5) // If the user clicks on 3 under "Number of players".
 		{
 		  Lkm3.setColor(sf::Color::Red);
 		  numOfPlayers = 3;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Lkm4.getPosition().x && MousePosX <= Lkm4.getPosition().x+Lkm4.getLocalBounds().width && MousePosY >= Lkm4.getPosition().y && MousePosY <= Lkm4.getPosition().y+Lkm4.getLocalBounds().height)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Lkm4.getPosition().x && MousePosX <= Lkm4.getPosition().x+Lkm4.getLocalBounds().width &&
+		       MousePosY >= Lkm4.getPosition().y*1.03 && MousePosY <= Lkm4.getPosition().y+Lkm4.getLocalBounds().height*1.5) // If the user clicks on 4 under "Number of players".
 		{
 		  Lkm4.setColor(sf::Color::Red);
 		  numOfPlayers = 4;
+		}
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Map1.getPosition().x && MousePosX <= Map1.getPosition().x+Map1.getLocalBounds().width &&
+		       MousePosY >= Map1.getPosition().y*1.03 && MousePosY <= Map1.getPosition().y+Map1.getLocalBounds().height*1.5) // If the user clicks on "Map 1".
+		{
+		  std::cout << "Map1" << std::endl;
+		}
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Map2.getPosition().x && MousePosX <= Map2.getPosition().x+Map2.getLocalBounds().width &&
+		       MousePosY >= Map2.getPosition().y*1.03 && MousePosY <= Map2.getPosition().y+Map2.getLocalBounds().height*1.5) // If the user clicks on "Map 2".
+		{
+		  std::cout << "Map2" << std::endl;
+		}
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Map3.getPosition().x && MousePosX <= Map3.getPosition().x+Map3.getLocalBounds().width &&
+		       MousePosY >= Map3.getPosition().y*1.03 && MousePosY <= Map3.getPosition().y+Map3.getLocalBounds().height*1.5) // If the user clicks on "Map 3".
+		{
+		  std::cout << "Map3" << std::endl;
+		}
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Map4.getPosition().x && MousePosX <= Map4.getPosition().x+Map4.getLocalBounds().width &&
+		       MousePosY >= Map4.getPosition().y*1.03 && MousePosY <= Map4.getPosition().y+Map4.getLocalBounds().height*1.5) // If the user clicks on "Map 4".
+		{
+		  std::cout << "Map4" << std::endl;
 		}
 	    default:
 	      break;
@@ -192,30 +379,34 @@ int StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player 
 	      return 0;
 	    }
 	}
-      // Draw some textures.
+      // Refresh the screen.
       w.clear(sf::Color::White);
       w.draw(ReturnButton);
       w.draw(ExitButton);
       w.draw(StartButton);
       w.draw(Heading1);
+      w.draw(Heading2);
       w.draw(Lkm1);
       w.draw(Lkm2);
       w.draw(Lkm3);
       w.draw(Lkm4);
+      w.draw(Map1);
+      w.draw(Map2);
+      w.draw(Map3);
+      w.draw(Map4);
       w.display();
     }
   return 0;
 }
-
 // We will enter this function when the user clicks on the Options-button in the first menu-screen.
 int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player &p3, Player &p4)
 {
   w.setFramerateLimit(60);
-  //int select = -1; // This variable is used to control whose controls are being changed.
   int var = 0;
   int MousePosX = 0;
   int MousePosY = 0;
   sf::Event e;
+  // This is a map contains some keyboard keys paired with the corrsedponding std::string.
   std::map <sf::Keyboard::Key, std::string> Keys{{sf::Keyboard::Q, "Q"}, {sf::Keyboard::W, "W"}, {sf::Keyboard::E, "E"}, {sf::Keyboard::R, "R"}, {sf::Keyboard::T, "T"},
 					         {sf::Keyboard::Y, "Y"}, {sf::Keyboard::U, "U"}, {sf::Keyboard::I, "I"}, {sf::Keyboard::O, "O"}, {sf::Keyboard::P, "P"},
 						 {sf::Keyboard::A, "A"}, {sf::Keyboard::S, "S"}, {sf::Keyboard::D, "D"}, {sf::Keyboard::F, "F"}, {sf::Keyboard::G, "G"},
@@ -225,7 +416,7 @@ int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Playe
 						 {sf::Keyboard::Right, "Right Arrow"}, {sf::Keyboard::Numpad0, "0"}, {sf::Keyboard::Numpad1, "1"}, {sf::Keyboard::Numpad2, "2"},
 						 {sf::Keyboard::Numpad3, "3"}, {sf::Keyboard::Numpad4, "4"}, {sf::Keyboard::Numpad5, "5"}, {sf::Keyboard::Numpad6, "6"},
 						 {sf::Keyboard::Numpad7, "7"}, {sf::Keyboard::Numpad8, "8"}, {sf::Keyboard::Numpad9, "9"}};
-  // Create some texts.
+  // Create some texts and set their colors and locations.
   sf::Text ReturnButton("Main Menu", f, 100);
   sf::Text ExitButton("Exit", f, 100);
   sf::Text Player1Opts("Player 1", f, 60);
@@ -305,25 +496,27 @@ int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Playe
   p4left.setPosition(w.getSize().x/1.2-p4left.getLocalBounds().width/2, w.getSize().y/2.25);
   p4right.setPosition(w.getSize().x/1.2-p4right.getLocalBounds().width/2, w.getSize().y/1.75);
   std::vector<sf::Text> Texts {p1up, p1down, p1left, p1right, p2up, p2down, p2left, p2right,
-      p3up, p3down, p3left, p3right, p4up, p4down, p4left, p4right};
+      p3up, p3down, p3left, p3right, p4up, p4down, p4left, p4right}; // This vector contains some texts so that they are easier to draw.
 
 
   while (w.isOpen()) // This is the actual game loop.
     {
       MousePosX = sf::Mouse::getPosition(w).x;
       MousePosY = sf::Mouse::getPosition(w).y;
-      for (auto it = Texts.begin(); it != Texts.end(); ++it)
+      for (auto it = Texts.begin(); it != Texts.end(); ++it) // Iterate through the vector Texts.
 	{
-	  if (MousePosX >= it->getPosition().x && MousePosX <= it->getPosition().x+it->getLocalBounds().width && MousePosY >= it->getPosition().y*1.03 && MousePosY <= it->getPosition().y+it->getLocalBounds().height*1.5)
+	  if (MousePosX >= it->getPosition().x && MousePosX <= it->getPosition().x+it->getLocalBounds().width && MousePosY >= it->getPosition().y*1.03 &&
+	      MousePosY <= it->getPosition().y+it->getLocalBounds().height*1.5) // If the mouse is on top of some text in the vector.
 	    {
-	      it->setColor(sf::Color::Blue);
+	      it->setColor(sf::Color::Blue); // Set the color of the text to blue.
 	    }
 	  else
 	    {
-	      it->setColor(sf::Color::Black);
+	      it->setColor(sf::Color::Black); // Set the color of the text to black.
 	    }
 	}
-      if (MousePosX >= ReturnButton.getPosition().x && MousePosX <= ReturnButton.getPosition().x+ReturnButton.getLocalBounds().width && MousePosY >= ReturnButton.getPosition().y*1.03 && MousePosY <= ReturnButton.getPosition().y+ReturnButton.getLocalBounds().width*1.5)
+      if (MousePosX >= ReturnButton.getPosition().x && MousePosX <= ReturnButton.getPosition().x+ReturnButton.getLocalBounds().width && MousePosY >= ReturnButton.getPosition().y*1.03 &&
+	  MousePosY <= ReturnButton.getPosition().y+ReturnButton.getLocalBounds().height*1.5) // If the mouse is on top of the "Main Menu"-button.
 	{
 	  ReturnButton.setColor(sf::Color::Blue);
 	}
@@ -331,7 +524,8 @@ int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Playe
 	{
 	  ReturnButton.setColor(sf::Color::Black);
 	}
-      if (MousePosX >= ExitButton.getPosition().x && MousePosX <= ExitButton.getPosition().x+ExitButton.getLocalBounds().width && MousePosY >= ExitButton.getPosition().y*1.03 && MousePosY <= ExitButton.getPosition().y+ExitButton.getLocalBounds().width*1.5)
+      if (MousePosX >= ExitButton.getPosition().x && MousePosX <= ExitButton.getPosition().x+ExitButton.getLocalBounds().width && MousePosY >= ExitButton.getPosition().y*1.03 &&
+	  MousePosY <= ExitButton.getPosition().y+ExitButton.getLocalBounds().height*1.5) // If the mouse is on top of the Exit-button.
 	{
 	  ExitButton.setColor(sf::Color::Blue);
 	}
@@ -348,11 +542,11 @@ int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Playe
 	      w.close();
 	      break;
 
-	    case sf::Event::KeyPressed:
+	    case sf::Event::KeyPressed: // If some keyboard key is pressed.
 	      switch(e.key.code)
 		{
-		case sf::Keyboard::Escape:
-		  w.close();
+		case sf::Keyboard::Escape: // If ESC is pressed.
+		  w.close(); // Close the window.
 		  break;
 
 		default:
@@ -372,112 +566,112 @@ int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Playe
 		  w.close();
 		  break;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1up.getPosition().x && MousePosX <= p1up.getPosition().x+p1up.getLocalBounds().width && MousePosY >= p1up.getPosition().y*1.03 && MousePosY <= p1up.getPosition().y+p1up.getLocalBounds().height*1.5)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1up.getPosition().x && MousePosX <= p1up.getPosition().x+p1up.getLocalBounds().width && MousePosY >= p1up.getPosition().y*1.03 && MousePosY <= p1up.getPosition().y+p1up.getLocalBounds().height*1.5) // If the user clicks on the up-key of player 1.
 		{
 		  p1up.setColor(sf::Color::Blue);
-		  WaitForKey(w, p1, 1, Keys);
-		  p1up.setString(Keys.at(p1.getKeys().up));
-		  Texts[0] = p1up;
+		  WaitForKey(w, p1, 1, Keys); // Go to function WaitForKey (found bottom of this file).
+		  p1up.setString(Keys.at(p1.getKeys().up)); // Set the string of the pressed key to be drawn on the window in place of corresponding key.
+		  Texts[0] = p1up; // Insert the new key to the vector Texts.
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1down.getPosition().x && MousePosX <= p1down.getPosition().x+p1down.getLocalBounds().width && MousePosY >= p1down.getPosition().y*1.03 && MousePosY <= p1down.getPosition().y+p1down.getLocalBounds().height*1.5)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1down.getPosition().x && MousePosX <= p1down.getPosition().x+p1down.getLocalBounds().width && MousePosY >= p1down.getPosition().y*1.03 && MousePosY <= p1down.getPosition().y+p1down.getLocalBounds().height*1.5) // If the user clicks on the down-key of player 1.
 		{
 		  p1down.setColor(sf::Color::Blue);
 		  WaitForKey(w, p1, 2, Keys);
 		  p1down.setString(Keys.at(p1.getKeys().down));
 		  Texts[1] = p1down;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1left.getPosition().x && MousePosX <= p1left.getPosition().x+p1left.getLocalBounds().width && MousePosY >= p1left.getPosition().y*1.03 && MousePosY <= p1left.getPosition().y+p1left.getLocalBounds().height*1.5)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1left.getPosition().x && MousePosX <= p1left.getPosition().x+p1left.getLocalBounds().width && MousePosY >= p1left.getPosition().y*1.03 && MousePosY <= p1left.getPosition().y+p1left.getLocalBounds().height*1.5) // If the user clicks on the left-key of player 1.
 		{
 		  p1left.setColor(sf::Color::Blue);
 		  WaitForKey(w, p1, 3, Keys);
 		  p1left.setString(Keys.at(p1.getKeys().left));
 		  Texts[2] = p1left;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1right.getPosition().x && MousePosX <= p1right.getPosition().x+p1right.getLocalBounds().width && MousePosY >= p1right.getPosition().y*1.03 && MousePosY <= p1right.getPosition().y+p1right.getLocalBounds().height*1.5)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1right.getPosition().x && MousePosX <= p1right.getPosition().x+p1right.getLocalBounds().width && MousePosY >= p1right.getPosition().y*1.03 && MousePosY <= p1right.getPosition().y+p1right.getLocalBounds().height*1.5) // If the user clicks on the right-key of player 1.
 		{
 		  p1right.setColor(sf::Color::Blue);
 		  WaitForKey(w, p1, 4, Keys);
 		  p1right.setString(Keys.at(p1.getKeys().right));
 		  Texts[3] = p1right;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2up.getPosition().x && MousePosX <= p2up.getPosition().x+p2up.getLocalBounds().width && MousePosY >= p2up.getPosition().y*1.03 && MousePosY <= p2up.getPosition().y+p2up.getLocalBounds().height*1.5)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2up.getPosition().x && MousePosX <= p2up.getPosition().x+p2up.getLocalBounds().width && MousePosY >= p2up.getPosition().y*1.03 && MousePosY <= p2up.getPosition().y+p2up.getLocalBounds().height*1.5) // If the user clicks on the up-key of player 2.
 		{
 		  p2up.setColor(sf::Color::Blue);
 		  WaitForKey(w, p2, 1, Keys);
 		  p2up.setString(Keys.at(p2.getKeys().up));
 		  Texts[4] = p2up;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2down.getPosition().x && MousePosX <= p2down.getPosition().x+p2down.getLocalBounds().width && MousePosY >= p2down.getPosition().y*1.03 && MousePosY <= p2down.getPosition().y+p2down.getLocalBounds().height*1.5)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2down.getPosition().x && MousePosX <= p2down.getPosition().x+p2down.getLocalBounds().width && MousePosY >= p2down.getPosition().y*1.03 && MousePosY <= p2down.getPosition().y+p2down.getLocalBounds().height*1.5) // If the user clicks on the down-key of player 2.
 		{
 		  p2down.setColor(sf::Color::Blue);
 		  WaitForKey(w, p2, 2, Keys);
 		  p2down.setString(Keys.at(p2.getKeys().down));
 		  Texts[5] = p2down;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2left.getPosition().x && MousePosX <= p2left.getPosition().x+p2left.getLocalBounds().width && MousePosY >= p2left.getPosition().y*1.03 && MousePosY <= p2left.getPosition().y+p2left.getLocalBounds().height*1.5)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2left.getPosition().x && MousePosX <= p2left.getPosition().x+p2left.getLocalBounds().width && MousePosY >= p2left.getPosition().y*1.03 && MousePosY <= p2left.getPosition().y+p2left.getLocalBounds().height*1.5) // If the user clicks on the left-key of player 2.
 		{
 		  p2left.setColor(sf::Color::Blue);
 		  WaitForKey(w, p2, 3, Keys);
 		  p2left.setString(Keys.at(p2.getKeys().left));
 		  Texts[6] = p2left;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2right.getPosition().x && MousePosX <= p2right.getPosition().x+p2right.getLocalBounds().width && MousePosY >= p2right.getPosition().y*1.03 && MousePosY <= p2right.getPosition().y+p2right.getLocalBounds().height*1.5)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2right.getPosition().x && MousePosX <= p2right.getPosition().x+p2right.getLocalBounds().width && MousePosY >= p2right.getPosition().y*1.03 && MousePosY <= p2right.getPosition().y+p2right.getLocalBounds().height*1.5) // If the user clicks on the right-key of player 2.
 		{
 		  p2right.setColor(sf::Color::Blue);
 		  WaitForKey(w, p2, 4, Keys);
 		  p2right.setString(Keys.at(p2.getKeys().right));
 		  Texts[7] = p2right;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3up.getPosition().x && MousePosX <= p3up.getPosition().x+p3up.getLocalBounds().width && MousePosY >= p3up.getPosition().y*1.03 && MousePosY <= p3up.getPosition().y+p3up.getLocalBounds().height*1.5)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3up.getPosition().x && MousePosX <= p3up.getPosition().x+p3up.getLocalBounds().width && MousePosY >= p3up.getPosition().y*1.03 && MousePosY <= p3up.getPosition().y+p3up.getLocalBounds().height*1.5) // If the user clicks on the up-key of player 3.
 		{
 		  p3up.setColor(sf::Color::Blue);
 		  WaitForKey(w, p3, 1, Keys);
 		  p3up.setString(Keys.at(p3.getKeys().up));
 		  Texts[8] = p3up;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3down.getPosition().x && MousePosX <= p3down.getPosition().x+p3down.getLocalBounds().width && MousePosY >= p3down.getPosition().y*1.03 && MousePosY <= p3down.getPosition().y+p3down.getLocalBounds().height*1.5)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3down.getPosition().x && MousePosX <= p3down.getPosition().x+p3down.getLocalBounds().width && MousePosY >= p3down.getPosition().y*1.03 && MousePosY <= p3down.getPosition().y+p3down.getLocalBounds().height*1.5) // If the user clicks on the down-key of player 3.
 		{
 		  p3down.setColor(sf::Color::Blue);
 		  WaitForKey(w, p3, 2, Keys);
 		  p3down.setString(Keys.at(p3.getKeys().down));
 		  Texts[9] = p3down;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3left.getPosition().x && MousePosX <= p3left.getPosition().x+p3left.getLocalBounds().width && MousePosY >= p3left.getPosition().y*1.03 && MousePosY <= p3left.getPosition().y+p3left.getLocalBounds().height*1.5)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3left.getPosition().x && MousePosX <= p3left.getPosition().x+p3left.getLocalBounds().width && MousePosY >= p3left.getPosition().y*1.03 && MousePosY <= p3left.getPosition().y+p3left.getLocalBounds().height*1.5) // If the user clicks on the left-key of player 3.
 		{
 		  p3left.setColor(sf::Color::Blue);
 		  WaitForKey(w, p3, 3, Keys);
 		  p3left.setString(Keys.at(p3.getKeys().left));
 		  Texts[10] = p3left;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3right.getPosition().x && MousePosX <= p3right.getPosition().x+p3right.getLocalBounds().width && MousePosY >= p3right.getPosition().y*1.03 && MousePosY <= p3right.getPosition().y+p3right.getLocalBounds().height*1.5)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3right.getPosition().x && MousePosX <= p3right.getPosition().x+p3right.getLocalBounds().width && MousePosY >= p3right.getPosition().y*1.03 && MousePosY <= p3right.getPosition().y+p3right.getLocalBounds().height*1.5) // If the user clicks on the right-key of player 3.
 		{
 		  p3right.setColor(sf::Color::Blue);
 		  WaitForKey(w, p3, 4, Keys);
 		  p3right.setString(Keys.at(p3.getKeys().right));
 		  Texts[11] = p3right;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4up.getPosition().x && MousePosX <= p4up.getPosition().x+p4up.getLocalBounds().width && MousePosY >= p4up.getPosition().y*1.03 && MousePosY <= p4up.getPosition().y+p4up.getLocalBounds().height*1.5)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4up.getPosition().x && MousePosX <= p4up.getPosition().x+p4up.getLocalBounds().width && MousePosY >= p4up.getPosition().y*1.03 && MousePosY <= p4up.getPosition().y+p4up.getLocalBounds().height*1.5) // If the user clicks on the up-key of player 4.
 		{
 		  p4up.setColor(sf::Color::Blue);
 		  WaitForKey(w, p4, 1, Keys);
 		  p4up.setString(Keys.at(p4.getKeys().up));
 		  Texts[12] = p4up;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4down.getPosition().x && MousePosX <= p4down.getPosition().x+p4down.getLocalBounds().width && MousePosY >= p4down.getPosition().y*1.03 && MousePosY <= p4down.getPosition().y+p4down.getLocalBounds().height*1.5)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4down.getPosition().x && MousePosX <= p4down.getPosition().x+p4down.getLocalBounds().width && MousePosY >= p4down.getPosition().y*1.03 && MousePosY <= p4down.getPosition().y+p4down.getLocalBounds().height*1.5) // If the user clicks on the down-key of player 4.
 		{
 		  p4down.setColor(sf::Color::Blue);
 		  WaitForKey(w, p4, 2, Keys);
 		  p4down.setString(Keys.at(p4.getKeys().down));
 		  Texts[13] = p4down;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4left.getPosition().x && MousePosX <= p4left.getPosition().x+p4left.getLocalBounds().width && MousePosY >= p4left.getPosition().y*1.03 && MousePosY <= p4left.getPosition().y+p4left.getLocalBounds().height*1.5)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4left.getPosition().x && MousePosX <= p4left.getPosition().x+p4left.getLocalBounds().width && MousePosY >= p4left.getPosition().y*1.03 && MousePosY <= p4left.getPosition().y+p4left.getLocalBounds().height*1.5) // If the user clicks on the left-key of player 4.
 		{
 		  p4left.setColor(sf::Color::Blue);
 		  WaitForKey(w, p4, 3, Keys);
 		  p4left.setString(Keys.at(p4.getKeys().left));
 		  Texts[14] = p4left;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4right.getPosition().x && MousePosX <= p4right.getPosition().x+p4right.getLocalBounds().width && MousePosY >= p4right.getPosition().y*1.03 && MousePosY <= p4right.getPosition().y+p4right.getLocalBounds().height*1.5)
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4right.getPosition().x && MousePosX <= p4right.getPosition().x+p4right.getLocalBounds().width && MousePosY >= p4right.getPosition().y*1.03 && MousePosY <= p4right.getPosition().y+p4right.getLocalBounds().height*1.5) // If the user clicks on the right-key of player 4.
 		{
 		  p4right.setColor(sf::Color::Blue);
 		  WaitForKey(w, p4, 4, Keys);
@@ -491,10 +685,11 @@ int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Playe
 	    }
 	}
       w.clear(sf::Color::White);
-      for (auto it = Texts.begin(); it != Texts.end(); ++it)
+      for (auto it = Texts.begin(); it != Texts.end(); ++it) // Loop through the vector Texts and draw the content.
 	{
 	  w.draw(*it);
 	}
+      // Draw some other content and refrest the screen.
       w.draw(ReturnButton);
       w.draw(ExitButton);
       w.draw(Up);
@@ -610,6 +805,8 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 			  w.draw(*tiles[i][j]);
 			}
 		    }
+		  for(auto i: obstacles)
+		    i->drawTo(w);
 		  w.draw(QuitButton);
 		  w.draw(MenuButton);
 		  w.display();
@@ -624,6 +821,13 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 			    }
 			  else if (event.key.code == sf::Keyboard::Escape)
 			    {
+			      for (int i = 0; i < y; i++)
+				{
+				  for (int j = 0; j < x; j++)
+				    {
+				      delete tiles[i][j];
+				    }
+				}
 			      w.close();
 			      pauseVar = 1;
 			      break;
@@ -635,15 +839,27 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 			      MousePosX <= QuitButton.getPosition().x+QuitButton.getLocalBounds().width*1.2 && MousePosY >= QuitButton.getPosition().y*1.03 &&
 			      MousePosY <= QuitButton.getPosition().y+QuitButton.getLocalBounds().height*1.5) // If the user clicks on the Exit-button.
 			    {
-			      pauseVar = 1;
-			      w.close();
-			      break;
+			      for (int i = 0; i < y; i++)
+				{
+				  for (int j = 0; j < x; j++)
+				    {
+				      delete tiles[i][j];
+				    }
+				}
+			      return 1;
 			    }
 			  
 			  else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= MenuButton.getPosition().x*1.01 &&
 				   MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 && MousePosY >= MenuButton.getPosition().y*1.03 &&
 				   MousePosY <= MenuButton.getPosition().y+MenuButton.getLocalBounds().height*1.5) // If the user clicks on the "Main menu"-button.
 			    {
+			      for (int i = 0; i < y; i++)
+				{
+				  for (int j = 0; j < x; j++)
+				    {
+				      delete tiles[i][j];
+				    }
+				}
 			      return 0;
 			    }
 			}
@@ -654,10 +870,10 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 		    }
 		}
 	    }
-	  case sf::Keyboard::S: //Saves matrix to the file "level1.txt"
+	  case sf::Keyboard::S: //Saves matrix to the ofstream f
 	    for(int i = 0; i < y; i++) {
 	      for(int j = 0; j < x; j++) {
-		f << A[i][j] << " ";
+					f << A[i][j] << " ";
 	      }
 	    }
 	    break;
@@ -835,7 +1051,7 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
       }
         
     for(auto i: obstacles)
-      i->drawTo(w,s);
+      i->drawTo(w);
 
     w.display();
   }
@@ -849,33 +1065,34 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
   return 0;
 }
 
+// We enter this function from the options-window, when the user clicks on some key of some player.
 int WaitForKey(sf::RenderWindow &w, Player &p, int x, std::map<sf::Keyboard::Key, std::string> K)
 {
   sf::Event e;
   while (1)
     {
-      while (w.pollEvent(e))
+      while (w.pollEvent(e)) // Poll for events.
 	{
-	  if (e.type == sf::Event::KeyPressed)
+	  if (e.type == sf::Event::KeyPressed) // If some keyboard key is pressed.
 	    {
-	      if (K.count(e.key.code) != 0)
+	      if (K.count(e.key.code) != 0) // If the pressed key can be found in the map K (std::map Keys in Options-window)
 		{
-		  if (x == 1)
+		  if (x == 1) // If we want to modify the up-key of a player.
 		    {
 		      p.getKeys().up = e.key.code;
 		      return 1;
 		    }
-		  else if (x == 2)
+		  else if (x == 2) // If we want to modify the down-key of a player.
 		    {
 		      p.getKeys().down = e.key.code;
 		      return 1;
 		    }
-		  else if (x == 3)
+		  else if (x == 3) // If we want to modify the left-key of a player.
 		    {
 		      p.getKeys().left = e.key.code;
 		      return 1;
 		    }
-		  else if (x == 4)
+		  else if (x == 4) // If we want to modify the right-key of a player.
 		    {
 		      p.getKeys().right = e.key.code;
 		      return 1;

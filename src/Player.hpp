@@ -1,3 +1,5 @@
+/* A class for the players of the game. Used mainly to handle the key settings of the players */
+
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 

@@ -1,30 +1,37 @@
+#include <string>
 #include <fstream>
 #include "Level.hpp"
 #include "Constants.hpp"
 #include <algorithm>
 
+/* The level constructor. The levels are saved to text files as numbers, where each number represents a tile type
+ * or a physical obstacle. The constructor reads a number from the file and creates the corresponding
+ * tile or physical obstacle.
+ */
 Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
     size_t x = static_cast<int>(s.worldWidth);
     size_t y = static_cast<int>(s.worldHeight);
     std::ifstream levelFile(levelFileName);
-    // TODO Handle errors when opening the file
+    if (!levelFile)
+		throw std::invalid_argument("Could not open the level: " + levelFileName );
     for (size_t j = 0; j < y; j++) {
         for (size_t i = 0; i < x; i++) {
             int tileNum;
-            levelFile >> tileNum;
-            // Default settings for all static obstacles
+            if(!(levelFile >> tileNum))
+				throw std::invalid_argument("Error reading from the file " + levelFileName + "." );
+            // Default body and fixture definition settings for all static obstacles
             b2BodyDef bd;
             bd.position.Set(i, s.worldHeight - j);
             b2FixtureDef fd;
             fd.friction = 0.3;
             switch (tileNum) {
-                case 0:
+                case 0: // Grass tile
                     tiles.push_back(Tile::createGrassTile(s, s.tileWidth*i, s.tileHeight*j));
                     break;
-                case 1:
+                case 1: // Road tile
                     tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j));
                     break;
-                case 2:
+                case 2: // Ice tile
                     tiles.push_back(Tile::createIceTile(s, s.tileWidth*i, s.tileHeight*j));
                     break;
                 case 10: // A small brown static rock obstacle.
@@ -122,21 +129,21 @@ Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
                         obstacles.push_back(physObjPtr);
                     }
                     break;
-	    case 3: // A diagonal rail from bottom left to top right.
-	      {
-		tiles.push_back(Tile::createOilTile(s, s.tileWidth*i, s.tileHeight*j));
-	      }
-	      break;
-	    case 100 ... 200: // A checkpoint with order of 0-100.
-	      {
-		tiles.push_back(Tile::createCheckpointTile(s, s.tileWidth*i, s.tileHeight*j));
-		b2Vec2 checkPointlocation(((i+0.5)*s.tileWidth)*s.pixelsToMeters, (s.screenHeight - (j+0.5)*s.tileHeight)*s.pixelsToMeters);
-		checkpointVector.push_back(std::make_pair(tileNum, checkPointlocation));
-	      }
-	      break;
+        	case 3: // Oil tile
+        	    {
+                	tiles.push_back(Tile::createOilTile(s, s.tileWidth*i, s.tileHeight*j));
+    	      	    }
+    	            break;
+    	        case 100 ... 200: // A checkpoint with order of 0-100.
+    	       	   {
+    		        tiles.push_back(Tile::createCheckpointTile(s, s.tileWidth*i, s.tileHeight*j));
+    		        b2Vec2 checkPointlocation(((i+0.5)*s.tileWidth)*s.pixelsToMeters, (s.screenHeight - (j+0.5)*s.tileHeight)*s.pixelsToMeters);
+    		        checkpointVector.push_back(std::make_pair(tileNum, checkPointlocation));
+    	       	   }
+    	            break;
                 default:
-                    //TODO throw error if the level file contains invalid numbers
-                    tiles.push_back(Tile::createGrassTile(s, s.tileWidth*i, s.tileHeight*j));
+                   	throw std::invalid_argument("Error reading the level-file: unrecognized tilenumber encountered." );
+              	 	// tiles.push_back(Tile::createGrassTile(s, s.tileWidth*i, s.tileHeight*j));
             }
         }
     }
@@ -146,7 +153,8 @@ Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
 });
 }
 
-void Level::createScreenBorders(b2World& world, Settings& s) {
+// Create borders to the level to stop physics objects from traveling outside the screen.
+void Level::createScreenBorders(b2World& world) {
     b2BodyDef borderDef;
     b2Body* borderBody = world.CreateBody(&borderDef);
     b2Vec2 vertices[4];
@@ -178,13 +186,13 @@ float Level::getFrictionMultiplier(b2Vec2 coordinates) const {
     else return 1.0;
 }
 
-void Level::drawTo(sf::RenderWindow& window, Settings& s) {
+void Level::drawTo(sf::RenderWindow& window) {
     // Set background color to grass color, as grass tiles are not drawn individually to
     // improve performance.
     window.clear(sf::Color(0, 123, 12, 255));
     for (auto it : tiles) it->drawTo(window);
-    for (auto it : obstacles) it->drawTo(window, s);
-    for (auto it : cars) it->drawTo(window, s);
+    for (auto it : obstacles) it->drawTo(window);
+    for (auto it : cars) it->drawTo(window);
 }
 
 void Level::checkpointChecker() {

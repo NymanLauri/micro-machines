@@ -121,6 +121,8 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 		case sf::Keyboard::Escape: // If ESC is pressed.
 		  window.close();
 		  break;
+		case sf::Keyboard::X:
+		  EndWindow(window, font, 1);
 
 		default:
 		  break;
@@ -144,7 +146,11 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 	      else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= LevelButton.getPosition().x*1.01 && MousePosX <= LevelButton.getPosition().x+LevelButton.getLocalBounds().width*1.1 &&
 		       MousePosY >= LevelButton.getPosition().y*1.03 && MousePosY <= LevelButton.getPosition().y+LevelButton.getLocalBounds().height*1.5) // If the user clicks on the Level Editor -button
 		{
-		  EditorWindow(window, font); // Go to function EditorWindow (found in Functions.cpp) that opens a window where the user can create levels.
+		  int ret = EditorWindow(window, font); // Go to function EditorWindow (found in Functions.cpp) that opens a window where the user can create levels.
+		  if (ret == 1)
+		    {
+		      return 0;
+		    }
 		}
 
 	      else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= StartButton.getPosition().x*1.01 && MousePosX <= StartButton.getPosition().x+StartButton.getLocalBounds().width*1.1 &&
@@ -188,152 +194,156 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
   sf::VideoMode videomode = sf::VideoMode(1800,1000);
 
   Settings s(videomode.width, videomode.height, 180, 100);
+  
+  try {
+    Level level("map1.txt", world, s);
+    level.createScreenBorders(world);
 
-  Level level("map1.txt", world, s);
-  level.createScreenBorders(world, s);
+    std::map <int, std::shared_ptr<Car>> PlayersAndCars;
+    std::vector<Player> Players;
 
-  std::map <int, std::shared_ptr<Car>> PlayersAndCars;
-  std::vector<Player> Players;
+    if (retValue >= 1)
+      {
+        auto car1 = std::make_shared<Car>(world, s, level, b2Vec2(0.12*s.worldWidth, 0.5*s.worldHeight), sf::Color::Red);
+        level.addCar(car1);
+        PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(0, car1));
+        Players.push_back(player1);
+      }
+    if (retValue >= 2)
+      {
+        auto car2 = std::make_shared<Car>(world, s, level, b2Vec2(0.10*s.worldWidth, 0.5*s.worldHeight), sf::Color::Blue);
+        level.addCar(car2);
+        PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(1, car2));
+        Players.push_back(player2);
+      }
+    if (retValue >= 3)
+      {
+        auto car3 = std::make_shared<Car>(world, s, level, b2Vec2(0.08*s.worldWidth, 0.5*s.worldHeight), sf::Color::Green);
+        level.addCar(car3);
+        PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(2, car3));
+        Players.push_back(player3);
+      }
+    if (retValue >= 4)
+      {
+        auto car4 = std::make_shared<Car>(world, s, level, b2Vec2(0.06*s.worldWidth, 0.5*s.worldHeight), sf::Color::Yellow);
+        level.addCar(car4);
+        PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(3, car4));
+        Players.push_back(player4);
+      }
+      
+    float timeStep = 1.0/60.0;
 
-  if (retValue >= 1)
-    {
-      auto car1 = std::make_shared<Car>(world, s, b2Vec2(0.12*s.worldWidth, 0.5*s.worldHeight), sf::Color::Red);
-      level.addCar(car1);
-      PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(0, car1));
-      Players.push_back(player1);
-    }
-  if (retValue >= 2)
-    {
-      auto car2 = std::make_shared<Car>(world, s, b2Vec2(0.10*s.worldWidth, 0.5*s.worldHeight), sf::Color::Blue);
-      level.addCar(car2);
-      PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(1, car2));
-      Players.push_back(player2);
-    }
-  if (retValue >= 3)
-    {
-      auto car3 = std::make_shared<Car>(world, s, b2Vec2(0.08*s.worldWidth, 0.5*s.worldHeight), sf::Color::Green);
-      level.addCar(car3);
-      PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(2, car3));
-      Players.push_back(player3);
-    }
-  if (retValue >= 4)
-    {
-      auto car4 = std::make_shared<Car>(world, s, b2Vec2(0.06*s.worldWidth, 0.5*s.worldHeight), sf::Color::Yellow);
-      level.addCar(car4);
-      PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(3, car4));
-      Players.push_back(player4);
+    //sf::RenderWindow window(videomode, "LevelTest");
+    window.setFramerateLimit(60);
+    while (window.isOpen()) {
+      sf::Event event;
+      while (window.pollEvent(event)) {
+        if (event.type == sf::Event::Closed) {
+	  window.close();
+        } else if (event.type == sf::Event::KeyPressed) {
+	  if (event.key.code == sf::Keyboard::Escape) {
+	    window.close();
+	  }
+	  else if (event.key.code == sf::Keyboard::P) // If the player pauses the game.
+	    {
+	      // Create some texts and set their positions etc.
+	      sf::Text QuitButton("Exit", font, 80);
+	      sf::Text MenuButton("Main Menu", font, 80);
+	      QuitButton.setColor(sf::Color::White);
+	      MenuButton.setColor(sf::Color::White);
+	      QuitButton.setPosition(window.getSize().x/2-QuitButton.getLocalBounds().width/2, window.getSize().y-QuitButton.getLocalBounds().height*4);
+	      MenuButton.setPosition(window.getSize().x/2-MenuButton.getLocalBounds().width/2, window.getSize().y-MenuButton.getLocalBounds().height*7);
+	      int pauseVar = 0; // This is a variable that controls when to exit the pause-loop.
+	      while (1) // Start the pause-loop.
+	        {
+		  int MousePosX = sf::Mouse::getPosition(window).x;
+		  int MousePosY = sf::Mouse::getPosition(window).y;
+		  if (MousePosX >= QuitButton.getPosition().x*1.01 && MousePosX <= QuitButton.getPosition().x+QuitButton.getLocalBounds().width*1.2 && MousePosY >= QuitButton.getPosition().y*1.03 &&
+		      MousePosY <= QuitButton.getPosition().y+QuitButton.getLocalBounds().height*1.5) // If the mouse is on top of the Exit-button.
+		    {
+		      QuitButton.setColor(sf::Color::Blue); // Set the color of the button to be blue.
+		    }
+		  else
+		    {
+		      QuitButton.setColor(sf::Color::White); // Set the color of the button to be white.
+		    }
+		
+		  if (MousePosX >= MenuButton.getPosition().x*1.01 && MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 && MousePosY >= MenuButton.getPosition().y*1.03 &&
+		      MousePosY <= MenuButton.getPosition().y+MenuButton.getLocalBounds().height*1.5) // If the mouse is on top of the "Main menu"-button.
+		    {
+		      MenuButton.setColor(sf::Color::Blue);
+		    }
+		  else
+		    {
+		      MenuButton.setColor(sf::Color::White);
+		    }
+		
+		  window.clear();
+		  // Draw all the player and some other textures to the screen.
+		  level.drawTo(window);
+		  window.draw(QuitButton);
+		  window.draw(MenuButton);
+		  window.display();
+		  while (window.pollEvent(event))
+		    {
+		      if (event.type == sf::Event::KeyPressed)
+		        {
+			  if (event.key.code == sf::Keyboard::P) // If the user presses p to continue the game.
+			    {
+			      pauseVar = 1;
+			      break;
+			    }
+			  else if (event.key.code == sf::Keyboard::Escape) // If the user clicks ESC.
+			    {
+			      window.close();
+			      pauseVar = 1;
+			      break;
+			    }
+		        }
+		      else if (event.type == sf::Event::MouseButtonPressed)
+		        {
+			  if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= QuitButton.getPosition().x*1.01 &&
+			      MousePosX <= QuitButton.getPosition().x+QuitButton.getLocalBounds().width*1.2 && MousePosY >= QuitButton.getPosition().y*1.03 &&
+			      MousePosY <= QuitButton.getPosition().y+QuitButton.getLocalBounds().height*1.5) // If the user clicks on the Exit-button.
+			    {
+			      pauseVar = 1;
+			      window.close();
+			      break;
+			    }
+			
+			  else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= MenuButton.getPosition().x*1.01 &&
+				   MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 && MousePosY >= MenuButton.getPosition().y*1.03 &&
+				   MousePosY <= MenuButton.getPosition().y+MenuButton.getLocalBounds().height*1.5) // If the user clicks on the "Main menu"-button.
+			    {
+			      return 0;
+			    }
+		        }
+		    }
+		  if (pauseVar == 1)
+		    {
+		      break;
+		    }
+	        }
+	    }
+        }
+      }
+      level.checkpointChecker();
+      for (int i = 0; i < Players.size(); ++i)
+        {	
+	  if (sf::Keyboard::isKeyPressed(Players[i].getKeys().up)) PlayersAndCars.at(i)->accelerate();
+	  if (sf::Keyboard::isKeyPressed(Players[i].getKeys().down)) PlayersAndCars.at(i)->decelerate();
+	  if (sf::Keyboard::isKeyPressed(Players[i].getKeys().left)) PlayersAndCars.at(i)->turnLeft();
+	  if (sf::Keyboard::isKeyPressed(Players[i].getKeys().right)) PlayersAndCars.at(i)->turnRight();
+	  PlayersAndCars.at(i)->updateMovement();
+        }
+      world.Step(timeStep, 8, 3);
+      window.clear();
+      level.drawTo(window);
+      window.display();
     }
     
-  float timeStep = 1.0/60.0;
-
-  //sf::RenderWindow window(videomode, "LevelTest");
-  window.setFramerateLimit(60);
-  while (window.isOpen()) {
-    sf::Event event;
-    while (window.pollEvent(event)) {
-      if (event.type == sf::Event::Closed) {
-	window.close();
-      } else if (event.type == sf::Event::KeyPressed) {
-	if (event.key.code == sf::Keyboard::Escape) {
-	  window.close();
-	}
-	else if (event.key.code == sf::Keyboard::P) // If the player pauses the game.
-	  {
-	    // Create some texts and set their positions etc.
-	    sf::Text QuitButton("Exit", font, 80);
-	    sf::Text MenuButton("Main Menu", font, 80);
-	    QuitButton.setColor(sf::Color::White);
-	    MenuButton.setColor(sf::Color::White);
-	    QuitButton.setPosition(window.getSize().x/2-QuitButton.getLocalBounds().width/2, window.getSize().y-QuitButton.getLocalBounds().height*4);
-	    MenuButton.setPosition(window.getSize().x/2-MenuButton.getLocalBounds().width/2, window.getSize().y-MenuButton.getLocalBounds().height*7);
-	    int pauseVar = 0; // This is a variable that controls when to exit the pause-loop.
-	    while (1) // Start the pause-loop.
-	      {
-		int MousePosX = sf::Mouse::getPosition(window).x;
-		int MousePosY = sf::Mouse::getPosition(window).y;
-		if (MousePosX >= QuitButton.getPosition().x*1.01 && MousePosX <= QuitButton.getPosition().x+QuitButton.getLocalBounds().width*1.2 && MousePosY >= QuitButton.getPosition().y*1.03 &&
-		    MousePosY <= QuitButton.getPosition().y+QuitButton.getLocalBounds().height*1.5) // If the mouse is on top of the Exit-button.
-		  {
-		    QuitButton.setColor(sf::Color::Blue); // Set the color of the button to be blue.
-		  }
-		else
-		  {
-		    QuitButton.setColor(sf::Color::White); // Set the color of the button to be white.
-		  }
-		
-		if (MousePosX >= MenuButton.getPosition().x*1.01 && MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 && MousePosY >= MenuButton.getPosition().y*1.03 &&
-		    MousePosY <= MenuButton.getPosition().y+MenuButton.getLocalBounds().height*1.5) // If the mouse is on top of the "Main menu"-button.
-		  {
-		    MenuButton.setColor(sf::Color::Blue);
-		  }
-		else
-		  {
-		    MenuButton.setColor(sf::Color::White);
-		  }
-		
-		window.clear();
-		// Draw all the player and some other textures to the screen.
-		level.drawTo(window, s);
-		window.draw(QuitButton);
-		window.draw(MenuButton);
-		window.display();
-		while (window.pollEvent(event))
-		  {
-		    if (event.type == sf::Event::KeyPressed)
-		      {
-			if (event.key.code == sf::Keyboard::P) // If the user presses p to continue the game.
-			  {
-			    pauseVar = 1;
-			    break;
-			  }
-			else if (event.key.code == sf::Keyboard::Escape) // If the user clicks ESC.
-			  {
-			    window.close();
-			    pauseVar = 1;
-			    break;
-			  }
-		      }
-		    else if (event.type == sf::Event::MouseButtonPressed)
-		      {
-			if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= QuitButton.getPosition().x*1.01 &&
-			    MousePosX <= QuitButton.getPosition().x+QuitButton.getLocalBounds().width*1.2 && MousePosY >= QuitButton.getPosition().y*1.03 &&
-			    MousePosY <= QuitButton.getPosition().y+QuitButton.getLocalBounds().height*1.5) // If the user clicks on the Exit-button.
-			  {
-			    pauseVar = 1;
-			    window.close();
-			    break;
-			  }
-			
-			else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= MenuButton.getPosition().x*1.01 &&
-				 MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 && MousePosY >= MenuButton.getPosition().y*1.03 &&
-				 MousePosY <= MenuButton.getPosition().y+MenuButton.getLocalBounds().height*1.5) // If the user clicks on the "Main menu"-button.
-			  {
-			    return 0;
-			  }
-		      }
-		  }
-		if (pauseVar == 1)
-		  {
-		    break;
-		  }
-	      }
-	  }
-      }
-    }
-    level.checkpointChecker();
-    for (int i = 0; i < Players.size(); ++i)
-      {	
-	if (sf::Keyboard::isKeyPressed(Players[i].getKeys().up)) PlayersAndCars.at(i)->accelerate(level);
-	if (sf::Keyboard::isKeyPressed(Players[i].getKeys().down)) PlayersAndCars.at(i)->decelerate(level);
-	if (sf::Keyboard::isKeyPressed(Players[i].getKeys().left)) PlayersAndCars.at(i)->turnLeft();
-	if (sf::Keyboard::isKeyPressed(Players[i].getKeys().right)) PlayersAndCars.at(i)->turnRight();
-	PlayersAndCars.at(i)->updateMovement(level);
-      }
-    world.Step(timeStep, 8, 3);
-    window.clear();
-    level.drawTo(window, s);
-    window.display();
-
+  } catch(std::invalid_argument& e) {
+    std::cout << e.what() << std::endl;
   }
   return 0;
 }

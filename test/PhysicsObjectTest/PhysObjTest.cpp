@@ -139,19 +139,19 @@ int main(void) {
             }
         }
 
-        if (sf::Keyboard::isKeyPressed(p1keys.up)) playerObj.applyLinearImpulse(b2Vec2(0.0f, 3.0f), playerObj.getWorldCenter(), true);
-        if (sf::Keyboard::isKeyPressed(p1keys.down)) playerObj.applyLinearImpulse(b2Vec2(0.0f, -3.0f), playerObj.getWorldCenter(), true);
-        if (sf::Keyboard::isKeyPressed(p1keys.left)) playerObj.applyLinearImpulse(b2Vec2(-3.0f, 0.0f), playerObj.getWorldCenter(), true);
-        if (sf::Keyboard::isKeyPressed(p1keys.right)) playerObj.applyLinearImpulse(b2Vec2(3.0f, 0.0f), playerObj.getWorldCenter(), true);
+        if (sf::Keyboard::isKeyPressed(p1keys.up)) playerObj.getBody()->ApplyLinearImpulse(b2Vec2(0.0f, 3.0f), playerObj.getWorldCenter(), true);
+        if (sf::Keyboard::isKeyPressed(p1keys.down)) playerObj.getBody()->ApplyLinearImpulse(b2Vec2(0.0f, -3.0f), playerObj.getWorldCenter(), true);
+        if (sf::Keyboard::isKeyPressed(p1keys.left)) playerObj.getBody()->ApplyLinearImpulse(b2Vec2(-3.0f, 0.0f), playerObj.getWorldCenter(), true);
+        if (sf::Keyboard::isKeyPressed(p1keys.right)) playerObj.getBody()->ApplyLinearImpulse(b2Vec2(3.0f, 0.0f), playerObj.getWorldCenter(), true);
 
         world.Step(1.0/60.0, 8, 3); 
         window.clear();
-        physObj1.drawTo(window, s);
-        physObj2.drawTo(window, s);
-        physObj3.drawTo(window, s);
-        physObj4.drawTo(window, s);
-        physObj5.drawTo(window, s);
-        playerObj.drawTo(window, s);
+        physObj1.drawTo(window);
+        physObj2.drawTo(window);
+        physObj3.drawTo(window);
+        physObj4.drawTo(window);
+        physObj5.drawTo(window);
+        playerObj.drawTo(window);
         window.display();
     }
     return 0;

@@ -6,7 +6,9 @@ Tile::Tile(const int tileNum, Settings& s, size_t xCoord, size_t yCoord, const f
 }
 
 void Tile::drawTo(sf::RenderWindow& window) const {
-    // Don't draw grass tiles to improve performance.
+    // Don't draw grass tiles to improve performance; handle grass tiles
+    // by setting the background color of the screen to be the grass color.
+    // (This is done in the level class.)
     if (tileNum != 0) window.draw(shape);
 }
 

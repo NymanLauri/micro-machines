@@ -1,11 +1,7 @@
-/* Some methods of the Tire class are loosely based on the Box2D top-down car physics
- * tutorial found at http://www.iforce2d.net/b2dtut/top-down-car
- */
-
 #include "Tire.hpp"
 #include "Settings.hpp"
 
-Tire::Tire(b2World& world, Settings& s, b2Vec2 position) {
+Tire::Tire(b2World& world, const Settings& s, Level& l, b2Vec2 position) : s(s), level(l) {
     b2BodyDef tireBodyDef;
     tireBodyDef.type = b2_dynamicBody;
     tireBodyDef.position = position;
@@ -15,8 +11,8 @@ Tire::Tire(b2World& world, Settings& s, b2Vec2 position) {
     tireObject = std::make_shared<PhysicsObject>(world, s, b2Vec2(0.25, 0.75), tireBodyDef, tireFixtureDef, sf::Color::Black);
 }
 
-void Tire::drawTo(sf::RenderWindow& window, Settings& s) {
-    tireObject->drawTo(window, s);
+void Tire::drawTo(sf::RenderWindow& window) {
+    tireObject->drawTo(window);
 }
 
 b2Body* const Tire::getBody() const {
@@ -35,33 +31,46 @@ b2Vec2 Tire::getParallelVelocity() const {
     return projectionLength * forwardDirection;
 }
 
-void Tire::applyFriction(const Level& level) {
+void Tire::applyFriction() {
     b2Body* const body = getBody();
     float friction = level.getFrictionMultiplier(body->GetPosition());
+    // Get the magnitude and direction of the impulse needed to stop all lateral motion of
+    // of the car.
     b2Vec2 impulse = body->GetMass() * -getLateralVelocity();
+    // Scale down the impulse if it is larger than the maximum value.
     if (impulse.Length() > maxLateralImpulse * friction) {
         impulse.Normalize();
         impulse *= maxLateralImpulse * friction;
     }
+    // Multiply the impulse by 0.8 so that the sideways velocity is never killed completely;
+    // this gives the car a more "gamey" feel.
     impulse *= 0.8;
+    // Apply the impulse.
     body->ApplyLinearImpulse(impulse, body->GetWorldCenter(), true);
     b2Vec2 direction = -getParallelVelocity();
     direction.Normalize();
+    // Apply a force opposite to the direction the car is moving in;
+    // this simulates friction between the road and the tires and drag.
     b2Vec2 forceVec = body->GetMass() * 10 * friction * direction;
     forceVec += 0.1 * friction * -getParallelVelocity();
     body->ApplyForce(forceVec, body->GetWorldCenter(), true); 
 }
 
-void Tire::accelerate(float force, float maxFwdSpeed, const Level& level) {
+void Tire::accelerate(float force, float maxFwdSpeed) {
+    // Get the friction multiplier for the tire's position from the level.
+    float friction = level.getFrictionMultiplier(getBody()->GetPosition());
+    // If the friction multiplier is less than 1, the car will accelerate more slowly.
+    // Otherwise the acceleration is unaffected.
+    friction = friction < 1.0 ? friction : 1.0;
     if (getParallelVelocity().Length() < maxFwdSpeed) {
         b2Body* const body = getBody();
         b2Vec2 direction = body->GetWorldVector(b2Vec2(0.0, 1.0));
         direction.Normalize();
-        body->ApplyForce(force * direction, body->GetWorldCenter(), true);
+        body->ApplyForce(force * friction * direction, body->GetWorldCenter(), true);
     }
 }
 
-void Tire::decelerate(float force, float maxRevSpeed, const Level& level) {
+void Tire::decelerate(float force, float maxRevSpeed) {
     float friction = level.getFrictionMultiplier(getBody()->GetPosition());
     friction = friction < 1.0 ? friction : 1.0;
     b2Vec2 moveDirection = getBody()->GetLinearVelocity();
@@ -82,7 +91,8 @@ void Tire::decelerate(float force, float maxRevSpeed, const Level& level) {
     }
 }
 
-
-void Tire::updateMovement(const Level& level) {
-    applyFriction(level);
+// Update movement is a separate method in order to enable easy addition of other movement affecting features
+// than only friction.
+void Tire::updateMovement() {
+    applyFriction();
 }
