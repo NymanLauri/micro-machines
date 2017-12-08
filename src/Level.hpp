@@ -27,6 +27,7 @@ class Level {
         void checkpointChecker();
   void sortCars();
   int getLevelLap();
+  std::shared_ptr<Car> getCar();
     private:
         unsigned int currentLap;
   std::vector<std::pair<unsigned int, b2Vec2>> checkpointVector;

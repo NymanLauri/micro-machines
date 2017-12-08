@@ -121,8 +121,6 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 		case sf::Keyboard::Escape: // If ESC is pressed.
 		  window.close();
 		  break;
-		case sf::Keyboard::X:
-		  EndWindow(window, font, 1);
 
 		default:
 		  break;
@@ -194,6 +192,7 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
   sf::VideoMode videomode = sf::VideoMode(1800,1000);
 
   Settings s(videomode.width, videomode.height, 180, 100);
+  int returnValue = -1;
   
   try {
     Level level("map1.txt", world, s);
@@ -330,7 +329,26 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
       level.checkpointChecker();
       level.sortCars();
       if(level.getLevelLap() > 3) {
-	EndWindow(window, font, 1); //This is 1 for now, need to change to a car specific number.
+	if (level.getCar() == PlayersAndCars.at(0))
+	  {
+	    returnValue = EndWindow(window, font, 1); //This is 1 for now, need to change to a car specific number.
+	  }
+	else if (level.getCar() == PlayersAndCars.at(1))
+	  {
+	    returnValue = EndWindow(window, font, 2);
+	  }
+	else if (level.getCar() == PlayersAndCars.at(2))
+	  {
+	    returnValue = EndWindow(window, font, 3);
+	  }
+	else if (level.getCar() == PlayersAndCars.at(3))
+	  {
+	    returnValue == EndWindow(window, font, 4);
+	  }
+	if (returnValue == 1)
+	  {
+	    return 0;
+	  }
       }
       for (int i = 0; i < Players.size(); ++i)
         {	

@@ -225,3 +225,8 @@ void Level::sortCars() {
 int Level::getLevelLap() {
   return this->cars.at(0)->getLap();
 }
+
+std::shared_ptr<Car> Level::getCar()
+{
+  return this->cars.at(0);
+}

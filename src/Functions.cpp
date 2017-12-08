@@ -114,7 +114,7 @@ int EndWindow(sf::RenderWindow &w, sf::Font f, int player_num)
 	    }
 	  if (var == 1)
 	    {
-	      return 0;
+	      return 1;
 	    }
 	}
       // Refresh the screen.
@@ -323,7 +323,6 @@ int StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player 
 		{
 		  if (std::unique(playerKeys.begin(), playerKeys.end()) == playerKeys.end()) // If all the keys in the playerKeys-vector are unique.
 		    {
-		      std::cout << numOfPlayers << std::endl;
 		      return numOfPlayers; // This return value tells the menu()-function to start the game with right amount of players.
 		    }
 		}
