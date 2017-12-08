@@ -204,3 +204,24 @@ void Level::checkpointChecker() {
     }
   }
 }
+
+void Level::sortCars() {
+  std::sort(this->cars.begin(), this->cars.end(), [](std::shared_ptr<Car> &left, std::shared_ptr<Car> &right) {
+      if (left->getLap() > right->getLap()){
+	return true;
+      }
+      if (left->getLap() < right->getLap()){
+	return false;
+      }
+      if (left->getLap() == right->getLap() && left->checkpointVecSize() > right->checkpointVecSize()){
+	return true;
+      }
+      if (left->getLap() == right->getLap() && left->checkpointVecSize() < right->checkpointVecSize()){
+	return false;
+      }
+    });
+}
+
+int Level::getLevelLap() {
+  return this->cars.at(0)->getLap();
+}

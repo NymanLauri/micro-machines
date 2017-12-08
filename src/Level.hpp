@@ -25,6 +25,8 @@ class Level {
         float getFrictionMultiplier(b2Vec2 coordinates) const;
         void drawTo(sf::RenderWindow& window);
         void checkpointChecker();
+  void sortCars();
+  int getLevelLap();
     private:
         unsigned int currentLap;
   std::vector<std::pair<unsigned int, b2Vec2>> checkpointVector;

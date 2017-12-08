@@ -328,6 +328,10 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
         }
       }
       level.checkpointChecker();
+      level.sortCars();
+      if(level.getLevelLap() > 3) {
+	EndWindow(window, font, 1); //This is 1 for now, need to change to a car specific number.
+      }
       for (int i = 0; i < Players.size(); ++i)
         {	
 	  if (sf::Keyboard::isKeyPressed(Players[i].getKeys().up)) PlayersAndCars.at(i)->accelerate();

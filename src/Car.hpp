@@ -31,6 +31,7 @@ class Car {
         void addCheckpoint(unsigned int checkpoint, unsigned int numLevelCheckpoints);
   //std::vector<unsigned int> getCheckpoints() {return this->checkpoints;}
         b2Vec2 getPosition(){return this->bodyObject->getPosition();}
+  unsigned int checkpointVecSize() {return this->checkpoints.size();}
     private:
         std::vector<unsigned int> checkpoints;
         int lap = 1;
