@@ -1,4 +1,5 @@
-/* Class for different road tile types. */
+/* Class for different road tile types. The levels consist of square shaped tiles; this class stores
+ * the properties of the each such tile: the color/texture of the tile and the friction multiplier.*/
 
 #ifndef TILE_HPP
 #define TILE_HPP

@@ -4,6 +4,10 @@
 #include "Constants.hpp"
 #include <algorithm>
 
+/* The level constructor. The levels are saved to text files as numbers, where each number represents a tile type
+ * or a physical obstacle. The constructor reads a number from the file and creates the corresponding
+ * tile or physical obstacle.
+ */
 Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
     size_t x = static_cast<int>(s.worldWidth);
     size_t y = static_cast<int>(s.worldHeight);
@@ -15,19 +19,19 @@ Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
             int tileNum;
             if(!(levelFile >> tileNum))
 				throw std::invalid_argument("Error reading from the file " + levelFileName + "." );
-            // Default settings for all static obstacles
+            // Default body and fixture definition settings for all static obstacles
             b2BodyDef bd;
             bd.position.Set(i, s.worldHeight - j);
             b2FixtureDef fd;
             fd.friction = 0.3;
             switch (tileNum) {
-                case 0:
+                case 0: // Grass tile
                     tiles.push_back(Tile::createGrassTile(s, s.tileWidth*i, s.tileHeight*j));
                     break;
-                case 1:
+                case 1: // Road tile
                     tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j));
                     break;
-                case 2:
+                case 2: // Ice tile
                     tiles.push_back(Tile::createIceTile(s, s.tileWidth*i, s.tileHeight*j));
                     break;
                 case 10: // A small brown static rock obstacle.
@@ -125,7 +129,7 @@ Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
                         obstacles.push_back(physObjPtr);
                     }
                     break;
-        	case 3: // A diagonal rail from bottom left to top right.
+        	case 3: // Oil tile
         	    {
                 	tiles.push_back(Tile::createOilTile(s, s.tileWidth*i, s.tileHeight*j));
     	      	    }
@@ -149,6 +153,7 @@ Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
 });
 }
 
+// Create borders to the level to stop physics objects from traveling outside the screen.
 void Level::createScreenBorders(b2World& world) {
     b2BodyDef borderDef;
     b2Body* borderBody = world.CreateBody(&borderDef);

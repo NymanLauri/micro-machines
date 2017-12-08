@@ -4,6 +4,7 @@
 #include <iostream>
 #include <algorithm>
 Car::Car(b2World& world, const Settings& s, Level& l, b2Vec2 position, sf::Color color) : s(s), level(l) {
+    // Create the body of the car.
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position = position;
@@ -21,7 +22,7 @@ Car::Car(b2World& world, const Settings& s, Level& l, b2Vec2 position, sf::Color
         std::make_pair(1.5, 0.0)
     };
     bodyObject = std::make_shared<PhysicsObject>(world, s, bodyVertices, bodyDef, fixtureDef, color);
-    //Set the positions of the tires relative to the center of the mass of the car's body.
+    // Set the positions of the tires relative to the center of the mass of the car's body.
     std::vector<std::pair<float,float>> tireOffsets = {
         std::make_pair(-1.0, 1.25),
         std::make_pair(1.0, 1.25),
@@ -29,6 +30,8 @@ Car::Car(b2World& world, const Settings& s, Level& l, b2Vec2 position, sf::Color
         std::make_pair(1.0, -1.0)
     };
     b2Vec2 bodyPos = bodyObject->getBody()->GetWorldCenter();
+    // Create the Tire objects of the car and attach them to the body of the car
+    // using b2RevoluteJoints.
     for (auto it : tireOffsets) {
         Tire newTire(world, s, level, b2Vec2(bodyPos.x + it.first, bodyPos.y + it.second));
         b2RevoluteJointDef jointDef;
@@ -46,12 +49,14 @@ Car::Car(b2World& world, const Settings& s, Level& l, b2Vec2 position, sf::Color
 }
 
 void Car::accelerate() {
+    // Only the front tires accelerate the car.
     for (size_t i = 0; i < 2; i++) {
         tires.at(i).accelerate(acceleration, maxForwardSpeed);
     }
 }
 
 void Car::decelerate() {
+    // All tires brake.
     for (auto it : tires) {
         it.decelerate(deceleration, maxReverseSpeed);
     }
@@ -86,7 +91,10 @@ void Car::turnRight() {
 void Car::updateMovement() {
     for (auto it : tires) {
         it.updateMovement();
-    } 
+    }
+    // If the car has been set to turn during this iteration, set the turning boolean to false for the
+    // next iteration (where it may be set to true again, if the turning key is still pressed).
+    // If the car is not turning, quickly restore the tires to the default position.
     if (turning) {
         turning = false;
     } else {

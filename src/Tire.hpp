@@ -1,3 +1,8 @@
+/* The class for the tires of the car. Tires handle the movement of the car.
+ * Some methods of the Tire class are loosely based on the Box2D top-down car physics
+ * tutorial found at http://www.iforce2d.net/b2dtut/top-down-car
+ */
+
 #ifndef TIRE_HPP
 #define TIRE_HPP
 
@@ -22,7 +27,6 @@ class Tire {
         std::shared_ptr<PhysicsObject> tireObject;
         const Settings& s;
         Level& level;
-        float drag = 0;
         float maxLateralImpulse = 5;
 };
 

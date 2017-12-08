@@ -19,6 +19,7 @@ PhysicsObject::PhysicsObject(b2World& world, const Settings& s, float32 radius, 
 PhysicsObject::PhysicsObject(b2World& world, const Settings& s, b2Vec2 rectDims, b2BodyDef bodyDef, b2FixtureDef fixtureDef, sf::Color color) : s(s) {
     shape = std::make_shared<sf::RectangleShape>(sf::Vector2f(rectDims.x * s.metersToPixels, rectDims.y * s.metersToPixels));
     shape->setFillColor(color);
+    //Set the shape's origin to the center of the rectangle.
     shape->setOrigin(0.5 * rectDims.x * s.metersToPixels, 0.5 * rectDims.y * s.metersToPixels);
     b2PolygonShape bodyShape;
     // Dimensios multiplied by 0.5 because the rectangle created by SetAsBox has double the side
@@ -89,8 +90,4 @@ b2Vec2 PhysicsObject::getWorldCenter() const {
 
 float32 PhysicsObject::getAngle() const {
     return body->GetAngle();
-}
-
-void PhysicsObject::applyLinearImpulse(b2Vec2 impulse, b2Vec2 point, bool wake) {
-    body->ApplyLinearImpulse(impulse, point, wake);
 }

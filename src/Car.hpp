@@ -1,3 +1,11 @@
+/* The class for the cars controlled by the players. Car constructor takes as parameters:
+ *     - the b2World into which the car will be created
+ *     - the settings for coordinate conversions etc.
+ *     - the level into which the car will be placed
+ *     - the starting position of the car
+ *     - the color of the car's body (optional, defaults to white).
+ */
+
 #ifndef CAR_HPP
 #define CAR_HPP
 
@@ -17,7 +25,7 @@ class Car {
         void decelerate();
         void turnLeft();
         void turnRight();
-        void updateMovement();
+        void updateMovement(); // This method must be called with every loop of the physics simulation to handle the friction and turning correctly.
         int getLap(){return this->lap;};
         void addLap(){this->lap += 1;};
         void addCheckpoint(unsigned int checkpoint, unsigned int numLevelCheckpoints);
