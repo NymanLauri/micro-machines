@@ -43,6 +43,8 @@ std::shared_ptr<Tile> Tile::createCheckpointTile(Settings& s, size_t xCoord, siz
 std::shared_ptr<Tile> Tile::createOilTile(Settings& s, size_t xCoord, size_t yCoord) {
     std::shared_ptr<Tile> tile = std::make_shared<Tile>(3, s, xCoord, yCoord, 5.0);
     //tile->shape.setFillColor(sf::Color(128, 128, 128, 255));
+    sf::Vector2f scale = tile->shape.getScale();
+    tile->shape.setScale(scale.x * 10, scale.y * 10);
     sf::Texture oilTexture;
     oilTexture.loadFromFile("media/small_oil_cropped_backgroud.png");
     tile->addTexture(oilTexture);
