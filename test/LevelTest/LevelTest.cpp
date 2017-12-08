@@ -18,9 +18,9 @@ int main(void) {
     Settings s(videomode.width, videomode.height, 180, 100);
 
     Level level("map1.txt", world, s);
-    level.createScreenBorders(world, s);
+    level.createScreenBorders(world);
 
-    auto car1 = std::make_shared<Car>(world, s, b2Vec2(0.12*s.worldWidth, 0.5*s.worldHeight), sf::Color::Red);
+    auto car1 = std::make_shared<Car>(world, s, level, b2Vec2(0.12*s.worldWidth, 0.5*s.worldHeight), sf::Color::Red);
     level.addCar(car1);
     
     Player player;
@@ -44,14 +44,14 @@ int main(void) {
                 }
             }
         }
-        if (sf::Keyboard::isKeyPressed(keys.up)) car1->accelerate(level);
-        if (sf::Keyboard::isKeyPressed(keys.down)) car1->decelerate(level);
+        if (sf::Keyboard::isKeyPressed(keys.up)) car1->accelerate();
+        if (sf::Keyboard::isKeyPressed(keys.down)) car1->decelerate();
         if (sf::Keyboard::isKeyPressed(keys.left)) car1->turnLeft();
         if (sf::Keyboard::isKeyPressed(keys.right)) car1->turnRight();
-        car1->updateMovement(level);
+        car1->updateMovement();
         world.Step(timeStep, 8, 3);
         window.clear();
-        level.drawTo(window, s);
+        level.drawTo(window);
         window.display();
     }
     return 0;

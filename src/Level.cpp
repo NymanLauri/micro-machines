@@ -149,7 +149,7 @@ Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
 });
 }
 
-void Level::createScreenBorders(b2World& world, Settings& s) {
+void Level::createScreenBorders(b2World& world) {
     b2BodyDef borderDef;
     b2Body* borderBody = world.CreateBody(&borderDef);
     b2Vec2 vertices[4];
@@ -181,13 +181,13 @@ float Level::getFrictionMultiplier(b2Vec2 coordinates) const {
     else return 1.0;
 }
 
-void Level::drawTo(sf::RenderWindow& window, Settings& s) {
+void Level::drawTo(sf::RenderWindow& window) {
     // Set background color to grass color, as grass tiles are not drawn individually to
     // improve performance.
     window.clear(sf::Color(0, 123, 12, 255));
     for (auto it : tiles) it->drawTo(window);
-    for (auto it : obstacles) it->drawTo(window, s);
-    for (auto it : cars) it->drawTo(window, s);
+    for (auto it : obstacles) it->drawTo(window);
+    for (auto it : cars) it->drawTo(window);
 }
 
 void Level::checkpointChecker() {

@@ -12,11 +12,11 @@ class Tire;
 class Level {
     public:
         Level(std::string, b2World& world, Settings& s);
-        void createScreenBorders(b2World& world, Settings& s);
+        void createScreenBorders(b2World& world);
         void addCar(std::shared_ptr<Car>);
         void addObstacle(std::shared_ptr<PhysicsObject>);
         float getFrictionMultiplier(b2Vec2 coordinates) const;
-        void drawTo(sf::RenderWindow& window, Settings& s);
+        void drawTo(sf::RenderWindow& window);
         void checkpointChecker();
         //TODO: void saveTo(std::string outFileName);
     private:

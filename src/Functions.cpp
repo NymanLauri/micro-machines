@@ -806,7 +806,7 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 			}
 		    }
 		  for(auto i: obstacles)
-		    i->drawTo(w,s);
+		    i->drawTo(w);
 		  w.draw(QuitButton);
 		  w.draw(MenuButton);
 		  w.display();
@@ -1051,7 +1051,7 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
       }
         
     for(auto i: obstacles)
-      i->drawTo(w,s);
+      i->drawTo(w);
 
     w.display();
   }

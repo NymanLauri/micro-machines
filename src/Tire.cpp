@@ -5,7 +5,7 @@
 #include "Tire.hpp"
 #include "Settings.hpp"
 
-Tire::Tire(b2World& world, Settings& s, b2Vec2 position) {
+Tire::Tire(b2World& world, const Settings& s, Level& l, b2Vec2 position) : s(s), level(l) {
     b2BodyDef tireBodyDef;
     tireBodyDef.type = b2_dynamicBody;
     tireBodyDef.position = position;
@@ -15,8 +15,8 @@ Tire::Tire(b2World& world, Settings& s, b2Vec2 position) {
     tireObject = std::make_shared<PhysicsObject>(world, s, b2Vec2(0.25, 0.75), tireBodyDef, tireFixtureDef, sf::Color::Black);
 }
 
-void Tire::drawTo(sf::RenderWindow& window, Settings& s) {
-    tireObject->drawTo(window, s);
+void Tire::drawTo(sf::RenderWindow& window) {
+    tireObject->drawTo(window);
 }
 
 b2Body* const Tire::getBody() const {
@@ -35,7 +35,7 @@ b2Vec2 Tire::getParallelVelocity() const {
     return projectionLength * forwardDirection;
 }
 
-void Tire::applyFriction(const Level& level) {
+void Tire::applyFriction() {
     b2Body* const body = getBody();
     float friction = level.getFrictionMultiplier(body->GetPosition());
     b2Vec2 impulse = body->GetMass() * -getLateralVelocity();
@@ -52,16 +52,18 @@ void Tire::applyFriction(const Level& level) {
     body->ApplyForce(forceVec, body->GetWorldCenter(), true); 
 }
 
-void Tire::accelerate(float force, float maxFwdSpeed, const Level& level) {
+void Tire::accelerate(float force, float maxFwdSpeed) {
+    float friction = level.getFrictionMultiplier(getBody()->GetPosition());
+    friction = friction < 1.0 ? friction : 1.0;
     if (getParallelVelocity().Length() < maxFwdSpeed) {
         b2Body* const body = getBody();
         b2Vec2 direction = body->GetWorldVector(b2Vec2(0.0, 1.0));
         direction.Normalize();
-        body->ApplyForce(force * direction, body->GetWorldCenter(), true);
+        body->ApplyForce(force * friction * direction, body->GetWorldCenter(), true);
     }
 }
 
-void Tire::decelerate(float force, float maxRevSpeed, const Level& level) {
+void Tire::decelerate(float force, float maxRevSpeed) {
     float friction = level.getFrictionMultiplier(getBody()->GetPosition());
     friction = friction < 1.0 ? friction : 1.0;
     b2Vec2 moveDirection = getBody()->GetLinearVelocity();
@@ -83,6 +85,6 @@ void Tire::decelerate(float force, float maxRevSpeed, const Level& level) {
 }
 
 
-void Tire::updateMovement(const Level& level) {
-    applyFriction(level);
+void Tire::updateMovement() {
+    applyFriction();
 }

@@ -197,35 +197,35 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
   
   try {
     Level level("map1.txt", world, s);
-    level.createScreenBorders(world, s);
+    level.createScreenBorders(world);
 
     std::map <int, std::shared_ptr<Car>> PlayersAndCars;
     std::vector<Player> Players;
 
     if (retValue >= 1)
       {
-        auto car1 = std::make_shared<Car>(world, s, b2Vec2(0.12*s.worldWidth, 0.5*s.worldHeight), sf::Color::Red);
+        auto car1 = std::make_shared<Car>(world, s, level, b2Vec2(0.12*s.worldWidth, 0.5*s.worldHeight), sf::Color::Red);
         level.addCar(car1);
         PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(0, car1));
         Players.push_back(player1);
       }
     if (retValue >= 2)
       {
-        auto car2 = std::make_shared<Car>(world, s, b2Vec2(0.10*s.worldWidth, 0.5*s.worldHeight), sf::Color::Blue);
+        auto car2 = std::make_shared<Car>(world, s, level, b2Vec2(0.10*s.worldWidth, 0.5*s.worldHeight), sf::Color::Blue);
         level.addCar(car2);
         PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(1, car2));
         Players.push_back(player2);
       }
     if (retValue >= 3)
       {
-        auto car3 = std::make_shared<Car>(world, s, b2Vec2(0.08*s.worldWidth, 0.5*s.worldHeight), sf::Color::Green);
+        auto car3 = std::make_shared<Car>(world, s, level, b2Vec2(0.08*s.worldWidth, 0.5*s.worldHeight), sf::Color::Green);
         level.addCar(car3);
         PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(2, car3));
         Players.push_back(player3);
       }
     if (retValue >= 4)
       {
-        auto car4 = std::make_shared<Car>(world, s, b2Vec2(0.06*s.worldWidth, 0.5*s.worldHeight), sf::Color::Yellow);
+        auto car4 = std::make_shared<Car>(world, s, level, b2Vec2(0.06*s.worldWidth, 0.5*s.worldHeight), sf::Color::Yellow);
         level.addCar(car4);
         PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(3, car4));
         Players.push_back(player4);
@@ -280,7 +280,7 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
 		
 		  window.clear();
 		  // Draw all the player and some other textures to the screen.
-		  level.drawTo(window, s);
+		  level.drawTo(window);
 		  window.draw(QuitButton);
 		  window.draw(MenuButton);
 		  window.display();
@@ -330,15 +330,15 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
       level.checkpointChecker();
       for (int i = 0; i < Players.size(); ++i)
         {	
-	  if (sf::Keyboard::isKeyPressed(Players[i].getKeys().up)) PlayersAndCars.at(i)->accelerate(level);
-	  if (sf::Keyboard::isKeyPressed(Players[i].getKeys().down)) PlayersAndCars.at(i)->decelerate(level);
+	  if (sf::Keyboard::isKeyPressed(Players[i].getKeys().up)) PlayersAndCars.at(i)->accelerate();
+	  if (sf::Keyboard::isKeyPressed(Players[i].getKeys().down)) PlayersAndCars.at(i)->decelerate();
 	  if (sf::Keyboard::isKeyPressed(Players[i].getKeys().left)) PlayersAndCars.at(i)->turnLeft();
 	  if (sf::Keyboard::isKeyPressed(Players[i].getKeys().right)) PlayersAndCars.at(i)->turnRight();
-	  PlayersAndCars.at(i)->updateMovement(level);
+	  PlayersAndCars.at(i)->updateMovement();
         }
       world.Step(timeStep, 8, 3);
       window.clear();
-      level.drawTo(window, s);
+      level.drawTo(window);
       window.display();
     }
     

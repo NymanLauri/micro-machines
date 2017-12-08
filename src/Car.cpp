@@ -3,7 +3,7 @@
 #include "Constants.hpp"
 #include <iostream>
 #include <algorithm>
-Car::Car(b2World& world, Settings& s, b2Vec2 position, sf::Color color) {
+Car::Car(b2World& world, const Settings& s, Level& l, b2Vec2 position, sf::Color color) : s(s), level(l) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position = position;
@@ -30,7 +30,7 @@ Car::Car(b2World& world, Settings& s, b2Vec2 position, sf::Color color) {
     };
     b2Vec2 bodyPos = bodyObject->getBody()->GetWorldCenter();
     for (auto it : tireOffsets) {
-        Tire newTire(world, s, b2Vec2(bodyPos.x + it.first, bodyPos.y + it.second));
+        Tire newTire(world, s, level, b2Vec2(bodyPos.x + it.first, bodyPos.y + it.second));
         b2RevoluteJointDef jointDef;
         jointDef.bodyA = bodyObject->getBody();
         jointDef.bodyB = newTire.getBody();
@@ -45,15 +45,15 @@ Car::Car(b2World& world, Settings& s, b2Vec2 position, sf::Color color) {
     }
 }
 
-void Car::accelerate(const Level& level) {
+void Car::accelerate() {
     for (size_t i = 0; i < 2; i++) {
-        tires.at(i).accelerate(acceleration, maxForwardSpeed, level);
+        tires.at(i).accelerate(acceleration, maxForwardSpeed);
     }
 }
 
-void Car::decelerate(const Level& level) {
+void Car::decelerate() {
     for (auto it : tires) {
-        it.decelerate(deceleration, maxReverseSpeed, level);
+        it.decelerate(deceleration, maxReverseSpeed);
     }
 }
 
@@ -83,9 +83,9 @@ void Car::turnRight() {
     }
 }
 
-void Car::updateMovement(const Level& level) {
+void Car::updateMovement() {
     for (auto it : tires) {
-        it.updateMovement(level);
+        it.updateMovement();
     } 
     if (turning) {
         turning = false;
@@ -97,10 +97,10 @@ void Car::updateMovement(const Level& level) {
     }
 }
 
-void Car::drawTo(sf::RenderWindow& window, Settings& s) {
-    bodyObject->drawTo(window, s);
+void Car::drawTo(sf::RenderWindow& window) {
+    bodyObject->drawTo(window);
     for (auto it : tires) {
-        it.drawTo(window, s);
+        it.drawTo(window);
     }
 }
 

@@ -11,13 +11,13 @@ class Level;
 class Tire;
 class Car {
     public:
-        Car(b2World& world, Settings& s, b2Vec2 position, sf::Color color = sf::Color::White);
-        void drawTo(sf::RenderWindow& window, Settings& s);
-        void accelerate(const Level& level);
-        void decelerate(const Level& level);
+        Car(b2World& world, const Settings& s, Level& l, b2Vec2 position, sf::Color color = sf::Color::White);
+        void drawTo(sf::RenderWindow& window);
+        void accelerate();
+        void decelerate();
         void turnLeft();
         void turnRight();
-        void updateMovement(const Level& level);
+        void updateMovement();
         int getLap(){return this->lap;};
         void addLap(){this->lap += 1;};
         void addCheckpoint(unsigned int checkpoint, unsigned int numLevelCheckpoints);
@@ -29,6 +29,8 @@ class Car {
         std::shared_ptr<PhysicsObject> bodyObject;
         std::vector<Tire> tires;
         std::vector<b2RevoluteJoint*> tireJoints;
+        const Settings& s;
+        Level& level;
         float maxForwardSpeed = 100.0;
         float maxReverseSpeed = 10.0;
         float acceleration = 60.0;

@@ -29,9 +29,9 @@
 class PhysicsObject {
     public:
         // The different constructors for circle, rectangle and convex polygon shaped objects.
-        PhysicsObject(b2World& world, Settings& s, float32 radius, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
-        PhysicsObject(b2World& world, Settings& s, b2Vec2 rectDims, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
-        PhysicsObject(b2World& world, Settings& s, std::vector<std::pair<float,float>>& vertices, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
+        PhysicsObject(b2World& world, const Settings& s, float32 radius, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
+        PhysicsObject(b2World& world, const Settings& s, b2Vec2 rectDims, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
+        PhysicsObject(b2World& world, const Settings& s, std::vector<std::pair<float,float>>& vertices, b2BodyDef bodyDef = b2BodyDef(), b2FixtureDef fixtureDef = b2FixtureDef(), sf::Color color = sf::Color::White);
         // The body of the object can be accessed and modified, but the pointer cannot be changed to another body.
         b2Body* const getBody() const;
         // Some (possibly temporary) methods for easier access to the properties of the body.
@@ -41,10 +41,11 @@ class PhysicsObject {
         void applyLinearImpulse(b2Vec2 impulse, b2Vec2 point, bool wake);
         // The method for easy drawing of the Box2D object; automatically calculates the correct
         // position of the SFML-shape before drawing.
-        void drawTo(sf::RenderWindow& window, Settings& s);
+        void drawTo(sf::RenderWindow& window);
     private:
         b2Body* body;
         std::shared_ptr<sf::Shape> shape;
+        const Settings& s;
 };
 
 #endif

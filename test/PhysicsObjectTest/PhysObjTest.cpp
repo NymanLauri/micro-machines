@@ -146,12 +146,12 @@ int main(void) {
 
         world.Step(1.0/60.0, 8, 3); 
         window.clear();
-        physObj1.drawTo(window, s);
-        physObj2.drawTo(window, s);
-        physObj3.drawTo(window, s);
-        physObj4.drawTo(window, s);
-        physObj5.drawTo(window, s);
-        playerObj.drawTo(window, s);
+        physObj1.drawTo(window);
+        physObj2.drawTo(window);
+        physObj3.drawTo(window);
+        physObj4.drawTo(window);
+        physObj5.drawTo(window);
+        playerObj.drawTo(window);
         window.display();
     }
     return 0;

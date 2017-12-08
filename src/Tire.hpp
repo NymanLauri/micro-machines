@@ -9,17 +9,19 @@
 class Level;
 class Tire {
     public:
-        Tire(b2World& world, Settings& s, b2Vec2 position);
-        void drawTo(sf::RenderWindow& window, Settings& s);
+        Tire(b2World& world, const Settings& s, Level& l, b2Vec2 position);
+        void drawTo(sf::RenderWindow& window);
         b2Body* const getBody() const;
         b2Vec2 getLateralVelocity() const;
         b2Vec2 getParallelVelocity() const;
-        void applyFriction(const Level& level);
-        void accelerate(float force, float maxFwdSpeed, const Level& level);
-        void decelerate(float force, float maxRevSpeed, const Level& level);
-        void updateMovement(const Level& level);
+        void applyFriction();
+        void accelerate(float force, float maxFwdSpeed);
+        void decelerate(float force, float maxRevSpeed);
+        void updateMovement();
     private:
         std::shared_ptr<PhysicsObject> tireObject;
+        const Settings& s;
+        Level& level;
         float drag = 0;
         float maxLateralImpulse = 5;
 };

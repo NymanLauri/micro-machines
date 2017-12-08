@@ -4,7 +4,7 @@
 #include <iostream>
 
 // Constructor for circle shapes.
-PhysicsObject::PhysicsObject(b2World& world, Settings& s, float32 radius, b2BodyDef bodyDef, b2FixtureDef fixtureDef, sf::Color color) {
+PhysicsObject::PhysicsObject(b2World& world, const Settings& s, float32 radius, b2BodyDef bodyDef, b2FixtureDef fixtureDef, sf::Color color) : s(s) {
     shape = std::make_shared<sf::CircleShape>(radius * s.metersToPixels);
     shape->setFillColor(color);
     shape->setOrigin(radius * s.metersToPixels, radius * s.metersToPixels);
@@ -16,7 +16,7 @@ PhysicsObject::PhysicsObject(b2World& world, Settings& s, float32 radius, b2Body
 }
 
 // Constructor for rectangle shapes.
-PhysicsObject::PhysicsObject(b2World& world, Settings& s, b2Vec2 rectDims, b2BodyDef bodyDef, b2FixtureDef fixtureDef, sf::Color color) {
+PhysicsObject::PhysicsObject(b2World& world, const Settings& s, b2Vec2 rectDims, b2BodyDef bodyDef, b2FixtureDef fixtureDef, sf::Color color) : s(s) {
     shape = std::make_shared<sf::RectangleShape>(sf::Vector2f(rectDims.x * s.metersToPixels, rectDims.y * s.metersToPixels));
     shape->setFillColor(color);
     shape->setOrigin(0.5 * rectDims.x * s.metersToPixels, 0.5 * rectDims.y * s.metersToPixels);
@@ -30,7 +30,7 @@ PhysicsObject::PhysicsObject(b2World& world, Settings& s, b2Vec2 rectDims, b2Bod
 }
 
 // Constructor for arbitrary convex polygon shapes.
-PhysicsObject::PhysicsObject(b2World& world, Settings& s, std::vector<std::pair<float,float>>& vertices, b2BodyDef bodyDef, b2FixtureDef fixtureDef, sf::Color color) {
+PhysicsObject::PhysicsObject(b2World& world, const Settings& s, std::vector<std::pair<float,float>>& vertices, b2BodyDef bodyDef, b2FixtureDef fixtureDef, sf::Color color) : s(s) {
     // Create the SFML shape for the body.
     auto tempShape = std::make_shared<sf::ConvexShape>(vertices.size());
     // Create vertex vector for the Box2D body's shape.
@@ -68,7 +68,7 @@ PhysicsObject::PhysicsObject(b2World& world, Settings& s, std::vector<std::pair<
 }
 
 // Calculate and set the correct position and rotation of the SFML shape and draw it.
-void PhysicsObject::drawTo(sf::RenderWindow& window, Settings& s) {
+void PhysicsObject::drawTo(sf::RenderWindow& window) {
     b2Vec2 position = body->GetWorldCenter();
     shape->setRotation(-body->GetAngle() * RADTODEG);
     shape->setPosition(position.x * s.metersToPixels, (-position.y * s.metersToPixels) + window.getSize().y);
