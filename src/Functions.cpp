@@ -127,7 +127,7 @@ int EndWindow(sf::RenderWindow &w, sf::Font f, int player_num)
   return 0;
 }
 
-int StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player &p3, Player &p4)
+std::pair <int, int> StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player &p3, Player &p4)
 {
   w.setFramerateLimit(60);
   // Create a vector playerKeys that contains keys of all the players. This is used to check that all keys are unqiue, that is, that many players do not try to use same keys.
@@ -135,7 +135,9 @@ int StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player 
       p2.getKeys().right, p3.getKeys().up, p3.getKeys().down, p3.getKeys().left, p3.getKeys().right, p4.getKeys().up, p4.getKeys().down, p4.getKeys().left, p4.getKeys().right};
   std::sort(playerKeys.begin(), playerKeys.end()); // Sort the vectror playerKeys.
   int var = 0;
+  std::pair<int, int> returns;
   int numOfPlayers = 1;
+  int mapNum = 1;
   int MousePosX = 0;
   int MousePosY = 0;
   sf::Event e;
@@ -291,6 +293,7 @@ int StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player 
 	  switch (e.type)
 	    {
 	    case sf::Event::Closed: // If the window is closed.
+	      var = 1;
 	      w.close();
 	      break;
 
@@ -298,6 +301,7 @@ int StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player 
 	      switch(e.key.code)
 		{
 		case sf::Keyboard::Escape: // If ESC is pressed.
+		  var = 1;
 		  w.close();
 		  break;
 
@@ -323,7 +327,8 @@ int StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player 
 		{
 		  if (std::unique(playerKeys.begin(), playerKeys.end()) == playerKeys.end()) // If all the keys in the playerKeys-vector are unique.
 		    {
-		      return numOfPlayers; // This return value tells the menu()-function to start the game with right amount of players.
+		      returns = std::make_pair(numOfPlayers, mapNum);
+		      return returns; // This return value tells the menu()-function to start the game with right amount of players.
 		    }
 		}
 	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Lkm1.getPosition().x && MousePosX <= Lkm1.getPosition().x+Lkm1.getLocalBounds().width &&
@@ -353,29 +358,30 @@ int StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player 
 	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Map1.getPosition().x && MousePosX <= Map1.getPosition().x+Map1.getLocalBounds().width &&
 		       MousePosY >= Map1.getPosition().y*1.03 && MousePosY <= Map1.getPosition().y+Map1.getLocalBounds().height*1.5) // If the user clicks on "Map 1".
 		{
-		  std::cout << "Map1" << std::endl;
+		  mapNum = 1;
 		}
 	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Map2.getPosition().x && MousePosX <= Map2.getPosition().x+Map2.getLocalBounds().width &&
 		       MousePosY >= Map2.getPosition().y*1.03 && MousePosY <= Map2.getPosition().y+Map2.getLocalBounds().height*1.5) // If the user clicks on "Map 2".
 		{
-		  std::cout << "Map2" << std::endl;
+		  mapNum = 2;
 		}
 	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Map3.getPosition().x && MousePosX <= Map3.getPosition().x+Map3.getLocalBounds().width &&
 		       MousePosY >= Map3.getPosition().y*1.03 && MousePosY <= Map3.getPosition().y+Map3.getLocalBounds().height*1.5) // If the user clicks on "Map 3".
 		{
-		  std::cout << "Map3" << std::endl;
+		  mapNum = 3;
 		}
 	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Map4.getPosition().x && MousePosX <= Map4.getPosition().x+Map4.getLocalBounds().width &&
 		       MousePosY >= Map4.getPosition().y*1.03 && MousePosY <= Map4.getPosition().y+Map4.getLocalBounds().height*1.5) // If the user clicks on "Map 4".
 		{
-		  std::cout << "Map4" << std::endl;
+		  mapNum = 4;
 		}
 	    default:
 	      break;
 	    }
 	  if (var == 1)
 	    {
-	      return 0;
+	      returns = std::make_pair(0, 0);
+	      return returns;
 	    }
 	}
       // Refresh the screen.
@@ -395,7 +401,8 @@ int StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player 
       w.draw(Map4);
       w.display();
     }
-  return 0;
+  returns = std::make_pair(-1, -1);
+  return returns;
 }
 // We will enter this function when the user clicks on the Options-button in the first menu-screen.
 int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player &p3, Player &p4)

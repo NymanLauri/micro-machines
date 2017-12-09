@@ -42,7 +42,9 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
   int MousePosY = 0; // This will contain the y-coordinate of the cursor.
   sf::Font font;
   font.loadFromFile("Ubuntu-B.ttf"); // Load a font from a file.
+  std::pair <int, int> retValues;
   int retValue = -1;
+  int mapValue = -1;
 
   // Create different kinds of texts and set the colors and positions of them.
   sf::Text ExitButton("Exit", font, 100); // Create a text "Exit".
@@ -155,10 +157,10 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 		       MousePosY >= StartButton.getPosition().y*1.03 && MousePosY <= StartButton.getPosition().y+StartButton.getLocalBounds().height*1.5) // If the user clicks on the "Start game"-button.
 		{
 		  // Go to function StartWindow (found in Functions.cpp) that opens a window where the player will for example choose the maps.
-		  retValue = StartWindow(window, font, player1, player2, player3, player4);
-		  if (retValue != 0) // retValue is 1 if the user clicked on the "Start"-button in the StartWindow.
+		  retValues = StartWindow(window, font, player1, player2, player3, player4);
+		  if (retValues.first != 0)
 		    {
-		      Game(window, font, player1, player2, player3, player4, retValue); // Go to Game-function that controls the actual game.
+		      Game(window, font, player1, player2, player3, player4, retValues.first, retValues.second); // Go to Game-function that controls the actual game.
 		      retValue = 0;
 		    }
 		}
@@ -184,7 +186,7 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 }
 
 // This function handles the actual gaming.
-int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &player2, Player &player3, Player &player4, int retValue)
+int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &player2, Player &player3, Player &player4, int retValue, int mapValue)
 {
   b2Vec2 gravity(0.0f, 0.0f);
   b2World world(gravity);
@@ -193,46 +195,65 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
 
   Settings s(videomode.width, videomode.height, 180, 100);
   int returnValue = -1;
+  std::vector <Level> L;
   
   try {
-    Level level("map1.txt", world, s);
-    level.createScreenBorders(world);
+    if (mapValue == 1)
+      {
+	Level level("map1.txt", world, s);
+	L.push_back(level);
+      }
+    else if (mapValue == 2)
+      {
+      	Level level("map2.txt", world, s);
+	L.push_back(level);
+      }
+    else if (mapValue == 3)
+      {
+	Level level("map3.txt", world, s);
+	L.push_back(level);
+      }
+    else if (mapValue == 4)
+      {
+	Level level("map4.txt", world, s);
+	L.push_back(level);
+      }
+    L[0].createScreenBorders(world);
 
     std::map <int, std::shared_ptr<Car>> PlayersAndCars;
     std::vector<Player> Players;
 
     if (retValue >= 1)
       {
-        auto car1 = std::make_shared<Car>(world, s, level, b2Vec2(0.12*s.worldWidth, 0.5*s.worldHeight), sf::Color::Red);
-        level.addCar(car1);
+        auto car1 = std::make_shared<Car>(world, s, L[0], b2Vec2(0.12*s.worldWidth, 0.5*s.worldHeight), sf::Color::Red);
+        L[0].addCar(car1);
         PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(0, car1));
         Players.push_back(player1);
       }
     if (retValue >= 2)
       {
-        auto car2 = std::make_shared<Car>(world, s, level, b2Vec2(0.10*s.worldWidth, 0.5*s.worldHeight), sf::Color::Blue);
-        level.addCar(car2);
+        auto car2 = std::make_shared<Car>(world, s, L[0], b2Vec2(0.10*s.worldWidth, 0.5*s.worldHeight), sf::Color::Blue);
+        L[0].addCar(car2);
         PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(1, car2));
         Players.push_back(player2);
       }
     if (retValue >= 3)
       {
-        auto car3 = std::make_shared<Car>(world, s, level, b2Vec2(0.08*s.worldWidth, 0.5*s.worldHeight), sf::Color::Green);
-        level.addCar(car3);
+        auto car3 = std::make_shared<Car>(world, s, L[0], b2Vec2(0.08*s.worldWidth, 0.5*s.worldHeight), sf::Color::Green);
+        L[0].addCar(car3);
         PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(2, car3));
         Players.push_back(player3);
       }
     if (retValue >= 4)
       {
-        auto car4 = std::make_shared<Car>(world, s, level, b2Vec2(0.06*s.worldWidth, 0.5*s.worldHeight), sf::Color::Yellow);
-        level.addCar(car4);
+        auto car4 = std::make_shared<Car>(world, s, L[0], b2Vec2(0.06*s.worldWidth, 0.5*s.worldHeight), sf::Color::Yellow);
+        L[0].addCar(car4);
         PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(3, car4));
         Players.push_back(player4);
       }
       
     float timeStep = 1.0/60.0;
 
-    //sf::RenderWindow window(videomode, "LevelTest");
     window.setFramerateLimit(60);
     while (window.isOpen()) {
       sf::Event event;
@@ -279,7 +300,7 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
 		
 		  window.clear();
 		  // Draw all the player and some other textures to the screen.
-		  level.drawTo(window);
+		  L[0].drawTo(window);
 		  window.draw(QuitButton);
 		  window.draw(MenuButton);
 		  window.display();
@@ -326,22 +347,22 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
 	    }
         }
       }
-      level.checkpointChecker();
-      level.sortCars();
-      if(level.getLevelLap() > 3) {
-	if (level.getCar() == PlayersAndCars.at(0))
+      L[0].checkpointChecker();
+      L[0].sortCars();
+      if(L[0].getLevelLap() > 3) {
+	if (L[0].getCar() == PlayersAndCars.at(0)) // If player 1 has won.
 	  {
-	    returnValue = EndWindow(window, font, 1); //This is 1 for now, need to change to a car specific number.
+	    returnValue = EndWindow(window, font, 1);
 	  }
-	else if (level.getCar() == PlayersAndCars.at(1))
+	else if (L[0].getCar() == PlayersAndCars.at(1)) // If Player 2 has won.
 	  {
 	    returnValue = EndWindow(window, font, 2);
 	  }
-	else if (level.getCar() == PlayersAndCars.at(2))
+	else if (L[0].getCar() == PlayersAndCars.at(2)) // If player 3 has won.
 	  {
 	    returnValue = EndWindow(window, font, 3);
 	  }
-	else if (level.getCar() == PlayersAndCars.at(3))
+	else if (L[0].getCar() == PlayersAndCars.at(3)) // If player 4 has won.
 	  {
 	    returnValue == EndWindow(window, font, 4);
 	  }
@@ -360,7 +381,7 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
         }
       world.Step(timeStep, 8, 3);
       window.clear();
-      level.drawTo(window);
+      L[0].drawTo(window);
       window.display();
     }
     
