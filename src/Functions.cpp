@@ -834,9 +834,7 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 				      delete tiles[i][j];
 				    }
 				}
-			      w.close();
-			      pauseVar = 1;
-			      break;
+			      return 1;
 			    }
 			}
 		      else if (event.type == sf::Event::MouseButtonPressed)
