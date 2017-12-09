@@ -35,7 +35,7 @@ std::shared_ptr<Tile> Tile::createIceTile(Settings& s, size_t xCoord, size_t yCo
 }
 
 std::shared_ptr<Tile> Tile::createCheckpointTile(Settings& s, size_t xCoord, size_t yCoord) {
-    std::shared_ptr<Tile> tile = std::make_shared<Tile>(100, s, xCoord, yCoord, 5.0);
+    std::shared_ptr<Tile> tile = std::make_shared<Tile>(100, s, xCoord, yCoord, 1.0);
     tile->shape.setFillColor(sf::Color::Yellow);
     //count++;
     //tile->checkpointNum = count;
@@ -43,11 +43,11 @@ std::shared_ptr<Tile> Tile::createCheckpointTile(Settings& s, size_t xCoord, siz
 }
 
 std::shared_ptr<Tile> Tile::createOilTile(Settings& s, size_t xCoord, size_t yCoord) {
-    std::shared_ptr<Tile> tile = std::make_shared<Tile>(3, s, xCoord, yCoord, 5.0);
-    //tile->shape.setFillColor(sf::Color(128, 128, 128, 255));
-    sf::Texture oilTexture;
-    oilTexture.loadFromFile("media/small_oil_cropped_backgroud.png");
-    tile->addTexture(oilTexture);
+    std::shared_ptr<Tile> tile = std::make_shared<Tile>(3, s, xCoord, yCoord, 125.0);
+    tile->shape.setFillColor(sf::Color::Black);
+    //sf::Texture oilTexture;
+    //oilTexture.loadFromFile("media/small_oil_cropped_backgroud.png");
+    //tile->addTexture(oilTexture);
     return tile;
 }
 

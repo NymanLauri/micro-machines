@@ -11,9 +11,10 @@
 Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
     size_t x = static_cast<int>(s.worldWidth);
     size_t y = static_cast<int>(s.worldHeight);
-    std::ifstream levelFile(levelFileName);
+    //std::ifstream levelFile(levelFileName);
+        std::ifstream levelFile("./Level/level1.txt");
     if (!levelFile)
-		throw std::invalid_argument("Could not open the level: " + levelFileName );
+      throw std::invalid_argument("Could not open the level: " + levelFileName );
     for (size_t j = 0; j < y; j++) {
         for (size_t i = 0; i < x; i++) {
             int tileNum;

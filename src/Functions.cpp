@@ -741,7 +741,7 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 
   //Writing the matrix to file level1.txt
   std::ofstream f("./Level/level1.txt");
-  //std::ofstream f("./Level/map1.txt");
+  std::ifstream f2("./Level/map1.txt");
     
   // Main program loop.
   while (w.isOpen()) {
@@ -876,6 +876,108 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 	      }
 	    }
 	    break;
+	  case sf::Keyboard::L: //Loads matrix from the ofstream f2
+	    for(int i = 0; i < y; i++) {
+	      for(int j = 0; j < x; j++) {
+		b2BodyDef bd;
+		bd.position.Set(j, s.worldHeight - i);
+		b2FixtureDef fd;
+		fd.friction = 0.3;
+		f2 >> A[i][j];
+		if(A[i][j] == 0){
+		  tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
+		}
+		if(A[i][j] == 2){
+		  tiles[i][j]->setFillColor(sf::Color::White);
+		}
+		if(A[i][j] == 1){
+		  tiles[i][j]->setFillColor(sf::Color(128, 128, 128, 255));
+		}
+		if(A[i][j] == 3){
+		  tiles[i][j]->setFillColor(sf::Color::Black);
+		}
+		if(A[i][j] <= 200 && A[i][j] >= 100){
+		  tiles[i][j]->setFillColor(sf::Color::Yellow);
+		}
+		if(A[i][j] == 10){
+		  tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
+		  std::vector<std::pair<float,float>> bodyVertices = {
+		    std::make_pair(0.0, -1.5),
+		    std::make_pair(-1.0, -1.3),
+		    std::make_pair(-2.0, -0.0),
+		    std::make_pair(-1.4, 0.5),
+		    std::make_pair(-0.4, 1.1),
+		    std::make_pair(1.0, 1.5),
+		    std::make_pair(2.0, 0.9),
+		    std::make_pair(1.0, -0.7)
+		  };
+		  obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
+		}
+		/*if(A[i][j] = 11) {
+		  tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
+		  std::vector<std::pair<float,float>> bodyVertices = {
+		    std::make_pair(1.0, -2.0),
+		    std::make_pair(0.0, -1.5),
+		    std::make_pair(-1.0, -0.7),
+		    std::make_pair(-2.0, 0.0),
+		    std::make_pair(-2.0, 0.5),
+		    std::make_pair(-1.0, 1.0),
+		    std::make_pair(0.5, 2.2),
+		    std::make_pair(2.0, -0.5)
+		  };
+		  obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
+		}*/
+		if(A[i][j] == 12){
+		  tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
+		  std::vector<std::pair<float,float>> bodyVertices = {
+		    std::make_pair(0.0, -3.0),
+		    std::make_pair(-2.0, -2.6),
+		    std::make_pair(-4.0, -0.0),
+		    std::make_pair(-2.8, 1.0),
+		    std::make_pair(-0.8, 2.2),
+		    std::make_pair(2.0, 3.0),
+		    std::make_pair(4.0, 1.8),
+		    std::make_pair(2.0, -1.4)
+		  };
+		  obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
+		}
+		if(A[i][j] == 13){
+		  tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
+		  std::vector<std::pair<float,float>> bodyVertices = {
+		    std::make_pair(2.0, -4.0),
+		    std::make_pair(0.0, -3.0),
+		    std::make_pair(-2.0, -1.4),
+		    std::make_pair(-4.0, 0.0),
+		    std::make_pair(-4.0, 1.0),
+		    std::make_pair(-2.0, 2.0),
+		    std::make_pair(1.0, 4.4),
+		    std::make_pair(4.0, -1.0)
+		  };
+		  obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
+		}
+		if(A[i][j] == 20){
+		  tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
+		  obstacles.push_back(std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255)));
+		}
+		if(A[i][j] == 21){
+		  tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
+		  obstacles.push_back(std::make_shared<PhysicsObject>(world, s, b2Vec2(1, 20), bd, fd, sf::Color(160,160,160,255)));
+		}
+		if(A[i][j] == 22){
+		  tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
+		  auto physObjPtr = std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255));
+		  physObjPtr->getBody()->SetTransform(b2Vec2(j, s.worldHeight-i), -45.0 * DEGTORAD);
+		  obstacles.push_back(physObjPtr);
+		}
+		if(A[i][j] == 23){
+		  tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
+		  auto physObjPtr = std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255));
+		  physObjPtr->getBody()->SetTransform(b2Vec2(j, s.worldHeight-i), 45.0 * DEGTORAD);
+		  obstacles.push_back(physObjPtr);
+		}
+	      }
+	    }
+	    break;
 	  default:
 	    // Empty default case included to stop compiler from giving warnings.
 	    break;
@@ -939,15 +1041,15 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 	  tiles[y2][x2]->setRotation(0);
 	  A[y2][x2] = 11;
 
-	  std::vector<std::pair<float,float>> bodyVertices = {
-	    std::make_pair(0.0, -3.0),
-	    std::make_pair(-2.0, -2.6),
-	    std::make_pair(-4.0, -0.0),
-	    std::make_pair(-2.8, 1.0),
-	    std::make_pair(-0.8, 2.2),
-	    std::make_pair(2.0, 3.0),
-	    std::make_pair(4.0, 1.8),
-	    std::make_pair(2.0, -1.4)
+	    std::vector<std::pair<float,float>> bodyVertices = {
+	      std::make_pair(1.0, -2.0),
+	      std::make_pair(0.0, -1.5),
+	      std::make_pair(-1.0, -0.7),
+	      std::make_pair(-2.0, 0.0),
+	      std::make_pair(-2.0, 0.5),
+	      std::make_pair(-1.0, 1.0),
+	      std::make_pair(0.5, 2.2),
+	      std::make_pair(2.0, -0.5)
 	  };
 	  obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
 	}
@@ -1034,6 +1136,12 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 	    A[y2][x2] = checkpoint;
 	    checkpoint += 1;
 	  }
+	}
+	    if (sf::Keyboard::isKeyPressed(sf::Keyboard::O))
+	{
+	  tiles[y2][x2]->setFillColor(sf::Color::Black);
+	  tiles[y2][x2]->setRotation(0);
+	  A[y2][x2] = 3;
 	}
     }
 	
