@@ -30,25 +30,25 @@ Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
                     tiles.push_back(Tile::createGrassTile(s, s.tileWidth*i, s.tileHeight*j));
                     break;
                 case 1: // Road tile
-                    tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j));
+		  tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j, 0));
                     break;
 	        case 1001:
-		  tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j));
+		  tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j, 1));
 		  coords.push_back(s.tileWidth*i);
 		  coords.push_back(s.tileHeight*j);
 		  break;
 	        case 1002:
-		  tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j));
+		  tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j, 1));
 		  coords.push_back(s.tileWidth*i);
 		  coords.push_back(s.tileHeight*j);
 		  break;
 		case 1003:
-		  tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j));
+		  tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j, 1));
 		  coords.push_back(s.tileWidth*i);
 		  coords.push_back(s.tileHeight*j);
 		  break;
 		case 1004:
-		  tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j));
+		  tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j, 1));
 		  coords.push_back(s.tileWidth*i);
 		  coords.push_back(s.tileHeight*j);
 		  break;

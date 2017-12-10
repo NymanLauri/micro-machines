@@ -14,7 +14,7 @@ class Tile {
         void drawTo(sf::RenderWindow& window) const;
         float getFrictionMultiplier() const;
         static std::shared_ptr<Tile> createGrassTile(Settings& s, size_t xCoord, size_t yCoord);
-        static std::shared_ptr<Tile> createRoadTile(Settings& s, size_t xCoord, size_t yCoord);
+        static std::shared_ptr<Tile> createRoadTile(Settings& s, size_t xCoord, size_t yCoordf, int col);
         static std::shared_ptr<Tile> createIceTile(Settings& s, size_t xCoord, size_t yCoord);
   static std::shared_ptr<Tile> createCheckpointTile(Settings& s, size_t xCoord, size_t yCoord);
     static std::shared_ptr<Tile> createOilTile(Settings& s, size_t xCoord, size_t yCoord);

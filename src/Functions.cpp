@@ -572,28 +572,32 @@ int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Playe
 		  w.close();
 		  break;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1up.getPosition().x && MousePosX <= p1up.getPosition().x+p1up.getLocalBounds().width && MousePosY >= p1up.getPosition().y*1.03 && MousePosY <= p1up.getPosition().y+p1up.getLocalBounds().height*1.5) // If the user clicks on the up-key of player 1.
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1up.getPosition().x && MousePosX <= p1up.getPosition().x+p1up.getLocalBounds().width &&
+		       MousePosY >= p1up.getPosition().y*1.03 && MousePosY <= p1up.getPosition().y+p1up.getLocalBounds().height*1.5) // If the user clicks on the up-key of player 1.
 		{
 		  p1up.setColor(sf::Color::Blue);
 		  WaitForKey(w, p1, 1, Keys); // Go to function WaitForKey (found bottom of this file).
 		  p1up.setString(Keys.at(p1.getKeys().up)); // Set the string of the pressed key to be drawn on the window in place of corresponding key.
 		  Texts[0] = p1up; // Insert the new key to the vector Texts.
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1down.getPosition().x && MousePosX <= p1down.getPosition().x+p1down.getLocalBounds().width && MousePosY >= p1down.getPosition().y*1.03 && MousePosY <= p1down.getPosition().y+p1down.getLocalBounds().height*1.5) // If the user clicks on the down-key of player 1.
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1down.getPosition().x && MousePosX <= p1down.getPosition().x+p1down.getLocalBounds().width &&
+		       MousePosY >= p1down.getPosition().y*1.03 && MousePosY <= p1down.getPosition().y+p1down.getLocalBounds().height*1.5) // If the user clicks on the down-key of player 1.
 		{
 		  p1down.setColor(sf::Color::Blue);
 		  WaitForKey(w, p1, 2, Keys);
 		  p1down.setString(Keys.at(p1.getKeys().down));
 		  Texts[1] = p1down;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1left.getPosition().x && MousePosX <= p1left.getPosition().x+p1left.getLocalBounds().width && MousePosY >= p1left.getPosition().y*1.03 && MousePosY <= p1left.getPosition().y+p1left.getLocalBounds().height*1.5) // If the user clicks on the left-key of player 1.
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1left.getPosition().x && MousePosX <= p1left.getPosition().x+p1left.getLocalBounds().width &&
+		       MousePosY >= p1left.getPosition().y*1.03 && MousePosY <= p1left.getPosition().y+p1left.getLocalBounds().height*1.5) // If the user clicks on the left-key of player 1.
 		{
 		  p1left.setColor(sf::Color::Blue);
 		  WaitForKey(w, p1, 3, Keys);
 		  p1left.setString(Keys.at(p1.getKeys().left));
 		  Texts[2] = p1left;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1right.getPosition().x && MousePosX <= p1right.getPosition().x+p1right.getLocalBounds().width && MousePosY >= p1right.getPosition().y*1.03 && MousePosY <= p1right.getPosition().y+p1right.getLocalBounds().height*1.5) // If the user clicks on the right-key of player 1.
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1right.getPosition().x && MousePosX <= p1right.getPosition().x+p1right.getLocalBounds().width &&
+		       MousePosY >= p1right.getPosition().y*1.03 && MousePosY <= p1right.getPosition().y+p1right.getLocalBounds().height*1.5) // If the user clicks on the right-key of player 1.
 		{
 		  p1right.setColor(sf::Color::Blue);
 		  WaitForKey(w, p1, 4, Keys);
@@ -607,28 +611,32 @@ int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Playe
 		  p2up.setString(Keys.at(p2.getKeys().up));
 		  Texts[4] = p2up;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2down.getPosition().x && MousePosX <= p2down.getPosition().x+p2down.getLocalBounds().width && MousePosY >= p2down.getPosition().y*1.03 && MousePosY <= p2down.getPosition().y+p2down.getLocalBounds().height*1.5) // If the user clicks on the down-key of player 2.
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2down.getPosition().x && MousePosX <= p2down.getPosition().x+p2down.getLocalBounds().width &&
+		       MousePosY >= p2down.getPosition().y*1.03 && MousePosY <= p2down.getPosition().y+p2down.getLocalBounds().height*1.5) // If the user clicks on the down-key of player 2.
 		{
 		  p2down.setColor(sf::Color::Blue);
 		  WaitForKey(w, p2, 2, Keys);
 		  p2down.setString(Keys.at(p2.getKeys().down));
 		  Texts[5] = p2down;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2left.getPosition().x && MousePosX <= p2left.getPosition().x+p2left.getLocalBounds().width && MousePosY >= p2left.getPosition().y*1.03 && MousePosY <= p2left.getPosition().y+p2left.getLocalBounds().height*1.5) // If the user clicks on the left-key of player 2.
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2left.getPosition().x && MousePosX <= p2left.getPosition().x+p2left.getLocalBounds().width &&
+		       MousePosY >= p2left.getPosition().y*1.03 && MousePosY <= p2left.getPosition().y+p2left.getLocalBounds().height*1.5) // If the user clicks on the left-key of player 2.
 		{
 		  p2left.setColor(sf::Color::Blue);
 		  WaitForKey(w, p2, 3, Keys);
 		  p2left.setString(Keys.at(p2.getKeys().left));
 		  Texts[6] = p2left;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2right.getPosition().x && MousePosX <= p2right.getPosition().x+p2right.getLocalBounds().width && MousePosY >= p2right.getPosition().y*1.03 && MousePosY <= p2right.getPosition().y+p2right.getLocalBounds().height*1.5) // If the user clicks on the right-key of player 2.
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2right.getPosition().x && MousePosX <= p2right.getPosition().x+p2right.getLocalBounds().width &&
+		       MousePosY >= p2right.getPosition().y*1.03 && MousePosY <= p2right.getPosition().y+p2right.getLocalBounds().height*1.5) // If the user clicks on the right-key of player 2.
 		{
 		  p2right.setColor(sf::Color::Blue);
 		  WaitForKey(w, p2, 4, Keys);
 		  p2right.setString(Keys.at(p2.getKeys().right));
 		  Texts[7] = p2right;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3up.getPosition().x && MousePosX <= p3up.getPosition().x+p3up.getLocalBounds().width && MousePosY >= p3up.getPosition().y*1.03 && MousePosY <= p3up.getPosition().y+p3up.getLocalBounds().height*1.5) // If the user clicks on the up-key of player 3.
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3up.getPosition().x && MousePosX <= p3up.getPosition().x+p3up.getLocalBounds().width &&
+		       MousePosY >= p3up.getPosition().y*1.03 && MousePosY <= p3up.getPosition().y+p3up.getLocalBounds().height*1.5) // If the user clicks on the up-key of player 3.
 		{
 		  p3up.setColor(sf::Color::Blue);
 		  WaitForKey(w, p3, 1, Keys);
@@ -642,42 +650,48 @@ int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Playe
 		  p3down.setString(Keys.at(p3.getKeys().down));
 		  Texts[9] = p3down;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3left.getPosition().x && MousePosX <= p3left.getPosition().x+p3left.getLocalBounds().width && MousePosY >= p3left.getPosition().y*1.03 && MousePosY <= p3left.getPosition().y+p3left.getLocalBounds().height*1.5) // If the user clicks on the left-key of player 3.
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3left.getPosition().x && MousePosX <= p3left.getPosition().x+p3left.getLocalBounds().width &&
+		       MousePosY >= p3left.getPosition().y*1.03 && MousePosY <= p3left.getPosition().y+p3left.getLocalBounds().height*1.5) // If the user clicks on the left-key of player 3.
 		{
 		  p3left.setColor(sf::Color::Blue);
 		  WaitForKey(w, p3, 3, Keys);
 		  p3left.setString(Keys.at(p3.getKeys().left));
 		  Texts[10] = p3left;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3right.getPosition().x && MousePosX <= p3right.getPosition().x+p3right.getLocalBounds().width && MousePosY >= p3right.getPosition().y*1.03 && MousePosY <= p3right.getPosition().y+p3right.getLocalBounds().height*1.5) // If the user clicks on the right-key of player 3.
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3right.getPosition().x && MousePosX <= p3right.getPosition().x+p3right.getLocalBounds().width &&
+		       MousePosY >= p3right.getPosition().y*1.03 && MousePosY <= p3right.getPosition().y+p3right.getLocalBounds().height*1.5) // If the user clicks on the right-key of player 3.
 		{
 		  p3right.setColor(sf::Color::Blue);
 		  WaitForKey(w, p3, 4, Keys);
 		  p3right.setString(Keys.at(p3.getKeys().right));
 		  Texts[11] = p3right;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4up.getPosition().x && MousePosX <= p4up.getPosition().x+p4up.getLocalBounds().width && MousePosY >= p4up.getPosition().y*1.03 && MousePosY <= p4up.getPosition().y+p4up.getLocalBounds().height*1.5) // If the user clicks on the up-key of player 4.
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4up.getPosition().x && MousePosX <= p4up.getPosition().x+p4up.getLocalBounds().width &&
+		       MousePosY >= p4up.getPosition().y*1.03 && MousePosY <= p4up.getPosition().y+p4up.getLocalBounds().height*1.5) // If the user clicks on the up-key of player 4.
 		{
 		  p4up.setColor(sf::Color::Blue);
 		  WaitForKey(w, p4, 1, Keys);
 		  p4up.setString(Keys.at(p4.getKeys().up));
 		  Texts[12] = p4up;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4down.getPosition().x && MousePosX <= p4down.getPosition().x+p4down.getLocalBounds().width && MousePosY >= p4down.getPosition().y*1.03 && MousePosY <= p4down.getPosition().y+p4down.getLocalBounds().height*1.5) // If the user clicks on the down-key of player 4.
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4down.getPosition().x && MousePosX <= p4down.getPosition().x+p4down.getLocalBounds().width &&
+		       MousePosY >= p4down.getPosition().y*1.03 && MousePosY <= p4down.getPosition().y+p4down.getLocalBounds().height*1.5) // If the user clicks on the down-key of player 4.
 		{
 		  p4down.setColor(sf::Color::Blue);
 		  WaitForKey(w, p4, 2, Keys);
 		  p4down.setString(Keys.at(p4.getKeys().down));
 		  Texts[13] = p4down;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4left.getPosition().x && MousePosX <= p4left.getPosition().x+p4left.getLocalBounds().width && MousePosY >= p4left.getPosition().y*1.03 && MousePosY <= p4left.getPosition().y+p4left.getLocalBounds().height*1.5) // If the user clicks on the left-key of player 4.
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4left.getPosition().x && MousePosX <= p4left.getPosition().x+p4left.getLocalBounds().width &&
+		       MousePosY >= p4left.getPosition().y*1.03 && MousePosY <= p4left.getPosition().y+p4left.getLocalBounds().height*1.5) // If the user clicks on the left-key of player 4.
 		{
 		  p4left.setColor(sf::Color::Blue);
 		  WaitForKey(w, p4, 3, Keys);
 		  p4left.setString(Keys.at(p4.getKeys().left));
 		  Texts[14] = p4left;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4right.getPosition().x && MousePosX <= p4right.getPosition().x+p4right.getLocalBounds().width && MousePosY >= p4right.getPosition().y*1.03 && MousePosY <= p4right.getPosition().y+p4right.getLocalBounds().height*1.5) // If the user clicks on the right-key of player 4.
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p4right.getPosition().x && MousePosX <= p4right.getPosition().x+p4right.getLocalBounds().width &&
+		       MousePosY >= p4right.getPosition().y*1.03 && MousePosY <= p4right.getPosition().y+p4right.getLocalBounds().height*1.5) // If the user clicks on the right-key of player 4.
 		{
 		  p4right.setColor(sf::Color::Blue);
 		  WaitForKey(w, p4, 4, Keys);
@@ -729,523 +743,527 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
   std::vector<std::shared_ptr<PhysicsObject>> obstacles;
   
   try {
-		//Writing the matrix to file map1.txt
-    std::ofstream f("map4.txt");
-		if (!f)
-			throw std::invalid_argument("Error: could not open the output file.");
-		std::ifstream f2("./Level/level1.txt");
-		if (!f2)
-			throw std::invalid_argument("Error: could not open the input file.");
-		//Creating an empty level, x tiles wide, y tiles high
-		sf::RectangleShape* tiles[y][x];
-		for(int i = 0; i < y; i++)
-		  {
-		    for(int j = 0; j < x; j++)
-		{
-			sf::RectangleShape* rectangle = new sf::RectangleShape(sf::Vector2f(boxwidth, boxwidth));	
-			rectangle->setPosition((j)*boxwidth, i*boxwidth);
-			rectangle->setFillColor(sf::Color(0, 123, 12, 255));
-			tiles[i][j] = rectangle;
-			A[i][j] = 0;
-		}
-		  }
+    //Creating an empty level, x tiles wide, y tiles high
+    sf::RectangleShape* tiles[y][x];
+    for(int i = 0; i < y; i++)
+      {
+	for(int j = 0; j < x; j++)
+	  {
+	    sf::RectangleShape* rectangle = new sf::RectangleShape(sf::Vector2f(boxwidth, boxwidth));	
+	    rectangle->setPosition((j)*boxwidth, i*boxwidth);
+	    rectangle->setFillColor(sf::Color(0, 123, 12, 255));
+	    tiles[i][j] = rectangle;
+	    A[i][j] = 0;
+	  }
+      }
 
-		w.setFramerateLimit(60); // Set fps to be 200.
+    w.setFramerateLimit(60); // Set fps to be 200.
 
-		b2Vec2 gravity(0.f, 0.0f); // Define gravity, in this case it will be zero.
-		b2World world(gravity); // Define world.
+    b2Vec2 gravity(0.f, 0.0f); // Define gravity, in this case it will be zero.
+    b2World world(gravity); // Define world.
 
 		 
-		// Main program loop.
-		while (w.isOpen()) {
-		  world.Step(1/60.f, 8, 3); // This is used to simulate the world.
-		  // sf::Event holds information about every event (a key press, mouse movement etc.)
-		  // which occurs during the program loop.
-		  sf::Event event;
-		  // Event loop handles all events which have occurred.
+    // Main program loop.
+    while (w.isOpen()) {
+      world.Step(1/60.f, 8, 3); // This is used to simulate the world.
+      // sf::Event holds information about every event (a key press, mouse movement etc.)
+      // which occurs during the program loop.
+      sf::Event event;
+      // Event loop handles all events which have occurred.
 	
 	
-		  while (w.pollEvent(event)) {
-		    switch (event.type) {
-		    case sf::Event::Closed:{
-		w.close();
-		break;
-		case sf::Event::KeyPressed:
-			switch (event.key.code) {
-			case sf::Keyboard::Escape:
-			  w.close();
-			  break;
-			case sf::Keyboard::P:
-			  {
-			    // Create some texts and set their positions etc.
-			    sf::Text QuitButton("Exit", fo, 80);
-			    sf::Text MenuButton("Main Menu", fo, 80);
-			    QuitButton.setColor(sf::Color::White);
-			    MenuButton.setColor(sf::Color::White);
-			    QuitButton.setPosition(w.getSize().x/2-QuitButton.getLocalBounds().width/2, w.getSize().y-QuitButton.getLocalBounds().height*4);
-			    MenuButton.setPosition(w.getSize().x/2-MenuButton.getLocalBounds().width/2, w.getSize().y-MenuButton.getLocalBounds().height*7);
-			    int pauseVar = 0; // This is a variable that controls when to exit the pause-loop.
-			    while (1) // Start the pause-loop.
-			{
-				int MousePosX = sf::Mouse::getPosition(w).x;
-				int MousePosY = sf::Mouse::getPosition(w).y;
-				if (MousePosX >= QuitButton.getPosition().x*1.01 && MousePosX <= QuitButton.getPosition().x+QuitButton.getLocalBounds().width*1.2 && MousePosY >= QuitButton.getPosition().y*1.03 &&
-				    MousePosY <= QuitButton.getPosition().y+QuitButton.getLocalBounds().height*1.5) // If the mouse is on top of the Exit-button.
-				  {
-				    QuitButton.setColor(sf::Color::Blue);
-				  }
-				else
-				  {
-				    QuitButton.setColor(sf::Color::White);
-				  }
-				
-				if (MousePosX >= MenuButton.getPosition().x*1.01 && MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 && MousePosY >= MenuButton.getPosition().y*1.03 &&
-				    MousePosY <= MenuButton.getPosition().y+MenuButton.getLocalBounds().height*1.5) // If the mouse is on top of the "Main menu"-button.
-				  {
-				    MenuButton.setColor(sf::Color::Blue);
-				  }
-				else
-				  {
-				    MenuButton.setColor(sf::Color::White);
-				  }
-				
-				w.clear();
-				for(int i = 0; i < y; i++)
-				  {
-				    for(int j = 0; j < x; j++)
-				{
-					w.draw(*tiles[i][j]);
-				}
-				  }
-				for(auto i: obstacles)
-				  i->drawTo(w);
-				w.draw(QuitButton);
-				w.draw(MenuButton);
-				w.display();
-				while (w.pollEvent(event))
-				  {
-				    if (event.type == sf::Event::KeyPressed)
-				{
-					if (event.key.code == sf::Keyboard::P) // If the user presses p to continue the game.
-					  {
-					    pauseVar = 1;
-					    break;
-					  }
-					else if (event.key.code == sf::Keyboard::Escape)
-					  {
-					    for (int i = 0; i < y; i++)
-					{
-						for (int j = 0; j < x; j++)
-						  {
-						    delete tiles[i][j];
-						  }
-					}
-					    return 1;
-					  }
-				}
-				    else if (event.type == sf::Event::MouseButtonPressed)
-				{
-					if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= QuitButton.getPosition().x*1.01 &&
-					    MousePosX <= QuitButton.getPosition().x+QuitButton.getLocalBounds().width*1.2 && MousePosY >= QuitButton.getPosition().y*1.03 &&
-					    MousePosY <= QuitButton.getPosition().y+QuitButton.getLocalBounds().height*1.5) // If the user clicks on the Exit-button.
-					  {
-					    f << f2.rdbuf();
-					    for (int i = 0; i < y; i++)
-					{
-						for (int j = 0; j < x; j++)
-						  {
-						    delete tiles[i][j];
-						  }
-					}
-					    return 1;
-					  }
-					
-					else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= MenuButton.getPosition().x*1.01 &&
-						 MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 && MousePosY >= MenuButton.getPosition().y*1.03 &&
-						 MousePosY <= MenuButton.getPosition().y+MenuButton.getLocalBounds().height*1.5) // If the user clicks on the "Main menu"-button.
-					  {
-					    f << f2.rdbuf();
-					    for (int i = 0; i < y; i++)
-					{
-						for (int j = 0; j < x; j++)
-						  {
-						    delete tiles[i][j];
-						  }
-					}
-					    return 0;
-					  }
-				}
-				  }
-				if (pauseVar == 1)
-				  {
-				    break;
-				  }
-			}
-			  }
-			case sf::Keyboard::S: //Saves matrix to the ofstream f
-			  for(int i = 0; i < y; i++) {
-			    for(int j = 0; j < x; j++) {
-						f << A[i][j] << " ";
-			    }
-			  }
-			  break;
-			case sf::Keyboard::Space:
-			  {
-			    sf::Vector2i mpos = sf::Mouse::getPosition (w);
-			    int x2 = floor(mpos.x/boxwidth);
-			    int y2 = floor(mpos.y/boxwidth);
-			    if (startPointCalc == 0)
-			      {
-				tiles[y2][x2]->setFillColor(sf::Color(128, 128, 128, 255));
-				tiles[y2][x2]->setRotation(0);
-				A[y2][x2] = 1001;
-				startPointCalc++;
-			      }
-			    else if (startPointCalc == 1)
-			      {
-				tiles[y2][x2]->setFillColor(sf::Color(128, 128, 128, 255));
-				tiles[y2][x2]->setRotation(0);
-				A[y2][x2] = 1002;
-				startPointCalc++;
-			      }
-			    else if (startPointCalc == 2)
-			      {
-				tiles[y2][x2]->setFillColor(sf::Color(128, 128, 128, 255));
-				tiles[y2][x2]->setRotation(0);
-				A[y2][x2] = 1003;
-				startPointCalc++;
-			      }
-			    else if (startPointCalc == 3)
-			      {
-				tiles[y2][x2]->setFillColor(sf::Color(128, 128, 128, 255));
-				tiles[y2][x2]->setRotation(0);
-				A[y2][x2] = 1004;
-				startPointCalc++;
-			      }
-			  }
-			  break;
-			  case sf::Keyboard::R:
-			  {
-			    sf::Vector2i mpos = sf::Mouse::getPosition (w);
-			    int x2 = floor(mpos.x/boxwidth);
-			    int y2 = floor(mpos.y/boxwidth);
-			    if (A[y2][x2] = 1001 || A[y2][x2] == 1002 || A[y2][x2] == 1003 || A[y2][x2] == 1004)
-			      {
-				tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
-				A[y2][x2] = 0;
-				startPointCalc--;
-			      }
-			  }
-			  break;
-			case sf::Keyboard::L: //Loads matrix from the ofstream f2
-			  for(int i = 0; i < y; i++) {
-			    for(int j = 0; j < x; j++) {
-			b2BodyDef bd;
-			startPointCalc = 4;
-			bd.position.Set(j, s.worldHeight - i);
-			b2FixtureDef fd;
-			fd.friction = 0.3;
-			if(!(f2 >> A[i][j]))
-				throw std::invalid_argument("Error reading from the file.");
-			if(A[i][j] == 0){
-				tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
-			}
-			if(A[i][j] == 2){
-				tiles[i][j]->setFillColor(sf::Color::White);
-			}
-			if(A[i][j] == 1){
-				tiles[i][j]->setFillColor(sf::Color(128, 128, 128, 255));
-			}
-			if(A[i][j] == 1001){
-			  tiles[i][j]->setFillColor(sf::Color(128,128,128,255));
-			}
-			if(A[i][j] == 1002){
-			  tiles[i][j]->setFillColor(sf::Color(128,128,128,255));
-			}
-			if(A[i][j] == 1003){
-			  tiles[i][j]->setFillColor(sf::Color(128,128,128,255));
-			}
-			if(A[i][j] == 1004){
-			  tiles[i][j]->setFillColor(sf::Color(128,128,128,255));
-			}
-			if(A[i][j] == 3){
-				tiles[i][j]->setFillColor(sf::Color::Black);
-			}
-			if(A[i][j] <= 200 && A[i][j] >= 100){
-				tiles[i][j]->setFillColor(sf::Color::Yellow);
-			}
-			if(A[i][j] == 10){
-				tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
-				std::vector<std::pair<float,float>> bodyVertices = {
-				  std::make_pair(0.0, -1.5),
-				  std::make_pair(-1.0, -1.3),
-				  std::make_pair(-2.0, -0.0),
-				  std::make_pair(-1.4, 0.5),
-				  std::make_pair(-0.4, 1.1),
-				  std::make_pair(1.0, 1.5),
-				  std::make_pair(2.0, 0.9),
-				  std::make_pair(1.0, -0.7)
-				};
-				obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
-			}
-			if(A[i][j] == 11) {
-				tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
-				std::vector<std::pair<float,float>> bodyVertices = {
-				  std::make_pair(1.0, -2.0),
-				  std::make_pair(0.0, -1.5),
-				  std::make_pair(-1.0, -0.7),
-				  std::make_pair(-2.0, 0.0),
-				  std::make_pair(-2.0, 0.5),
-				  std::make_pair(-1.0, 1.0),
-				  std::make_pair(0.5, 2.2),
-				  std::make_pair(2.0, -0.5)
-				};
-				obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
-			}
-			if(A[i][j] == 12){
-				tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
-				std::vector<std::pair<float,float>> bodyVertices = {
-				  std::make_pair(0.0, -3.0),
-				  std::make_pair(-2.0, -2.6),
-				  std::make_pair(-4.0, -0.0),
-				  std::make_pair(-2.8, 1.0),
-				  std::make_pair(-0.8, 2.2),
-				  std::make_pair(2.0, 3.0),
-				  std::make_pair(4.0, 1.8),
-				  std::make_pair(2.0, -1.4)
-				};
-				obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
-			}
-			if(A[i][j] == 13){
-				tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
-				std::vector<std::pair<float,float>> bodyVertices = {
-				  std::make_pair(2.0, -4.0),
-				  std::make_pair(0.0, -3.0),
-				  std::make_pair(-2.0, -1.4),
-				  std::make_pair(-4.0, 0.0),
-				  std::make_pair(-4.0, 1.0),
-				  std::make_pair(-2.0, 2.0),
-				  std::make_pair(1.0, 4.4),
-				  std::make_pair(4.0, -1.0)
-				};
-				obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
-			}
-			if(A[i][j] == 20){
-				tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
-				obstacles.push_back(std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255)));
-			}
-			if(A[i][j] == 21){
-				tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
-				obstacles.push_back(std::make_shared<PhysicsObject>(world, s, b2Vec2(1, 20), bd, fd, sf::Color(160,160,160,255)));
-			}
-			if(A[i][j] == 22){
-				tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
-				auto physObjPtr = std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255));
-				physObjPtr->getBody()->SetTransform(b2Vec2(j, s.worldHeight-i), -45.0 * DEGTORAD);
-				obstacles.push_back(physObjPtr);
-			}
-			if(A[i][j] == 23){
-				tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
-				auto physObjPtr = std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255));
-				physObjPtr->getBody()->SetTransform(b2Vec2(j, s.worldHeight-i), 45.0 * DEGTORAD);
-				obstacles.push_back(physObjPtr);
-			}
-			    }
-			  }
-			  break;
-			default:
-			  // Empty default case included to stop compiler from giving warnings.
-			  break;
-			}
-			break;
-		    }
-		    default:
-		break;
-		    }
-		  }
-
-		  //Checking which tile the cursor is located at
-		  sf::Vector2i mpos = sf::Mouse::getPosition (w);
-		  int x2 = floor(mpos.x/boxwidth);
-		  int y2 = floor(mpos.y/boxwidth);
-
-		  if (x2 >= 0 && x2<x && y2 >= 0 && y2 < y) {
-		    // Default settings for all static obstacles
-		    b2BodyDef bd;
-		    bd.position.Set(x2, s.worldHeight - y2);
-		    b2FixtureDef fd;
-		    fd.friction = 0.3;
-		    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
-		{
-			tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
-			tiles[y2][x2]->setRotation(0);
-			A[y2][x2] = 0;
-		}
-		    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
-		tiles[y2][x2]->setFillColor(sf::Color(128, 128, 128, 255));
-		tiles[y2][x2]->setRotation(0);
-		A[y2][x2] = 1;
-		    }
-		    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
-		{
-			tiles[y2][x2]->setFillColor(sf::Color::White);
-			tiles[y2][x2]->setRotation(0);			
-			A[y2][x2] = 2;	  
-		}
-		    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
-		{
-			tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
-			tiles[y2][x2]->setRotation(0);
-			A[y2][x2] = 10;
-
-			std::vector<std::pair<float,float>> bodyVertices = {
-			  std::make_pair(0.0, -1.5),
-			  std::make_pair(-1.0, -1.3),
-			  std::make_pair(-2.0, -0.0),
-			  std::make_pair(-1.4, 0.5),
-			  std::make_pair(-0.4, 1.1),
-			  std::make_pair(1.0, 1.5),
-			  std::make_pair(2.0, 0.9),
-			  std::make_pair(1.0, -0.7)
-			};
-			obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
-		}
-		    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5))
-		{
-			tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
-			tiles[y2][x2]->setRotation(0);
-			A[y2][x2] = 11;
-
-			  std::vector<std::pair<float,float>> bodyVertices = {
-			    std::make_pair(1.0, -2.0),
-			    std::make_pair(0.0, -1.5),
-			    std::make_pair(-1.0, -0.7),
-			    std::make_pair(-2.0, 0.0),
-			    std::make_pair(-2.0, 0.5),
-			    std::make_pair(-1.0, 1.0),
-			    std::make_pair(0.5, 2.2),
-			    std::make_pair(2.0, -0.5)
-			};
-			obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
-		}
-
-		    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
-		{
-			tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
-			tiles[y2][x2]->setRotation(0);
-			A[y2][x2] = 12;
-
-			std::vector<std::pair<float,float>> bodyVertices = {
-			  std::make_pair(0.0, -3.0),
-			  std::make_pair(-2.0, -2.6),
-			  std::make_pair(-4.0, -0.0),
-			  std::make_pair(-2.8, 1.0),
-			  std::make_pair(-0.8, 2.2),
-			  std::make_pair(2.0, 3.0),
-			  std::make_pair(4.0, 1.8),
-			  std::make_pair(2.0, -1.4)
-			};
-			obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
-		}
-		    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num7))
-		{
-			tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
-			tiles[y2][x2]->setRotation(0);
-			A[y2][x2] = 13;
-
-			std::vector<std::pair<float,float>> bodyVertices = {
-			  std::make_pair(2.0, -4.0),
-			  std::make_pair(0.0, -3.0),
-			  std::make_pair(-2.0, -1.4),
-			  std::make_pair(-4.0, 0.0),
-			  std::make_pair(-4.0, 1.0),
-			  std::make_pair(-2.0, 2.0),
-			  std::make_pair(1.0, 4.4),
-			  std::make_pair(4.0, -1.0)
-			};
-			obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
-
-		}
-		    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
-		{
-			tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
-			tiles[y2][x2]->setRotation(0);
-			A[y2][x2] = 20;
-
-			auto physObjPtr = std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255));
-			obstacles.push_back(std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255)));
-		}
-		    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num9))
-		{
-			tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
-			tiles[y2][x2]->setRotation(0);
-			A[y2][x2] = 21;
-
-			obstacles.push_back(std::make_shared<PhysicsObject>(world, s, b2Vec2(1, 20), bd, fd, sf::Color(160,160,160,255)));
-		}
-		    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num0))
-		{
-			tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
-			tiles[y2][x2]->setRotation(0);
-			A[y2][x2] = 22;
-
-			auto physObjPtr = std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255));
-			physObjPtr->getBody()->SetTransform(b2Vec2(x2, s.worldHeight-y2), -45.0 * DEGTORAD);
-			obstacles.push_back(physObjPtr);
-		}
-		    if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSlash))
-		{
-			tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
-			tiles[y2][x2]->setRotation(0);
-			A[y2][x2] = 23;
-
-			auto physObjPtr = std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255));
-			physObjPtr->getBody()->SetTransform(b2Vec2(x2, s.worldHeight-y2), 45.0 * DEGTORAD);
-			obstacles.push_back(physObjPtr);
-		}
-		          if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
-		{
-			tiles[y2][x2]->setFillColor(sf::Color::Yellow);
-			tiles[y2][x2]->setRotation(0);
-			if(A[y2][x2] < 100){
-			  A[y2][x2] = checkpoint;
-			  checkpoint += 1;
-			}
-		}
-			  if (sf::Keyboard::isKeyPressed(sf::Keyboard::O))
-		{
-			tiles[y2][x2]->setFillColor(sf::Color::Black);
-			tiles[y2][x2]->setRotation(0);
-			A[y2][x2] = 3;
-		}
-		  }
-	
-		  // Clear previously displayed window, draw the new positions
-		
-		  w.clear();
-		      
-		  for(int i = 0; i < y; i++)
-		    {
-		for(int j = 0; j < x; j++)
-			{
-			  w.draw(*tiles[i][j]);
-			}
-		    }
-		      
-		  for(auto i: obstacles)
-		    i->drawTo(w);
-
-		  w.display();
-		}
-		for (int i = 0; i < y; i++)
-		{
-		  for (int j = 0; j < x; j++)
+      while (w.pollEvent(event)) {
+	switch (event.type) {
+	case sf::Event::Closed:{
+	  w.close();
+	  break;
+	  case sf::Event::KeyPressed:
+	    switch (event.key.code) {
+	    case sf::Keyboard::Escape:
+	      w.close();
+	      break;
+	    case sf::Keyboard::P:
+	      {
+		// Create some texts and set their positions etc.
+		sf::Text QuitButton("Exit", fo, 80);
+		sf::Text MenuButton("Main Menu", fo, 80);
+		QuitButton.setColor(sf::Color::White);
+		MenuButton.setColor(sf::Color::White);
+		QuitButton.setPosition(w.getSize().x/2-QuitButton.getLocalBounds().width/2, w.getSize().y-QuitButton.getLocalBounds().height*4);
+		MenuButton.setPosition(w.getSize().x/2-MenuButton.getLocalBounds().width/2, w.getSize().y-MenuButton.getLocalBounds().height*7);
+		int pauseVar = 0; // This is a variable that controls when to exit the pause-loop.
+		while (1) // Start the pause-loop.
 		  {
-		    delete tiles[i][j];
+		    int MousePosX = sf::Mouse::getPosition(w).x;
+		    int MousePosY = sf::Mouse::getPosition(w).y;
+		    if (MousePosX >= QuitButton.getPosition().x*1.01 && MousePosX <= QuitButton.getPosition().x+QuitButton.getLocalBounds().width*1.2 && MousePosY >= QuitButton.getPosition().y*1.03 &&
+			MousePosY <= QuitButton.getPosition().y+QuitButton.getLocalBounds().height*1.5) // If the mouse is on top of the Exit-button.
+		      {
+			QuitButton.setColor(sf::Color::Blue);
+		      }
+		    else
+		      {
+			QuitButton.setColor(sf::Color::White);
+		      }
+				
+		    if (MousePosX >= MenuButton.getPosition().x*1.01 && MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 && MousePosY >= MenuButton.getPosition().y*1.03 &&
+			MousePosY <= MenuButton.getPosition().y+MenuButton.getLocalBounds().height*1.5) // If the mouse is on top of the "Main menu"-button.
+		      {
+			MenuButton.setColor(sf::Color::Blue);
+		      }
+		    else
+		      {
+			MenuButton.setColor(sf::Color::White);
+		      }
+				
+		    w.clear();
+		    for(int i = 0; i < y; i++)
+		      {
+			for(int j = 0; j < x; j++)
+			  {
+			    w.draw(*tiles[i][j]);
+			  }
+		      }
+		    for(auto i: obstacles)
+		      i->drawTo(w);
+		    w.draw(QuitButton);
+		    w.draw(MenuButton);
+		    w.display();
+		    while (w.pollEvent(event))
+		      {
+			if (event.type == sf::Event::KeyPressed)
+			  {
+			    if (event.key.code == sf::Keyboard::P) // If the user presses p to continue the game.
+			      {
+				pauseVar = 1;
+				break;
+			      }
+			    else if (event.key.code == sf::Keyboard::Escape)
+			      {
+				for (int i = 0; i < y; i++)
+				  {
+				    for (int j = 0; j < x; j++)
+				      {
+					delete tiles[i][j];
+				      }
+				  }
+				return 1;
+			      }
+			  }
+			else if (event.type == sf::Event::MouseButtonPressed)
+			  {
+			    if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= QuitButton.getPosition().x*1.01 &&
+				MousePosX <= QuitButton.getPosition().x+QuitButton.getLocalBounds().width*1.2 && MousePosY >= QuitButton.getPosition().y*1.03 &&
+				MousePosY <= QuitButton.getPosition().y+QuitButton.getLocalBounds().height*1.5) // If the user clicks on the Exit-button.
+			      {
+				for (int i = 0; i < y; i++)
+				  {
+				    for (int j = 0; j < x; j++)
+				      {
+					delete tiles[i][j];
+				      }
+				  }
+				return 1;
+			      }
+					
+			    else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= MenuButton.getPosition().x*1.01 &&
+				     MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 && MousePosY >= MenuButton.getPosition().y*1.03 &&
+				     MousePosY <= MenuButton.getPosition().y+MenuButton.getLocalBounds().height*1.5) // If the user clicks on the "Main menu"-button.
+			      {
+				for (int i = 0; i < y; i++)
+				  {
+				    for (int j = 0; j < x; j++)
+				      {
+					delete tiles[i][j];
+				      }
+				  }
+				return 0;
+			      }
+			  }
+		      }
+		    if (pauseVar == 1)
+		      {
+			break;
+		      }
+		  }
+	      }
+	      break;
+	    case sf::Keyboard::S: { //Saves matrix to the ofstream f
+	      std::ofstream f("map4.txt");
+	      if (!f)
+		throw std::invalid_argument("Error: could not open the output file.");
+	      for(int i = 0; i < y; i++) {
+		for(int j = 0; j < x; j++) {
+		  f << A[i][j] << " ";
+		}
+	      }
+	    }
+	      break;
+	    case sf::Keyboard::Space:
+	      {
+		sf::Vector2i mpos = sf::Mouse::getPosition (w);
+		int x2 = floor(mpos.x/boxwidth);
+		int y2 = floor(mpos.y/boxwidth);
+		if (startPointCalc == 0)
+		  {
+		    tiles[y2][x2]->setFillColor(sf::Color::Red);
+		    tiles[y2][x2]->setRotation(0);
+		    A[y2][x2] = 1001;
+		    startPointCalc++;
+		  }
+		else if (startPointCalc == 1)
+		  {
+		    tiles[y2][x2]->setFillColor(sf::Color::Red);
+		    tiles[y2][x2]->setRotation(0);
+		    A[y2][x2] = 1002;
+		    startPointCalc++;
+		  }
+		else if (startPointCalc == 2)
+		  {
+		    tiles[y2][x2]->setFillColor(sf::Color::Red);
+		    tiles[y2][x2]->setRotation(0);
+		    A[y2][x2] = 1003;
+		    startPointCalc++;
+		  }
+		else if (startPointCalc == 3)
+		  {
+		    tiles[y2][x2]->setFillColor(sf::Color::Red);
+		    tiles[y2][x2]->setRotation(0);
+		    A[y2][x2] = 1004;
+		    startPointCalc++;
+		  }
+	      }
+	      break;
+	    case sf::Keyboard::R:
+	      {
+		sf::Vector2i mpos = sf::Mouse::getPosition (w);
+		int x2 = floor(mpos.x/boxwidth);
+		int y2 = floor(mpos.y/boxwidth);
+		if (A[y2][x2] == 1001 || A[y2][x2] == 1002 || A[y2][x2] == 1003 || A[y2][x2] == 1004)
+		  {
+		    tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
+		    A[y2][x2] = 0;
+		    startPointCalc--;
+		  }
+	      }
+	      break;
+	    case sf::Keyboard::L: { //Loads matrix from the ofstream f2
+	      startPointCalc = 0;
+	      std::ifstream f2("map4.txt");
+	      if (!f2)
+		throw std::invalid_argument("Error: could not open the input file.");
+	      for(int i = 0; i < y; i++) {
+		for(int j = 0; j < x; j++) {
+		  b2BodyDef bd;
+		  bd.position.Set(j, s.worldHeight - i);
+		  b2FixtureDef fd;
+		  fd.friction = 0.3;
+		  if(!(f2 >> A[i][j]))
+		    throw std::invalid_argument("Error reading from the file.");
+		  if(A[i][j] == 0){
+		    tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
+		  }
+		  if(A[i][j] == 2){
+		    tiles[i][j]->setFillColor(sf::Color::White);
+		  }
+		  if(A[i][j] == 1){
+		    tiles[i][j]->setFillColor(sf::Color(128, 128, 128, 255));
+		  }
+		  if(A[i][j] == 1001){
+		    startPointCalc++; 
+		    tiles[i][j]->setFillColor(sf::Color::Red);
+		  }
+		  if(A[i][j] == 1002){
+		    startPointCalc++;
+		    tiles[i][j]->setFillColor(sf::Color::Red);
+		  }
+		  if(A[i][j] == 1003){
+		    startPointCalc++;
+		    tiles[i][j]->setFillColor(sf::Color::Red);
+		  }
+		  if(A[i][j] == 1004){
+		    startPointCalc++;
+		    tiles[i][j]->setFillColor(sf::Color::Red);
+		  }
+		  if(A[i][j] == 3){
+		    tiles[i][j]->setFillColor(sf::Color::Black);
+		  }
+		  if(A[i][j] <= 200 && A[i][j] >= 100){
+		    tiles[i][j]->setFillColor(sf::Color::Yellow);
+		  }
+		  if(A[i][j] == 10){
+		    tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
+		    std::vector<std::pair<float,float>> bodyVertices = {
+		      std::make_pair(0.0, -1.5),
+		      std::make_pair(-1.0, -1.3),
+		      std::make_pair(-2.0, -0.0),
+		      std::make_pair(-1.4, 0.5),
+		      std::make_pair(-0.4, 1.1),
+		      std::make_pair(1.0, 1.5),
+		      std::make_pair(2.0, 0.9),
+		      std::make_pair(1.0, -0.7)
+		    };
+		    obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
+		  }
+		  if(A[i][j] == 11) {
+		    tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
+		    std::vector<std::pair<float,float>> bodyVertices = {
+		      std::make_pair(1.0, -2.0),
+		      std::make_pair(0.0, -1.5),
+		      std::make_pair(-1.0, -0.7),
+		      std::make_pair(-2.0, 0.0),
+		      std::make_pair(-2.0, 0.5),
+		      std::make_pair(-1.0, 1.0),
+		      std::make_pair(0.5, 2.2),
+		      std::make_pair(2.0, -0.5)
+		    };
+		    obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
+		  }
+		  if(A[i][j] == 12){
+		    tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
+		    std::vector<std::pair<float,float>> bodyVertices = {
+		      std::make_pair(0.0, -3.0),
+		      std::make_pair(-2.0, -2.6),
+		      std::make_pair(-4.0, -0.0),
+		      std::make_pair(-2.8, 1.0),
+		      std::make_pair(-0.8, 2.2),
+		      std::make_pair(2.0, 3.0),
+		      std::make_pair(4.0, 1.8),
+		      std::make_pair(2.0, -1.4)
+		    };
+		    obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
+		  }
+		  if(A[i][j] == 13){
+		    tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
+		    std::vector<std::pair<float,float>> bodyVertices = {
+		      std::make_pair(2.0, -4.0),
+		      std::make_pair(0.0, -3.0),
+		      std::make_pair(-2.0, -1.4),
+		      std::make_pair(-4.0, 0.0),
+		      std::make_pair(-4.0, 1.0),
+		      std::make_pair(-2.0, 2.0),
+		      std::make_pair(1.0, 4.4),
+		      std::make_pair(4.0, -1.0)
+		    };
+		    obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
+		  }
+		  if(A[i][j] == 20){
+		    tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
+		    obstacles.push_back(std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255)));
+		  }
+		  if(A[i][j] == 21){
+		    tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
+		    obstacles.push_back(std::make_shared<PhysicsObject>(world, s, b2Vec2(1, 20), bd, fd, sf::Color(160,160,160,255)));
+		  }
+		  if(A[i][j] == 22){
+		    tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
+		    auto physObjPtr = std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255));
+		    physObjPtr->getBody()->SetTransform(b2Vec2(j, s.worldHeight-i), -45.0 * DEGTORAD);
+		    obstacles.push_back(physObjPtr);
+		  }
+		  if(A[i][j] == 23){
+		    tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
+		    auto physObjPtr = std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255));
+		    physObjPtr->getBody()->SetTransform(b2Vec2(j, s.worldHeight-i), 45.0 * DEGTORAD);
+		    obstacles.push_back(physObjPtr);
 		  }
 		}
+	      }
+	    }
+	      break;
+	    default:
+	      // Empty default case included to stop compiler from giving warnings.
+	      break;
+	    }
+	    break;
+	}
+	default:
+	  break;
+	}
+      }
+
+      //Checking which tile the cursor is located at
+      sf::Vector2i mpos = sf::Mouse::getPosition (w);
+      int x2 = floor(mpos.x/boxwidth);
+      int y2 = floor(mpos.y/boxwidth);
+
+      if (x2 >= 0 && x2<x && y2 >= 0 && y2 < y) {
+	// Default settings for all static obstacles
+	b2BodyDef bd;
+	bd.position.Set(x2, s.worldHeight - y2);
+	b2FixtureDef fd;
+	fd.friction = 0.3;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1) && A[y2][x2] != 1001 && A[y2][x2] != 1002 && A[y2][x2] != 1003 && A[y2][x2] != 1004)
+	  {
+	    tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
+	    tiles[y2][x2]->setRotation(0);
+	    A[y2][x2] = 0;
+	  }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2) && A[y2][x2] != 1001 && A[y2][x2] != 1002 && A[y2][x2] != 1003 && A[y2][x2] != 1004) {
+	  tiles[y2][x2]->setFillColor(sf::Color(128, 128, 128, 255));
+	  tiles[y2][x2]->setRotation(0);
+	  A[y2][x2] = 1;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3) && A[y2][x2] != 1001 && A[y2][x2] != 1002 && A[y2][x2] != 1003 && A[y2][x2] != 1004)
+	  {
+	    tiles[y2][x2]->setFillColor(sf::Color::White);
+	    tiles[y2][x2]->setRotation(0);			
+	    A[y2][x2] = 2;	  
+	  }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4) && A[y2][x2] != 1001 && A[y2][x2] != 1002 && A[y2][x2] != 1003 && A[y2][x2] != 1004)
+	  {
+	    tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
+	    tiles[y2][x2]->setRotation(0);
+	    A[y2][x2] = 10;
+
+	    std::vector<std::pair<float,float>> bodyVertices = {
+	      std::make_pair(0.0, -1.5),
+	      std::make_pair(-1.0, -1.3),
+	      std::make_pair(-2.0, -0.0),
+	      std::make_pair(-1.4, 0.5),
+	      std::make_pair(-0.4, 1.1),
+	      std::make_pair(1.0, 1.5),
+	      std::make_pair(2.0, 0.9),
+	      std::make_pair(1.0, -0.7)
+	    };
+	    obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
+	  }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5) && A[y2][x2] != 1001 && A[y2][x2] != 1002 && A[y2][x2] != 1003 && A[y2][x2] != 1004)
+	  {
+	    tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
+	    tiles[y2][x2]->setRotation(0);
+	    A[y2][x2] = 11;
+
+	    std::vector<std::pair<float,float>> bodyVertices = {
+	      std::make_pair(1.0, -2.0),
+	      std::make_pair(0.0, -1.5),
+	      std::make_pair(-1.0, -0.7),
+	      std::make_pair(-2.0, 0.0),
+	      std::make_pair(-2.0, 0.5),
+	      std::make_pair(-1.0, 1.0),
+	      std::make_pair(0.5, 2.2),
+	      std::make_pair(2.0, -0.5)
+	    };
+	    obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
+	  }
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num6) && A[y2][x2] != 1001 && A[y2][x2] != 1002 && A[y2][x2] != 1003 && A[y2][x2] != 1004)
+	  {
+	    tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
+	    tiles[y2][x2]->setRotation(0);
+	    A[y2][x2] = 12;
+
+	    std::vector<std::pair<float,float>> bodyVertices = {
+	      std::make_pair(0.0, -3.0),
+	      std::make_pair(-2.0, -2.6),
+	      std::make_pair(-4.0, -0.0),
+	      std::make_pair(-2.8, 1.0),
+	      std::make_pair(-0.8, 2.2),
+	      std::make_pair(2.0, 3.0),
+	      std::make_pair(4.0, 1.8),
+	      std::make_pair(2.0, -1.4)
+	    };
+	    obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
+	  }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num7) && A[y2][x2] != 1001 && A[y2][x2] != 1002 && A[y2][x2] != 1003 && A[y2][x2] != 1004)
+	  {
+	    tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
+	    tiles[y2][x2]->setRotation(0);
+	    A[y2][x2] = 13;
+
+	    std::vector<std::pair<float,float>> bodyVertices = {
+	      std::make_pair(2.0, -4.0),
+	      std::make_pair(0.0, -3.0),
+	      std::make_pair(-2.0, -1.4),
+	      std::make_pair(-4.0, 0.0),
+	      std::make_pair(-4.0, 1.0),
+	      std::make_pair(-2.0, 2.0),
+	      std::make_pair(1.0, 4.4),
+	      std::make_pair(4.0, -1.0)
+	    };
+	    obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
+
+	  }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8) && A[y2][x2] != 1001 && A[y2][x2] != 1002 && A[y2][x2] != 1003 && A[y2][x2] != 1004)
+	  {
+	    tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
+	    tiles[y2][x2]->setRotation(0);
+	    A[y2][x2] = 20;
+
+	    auto physObjPtr = std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255));
+	    obstacles.push_back(std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255)));
+	  }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num9) && A[y2][x2] != 1001 && A[y2][x2] != 1002 && A[y2][x2] != 1003 && A[y2][x2] != 1004)
+	  {
+	    tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
+	    tiles[y2][x2]->setRotation(0);
+	    A[y2][x2] = 21;
+
+	    obstacles.push_back(std::make_shared<PhysicsObject>(world, s, b2Vec2(1, 20), bd, fd, sf::Color(160,160,160,255)));
+	  }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num0) && A[y2][x2] != 1001 && A[y2][x2] != 1002 && A[y2][x2] != 1003 && A[y2][x2] != 1004)
+	  {
+	    tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
+	    tiles[y2][x2]->setRotation(0);
+	    A[y2][x2] = 22;
+
+	    auto physObjPtr = std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255));
+	    physObjPtr->getBody()->SetTransform(b2Vec2(x2, s.worldHeight-y2), -45.0 * DEGTORAD);
+	    obstacles.push_back(physObjPtr);
+	  }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSlash) && A[y2][x2] != 1001 && A[y2][x2] != 1002 && A[y2][x2] != 1003 && A[y2][x2] != 1004)
+	  {
+	    tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
+	    tiles[y2][x2]->setRotation(0);
+	    A[y2][x2] = 23;
+
+	    auto physObjPtr = std::make_shared<PhysicsObject>(world, s, b2Vec2(20, 1), bd, fd, sf::Color(160,160,160,255));
+	    physObjPtr->getBody()->SetTransform(b2Vec2(x2, s.worldHeight-y2), 45.0 * DEGTORAD);
+	    obstacles.push_back(physObjPtr);
+	  }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::C) && A[y2][x2] != 1001 && A[y2][x2] != 1002 && A[y2][x2] != 1003 && A[y2][x2] != 1004)
+	  {
+	    tiles[y2][x2]->setFillColor(sf::Color::Yellow);
+	    tiles[y2][x2]->setRotation(0);
+	    if(A[y2][x2] < 100){
+	      A[y2][x2] = checkpoint;
+	      checkpoint += 1;
+	    }
+	  }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::O) && A[y2][x2] != 1001 && A[y2][x2] != 1002 && A[y2][x2] != 1003 && A[y2][x2] != 1004)
+	  {
+	    tiles[y2][x2]->setFillColor(sf::Color::Black);
+	    tiles[y2][x2]->setRotation(0);
+	    A[y2][x2] = 3;
+	  }
+      }
+	
+      // Clear previously displayed window, draw the new positions
+		
+      w.clear();
+		      
+      for(int i = 0; i < y; i++)
+	{
+	  for(int j = 0; j < x; j++)
+	    {
+	      w.draw(*tiles[i][j]);
+	    }
+	}
+		      
+      for(auto i: obstacles)
+	i->drawTo(w);
+
+      w.display();
+    }
+    for (int i = 0; i < y; i++)
+      {
+	for (int j = 0; j < x; j++)
+	  {
+	    delete tiles[i][j];
+	  }
+      }
   } catch(std::invalid_argument& e) {
-  	std::cout << e.what() << std::endl;
+    std::cout << e.what() << std::endl;
   }
   return 0;
 }

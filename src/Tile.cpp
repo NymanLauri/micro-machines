@@ -22,9 +22,12 @@ std::shared_ptr<Tile> Tile::createGrassTile(Settings& s, size_t xCoord, size_t y
     return tile;
 }
 
-std::shared_ptr<Tile> Tile::createRoadTile(Settings& s, size_t xCoord, size_t yCoord) {
+std::shared_ptr<Tile> Tile::createRoadTile(Settings& s, size_t xCoord, size_t yCoord, int col) {
     std::shared_ptr<Tile> tile = std::make_shared<Tile>(1, s, xCoord, yCoord, 1.0);
-    tile->shape.setFillColor(sf::Color(128, 128, 128, 255));
+    if (col == 0)
+      tile->shape.setFillColor(sf::Color(128, 128, 128, 255));
+    else if (col == 1)
+      tile->shape.setFillColor(sf::Color::Red);
     return tile;
 }
 
