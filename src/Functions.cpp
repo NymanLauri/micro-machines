@@ -723,16 +723,17 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
   int x = s.screenWidth/boxwidth;
   int y = s.screenHeight/boxwidth;
   //Checkpoint counter
+  int startPointCalc = 0;
   int checkpoint = 100;
   int A[y][x]; //If 1800x1000 pixels and 180x100 tiles
   std::vector<std::shared_ptr<PhysicsObject>> obstacles;
   
   try {
-		//Writing the matrix to file level1.txt
-		std::ofstream f("./Level/level1.txt");
+		//Writing the matrix to file map1.txt
+    std::ofstream f("map4.txt");
 		if (!f)
 			throw std::invalid_argument("Error: could not open the output file.");
-		std::ifstream f2("./Level/map1.txt");
+		std::ifstream f2("./Level/level1.txt");
 		if (!f2)
 			throw std::invalid_argument("Error: could not open the input file.");
 		//Creating an empty level, x tiles wide, y tiles high
@@ -848,6 +849,7 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 					    MousePosX <= QuitButton.getPosition().x+QuitButton.getLocalBounds().width*1.2 && MousePosY >= QuitButton.getPosition().y*1.03 &&
 					    MousePosY <= QuitButton.getPosition().y+QuitButton.getLocalBounds().height*1.5) // If the user clicks on the Exit-button.
 					  {
+					    f << f2.rdbuf();
 					    for (int i = 0; i < y; i++)
 					{
 						for (int j = 0; j < x; j++)
@@ -862,6 +864,7 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 						 MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 && MousePosY >= MenuButton.getPosition().y*1.03 &&
 						 MousePosY <= MenuButton.getPosition().y+MenuButton.getLocalBounds().height*1.5) // If the user clicks on the "Main menu"-button.
 					  {
+					    f << f2.rdbuf();
 					    for (int i = 0; i < y; i++)
 					{
 						for (int j = 0; j < x; j++)
@@ -886,10 +889,59 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 			    }
 			  }
 			  break;
+			case sf::Keyboard::Space:
+			  {
+			    sf::Vector2i mpos = sf::Mouse::getPosition (w);
+			    int x2 = floor(mpos.x/boxwidth);
+			    int y2 = floor(mpos.y/boxwidth);
+			    if (startPointCalc == 0)
+			      {
+				tiles[y2][x2]->setFillColor(sf::Color(128, 128, 128, 255));
+				tiles[y2][x2]->setRotation(0);
+				A[y2][x2] = 1001;
+				startPointCalc++;
+			      }
+			    else if (startPointCalc == 1)
+			      {
+				tiles[y2][x2]->setFillColor(sf::Color(128, 128, 128, 255));
+				tiles[y2][x2]->setRotation(0);
+				A[y2][x2] = 1002;
+				startPointCalc++;
+			      }
+			    else if (startPointCalc == 2)
+			      {
+				tiles[y2][x2]->setFillColor(sf::Color(128, 128, 128, 255));
+				tiles[y2][x2]->setRotation(0);
+				A[y2][x2] = 1003;
+				startPointCalc++;
+			      }
+			    else if (startPointCalc == 3)
+			      {
+				tiles[y2][x2]->setFillColor(sf::Color(128, 128, 128, 255));
+				tiles[y2][x2]->setRotation(0);
+				A[y2][x2] = 1004;
+				startPointCalc++;
+			      }
+			  }
+			  break;
+			  case sf::Keyboard::R:
+			  {
+			    sf::Vector2i mpos = sf::Mouse::getPosition (w);
+			    int x2 = floor(mpos.x/boxwidth);
+			    int y2 = floor(mpos.y/boxwidth);
+			    if (A[y2][x2] = 1001 || A[y2][x2] == 1002 || A[y2][x2] == 1003 || A[y2][x2] == 1004)
+			      {
+				tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
+				A[y2][x2] = 0;
+				startPointCalc--;
+			      }
+			  }
+			  break;
 			case sf::Keyboard::L: //Loads matrix from the ofstream f2
 			  for(int i = 0; i < y; i++) {
 			    for(int j = 0; j < x; j++) {
 			b2BodyDef bd;
+			startPointCalc = 4;
 			bd.position.Set(j, s.worldHeight - i);
 			b2FixtureDef fd;
 			fd.friction = 0.3;
@@ -903,6 +955,18 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 			}
 			if(A[i][j] == 1){
 				tiles[i][j]->setFillColor(sf::Color(128, 128, 128, 255));
+			}
+			if(A[i][j] == 1001){
+			  tiles[i][j]->setFillColor(sf::Color(128,128,128,255));
+			}
+			if(A[i][j] == 1002){
+			  tiles[i][j]->setFillColor(sf::Color(128,128,128,255));
+			}
+			if(A[i][j] == 1003){
+			  tiles[i][j]->setFillColor(sf::Color(128,128,128,255));
+			}
+			if(A[i][j] == 1004){
+			  tiles[i][j]->setFillColor(sf::Color(128,128,128,255));
 			}
 			if(A[i][j] == 3){
 				tiles[i][j]->setFillColor(sf::Color::Black);
@@ -924,7 +988,7 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 				};
 				obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
 			}
-			/*if(A[i][j] = 11) {
+			if(A[i][j] == 11) {
 				tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
 				std::vector<std::pair<float,float>> bodyVertices = {
 				  std::make_pair(1.0, -2.0),
@@ -937,7 +1001,7 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 				  std::make_pair(2.0, -0.5)
 				};
 				obstacles.push_back(std::make_shared<PhysicsObject>(world, s, bodyVertices, bd, fd, sf::Color(50,25,0,255)));
-			}*/
+			}
 			if(A[i][j] == 12){
 				tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
 				std::vector<std::pair<float,float>> bodyVertices = {

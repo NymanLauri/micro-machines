@@ -32,6 +32,26 @@ Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
                 case 1: // Road tile
                     tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j));
                     break;
+	        case 1001:
+		  tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j));
+		  coords.push_back(s.tileWidth*i);
+		  coords.push_back(s.tileHeight*j);
+		  break;
+	        case 1002:
+		  tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j));
+		  coords.push_back(s.tileWidth*i);
+		  coords.push_back(s.tileHeight*j);
+		  break;
+		case 1003:
+		  tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j));
+		  coords.push_back(s.tileWidth*i);
+		  coords.push_back(s.tileHeight*j);
+		  break;
+		case 1004:
+		  tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j));
+		  coords.push_back(s.tileWidth*i);
+		  coords.push_back(s.tileHeight*j);
+		  break;
                 case 2: // Ice tile
                     tiles.push_back(Tile::createIceTile(s, s.tileWidth*i, s.tileHeight*j));
                     break;
@@ -166,6 +186,10 @@ void Level::createScreenBorders(b2World& world) {
     b2ChainShape screenBorders;
     screenBorders.CreateLoop(vertices, 4);
     borderBody->CreateFixture(&screenBorders, 1.0);
+}
+std::vector<int> Level::getCoords()
+{
+  return coords;
 }
 
 void Level::addCar(std::shared_ptr<Car> car) {

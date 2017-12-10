@@ -8,9 +8,11 @@
 #include "Player.hpp"
 #include "Level.hpp"
 #include "Car.hpp"
+#include "Tile.hpp"
 #include "Functions.hpp"
 #include "KeySettings.hpp"
 #include "Settings.hpp"
+#define boxwidth 10
 // How to compile: g++ -g -Wall -o game Main.cpp Functions.cpp PhysicsObject.cpp -lBox2D -IBox2D -L. -lsfml-graphics -lsfml-window -lsfml-system -std=c++11
 
 // In this function we initialize 4 players. We do not have to use them all.
@@ -45,6 +47,7 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
   std::pair <int, int> retValues;
   int retValue = -1;
   int mapValue = -1;
+  int ret = -1;
 
   // Create different kinds of texts and set the colors and positions of them.
   sf::Text ExitButton("Exit", font, 100); // Create a text "Exit".
@@ -146,8 +149,8 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 	      else if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= LevelButton.getPosition().x*1.01 && MousePosX <= LevelButton.getPosition().x+LevelButton.getLocalBounds().width*1.1 &&
 		       MousePosY >= LevelButton.getPosition().y*1.03 && MousePosY <= LevelButton.getPosition().y+LevelButton.getLocalBounds().height*1.5) // If the user clicks on the Level Editor -button
 		{
-		  int ret = EditorWindow(window, font); // Go to function EditorWindow (found in Functions.cpp) that opens a window where the user can create levels.
-		  if (ret == 1)
+		  ret = EditorWindow(window, font); // Go to function EditorWindow (found in Functions.cpp) that opens a window where the user can create levels.
+		  if (ret == 1) // Exit the game.
 		    {
 		      return 0;
 		    }
@@ -169,7 +172,7 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 	      break;
 	    }
 	}
-      window.clear(sf::Color::White); // Pain the window white.
+      window.clear(sf::Color::White); // Paint the window white.
       if (retValue == 1)
 	{
 	  break;
@@ -194,8 +197,10 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
   sf::VideoMode videomode = sf::VideoMode(1800,1000);
 
   Settings s(videomode.width, videomode.height, 180, 100);
-  int returnValue = -1;
+  int x = s.screenWidth/boxwidth;
+  int y = s.screenHeight/boxwidth;
   std::vector <Level> L;
+  int returnValue = -1;
   
   try {
     if (mapValue == 1)
@@ -219,34 +224,35 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
 	L.push_back(level);
       }
     L[0].createScreenBorders(world);
+    std::vector<int> co = L[0].getCoords();
 
     std::map <int, std::shared_ptr<Car>> PlayersAndCars;
     std::vector<Player> Players;
 
     if (retValue >= 1)
       {
-        auto car1 = std::make_shared<Car>(world, s, L[0], b2Vec2(0.12*s.worldWidth, 0.5*s.worldHeight), sf::Color::Red);
+        auto car1 = std::make_shared<Car>(world, s, L[0], b2Vec2(co[0]/boxwidth, 100-co[1]/boxwidth/*0.12*s.worldWidth, 0.5*s.worldHeight*/), sf::Color::Red);
         L[0].addCar(car1);
         PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(0, car1));
         Players.push_back(player1);
       }
     if (retValue >= 2)
       {
-        auto car2 = std::make_shared<Car>(world, s, L[0], b2Vec2(0.10*s.worldWidth, 0.5*s.worldHeight), sf::Color::Blue);
+        auto car2 = std::make_shared<Car>(world, s, L[0], b2Vec2(co[2]/boxwidth, 100-co[3]/boxwidth/*0.10*s.worldWidth, 0.5*s.worldHeight*/), sf::Color::Blue);
         L[0].addCar(car2);
         PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(1, car2));
         Players.push_back(player2);
       }
     if (retValue >= 3)
       {
-        auto car3 = std::make_shared<Car>(world, s, L[0], b2Vec2(0.08*s.worldWidth, 0.5*s.worldHeight), sf::Color::Green);
+        auto car3 = std::make_shared<Car>(world, s, L[0], b2Vec2(co[4]/boxwidth, 100-co[5]/boxwidth/*0.08*s.worldWidth, 0.5*s.worldHeight*/), sf::Color::Green);
         L[0].addCar(car3);
         PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(2, car3));
         Players.push_back(player3);
       }
     if (retValue >= 4)
       {
-        auto car4 = std::make_shared<Car>(world, s, L[0], b2Vec2(0.06*s.worldWidth, 0.5*s.worldHeight), sf::Color::Yellow);
+        auto car4 = std::make_shared<Car>(world, s, L[0], b2Vec2(co[6]/boxwidth, 100-co[7]/boxwidth/*0.06*s.worldWidth, 0.5*s.worldHeight*/), sf::Color::Yellow);
         L[0].addCar(car4);
         PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(3, car4));
         Players.push_back(player4);

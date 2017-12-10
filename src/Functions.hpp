@@ -4,6 +4,7 @@
 #include "Player.hpp"
 #include <map>
 #include <string>
+#include <vector>
 
 int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player &p3, Player &p4);
 std::pair <int, int> StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player &p3, Player &p4);
