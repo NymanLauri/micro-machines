@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+// These functions can be found in file Functions.cpp.
 int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player &p3, Player &p4);
 std::pair <int, int> StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player &p3, Player &p4);
 int EditorWindow(sf::RenderWindow &w, sf::Font fo);

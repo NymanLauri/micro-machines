@@ -32,7 +32,7 @@ int EndWindow(sf::RenderWindow &w, sf::Font f, int player_num)
   sf::Text EndText("None", f, 150);
   
   // We print the right text depending on which player has won the game.
-  if (player_num == 1)
+  if (player_num == 1) // If player 1 has won.
     {
       EndText.setString("Player 1 wins!");
     }
@@ -92,7 +92,7 @@ int EndWindow(sf::RenderWindow &w, sf::Font f, int player_num)
 	      switch(e.key.code)
 		{
 		case sf::Keyboard::Escape: // If ESC is pressed.
-		  w.close(); // Close the window
+		  w.close(); // Close the window.
 		  break;
 
 		default:
@@ -327,8 +327,8 @@ std::pair <int, int> StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Pl
 		{
 		  if (std::unique(playerKeys.begin(), playerKeys.end()) == playerKeys.end()) // If all the keys in the playerKeys-vector are unique.
 		    {
-		      returns = std::make_pair(numOfPlayers, mapNum); // We want to return the information of the number of player and the number of map.
-		      return returns; // This return value tells the menu()-function to start the game with right amount of players and in the right map..
+		      returns = std::make_pair(numOfPlayers, mapNum); // We want to return the information of the number of players and the number of map.
+		      return returns; // This return value tells the menu()-function to start the game with right amount of players and in the right map.
 		    }
 		}
 	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Lkm1.getPosition().x && MousePosX <= Lkm1.getPosition().x+Lkm1.getLocalBounds().width &&
@@ -377,7 +377,7 @@ std::pair <int, int> StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Pl
 	  if (var == 1)
 	    {
 	      returns = std::make_pair(0, 0);
-	      return returns; // When one of the values in the pair is 0, the menu()-function knows not to continue to the game()-function.
+	      return returns; // When one of the values in the pair is 0, the menu()-function knows not to call the game()-function.
 	    }
 	}
       // Refresh the screen.
@@ -731,13 +731,12 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
   // Context settings are used here to set the antialiasing level.
   sf::ContextSettings settings;
   settings.antialiasingLevel = 8;
-  //sf::RenderWindow window(sf::VideoMode(WIDTH,HEIGHT), "SFML test", sf::Style::Default, settings);
   Settings s(WIDTH, HEIGHT, 180, 100);
   //The width and height in 10x10 tiles
   int x = s.screenWidth/boxwidth;
   int y = s.screenHeight/boxwidth;
   //Checkpoint counter
-  int startPointCalc = 0;
+  int startPointCalc = 0; // This variable contains the information of how many startpoints there are in the map.
   int checkpoint = 100;
   int A[y][x]; //If 1800x1000 pixels and 180x100 tiles
   std::vector<std::shared_ptr<PhysicsObject>> obstacles;
@@ -832,16 +831,16 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 		    w.draw(MenuButton);
 		    w.display();
 		    
-		    while (w.pollEvent(event))
+		    while (w.pollEvent(event)) // Loop through events.
 		      {
-			if (event.type == sf::Event::KeyPressed)
+			if (event.type == sf::Event::KeyPressed) // If some key is pressed.
 			  {
 			    if (event.key.code == sf::Keyboard::P) // If the user presses p to continue the game.
 			      {
 				pauseVar = 1;
 				break;
 			      }
-			    else if (event.key.code == sf::Keyboard::Escape)
+			    else if (event.key.code == sf::Keyboard::Escape) // If ESC is pressed.
 			      {
 				// Free the memory allocated for the tiles.
 				for (int i = 0; i < y; i++)
@@ -945,7 +944,7 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 		sf::Vector2i mpos = sf::Mouse::getPosition (w);
 		int x2 = floor(mpos.x/boxwidth);
 		int y2 = floor(mpos.y/boxwidth);
-		if (A[y2][x2] == 1001 || A[y2][x2] == 1002 || A[y2][x2] == 1003 || A[y2][x2] == 1004)
+		if (A[y2][x2] == 1001 || A[y2][x2] == 1002 || A[y2][x2] == 1003 || A[y2][x2] == 1004) // If the mouse is on top of some starting point.
 		  {
 		    tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
 		    A[y2][x2] = 0;
@@ -1100,6 +1099,7 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 	bd.position.Set(x2, s.worldHeight - y2);
 	b2FixtureDef fd;
 	fd.friction = 0.3;
+	// We make some modifications on the tiles according to where the cursor is located and which key is pressed.
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1) && A[y2][x2] != 1001 && A[y2][x2] != 1002 && A[y2][x2] != 1003 && A[y2][x2] != 1004)
 	  {
 	    tiles[y2][x2]->setFillColor(sf::Color(0, 123, 12, 255));
@@ -1248,7 +1248,8 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
       // Clear previously displayed window, draw the new positions
 		
       w.clear();
-		      
+
+      // Draw all tiles.
       for(int i = 0; i < y; i++)
 	{
 	  for(int j = 0; j < x; j++)
@@ -1262,6 +1263,7 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 
       w.display();
     }
+    // Free the memory for all allocated tiles.
     for (int i = 0; i < y; i++)
       {
 	for (int j = 0; j < x; j++)

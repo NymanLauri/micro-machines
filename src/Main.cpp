@@ -13,7 +13,6 @@
 #include "KeySettings.hpp"
 #include "Settings.hpp"
 #define boxwidth 10
-// How to compile: g++ -g -Wall -o game Main.cpp Functions.cpp PhysicsObject.cpp -lBox2D -IBox2D -L. -lsfml-graphics -lsfml-window -lsfml-system -std=c++11
 
 // In this function we initialize 4 players. We do not have to use them all.
 int main()
@@ -37,7 +36,7 @@ int main()
 // This loop controls the menu-windows. The players are given as parameters so that we can adjust their properties.
 int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 {
-  sf::RenderWindow window(sf::VideoMode(1800, 1000),/*sf::VideoMode::getDesktopMode()*/ "Micro Machines", sf::Style::Default); // Create a window in fullscreen mode.
+  sf::RenderWindow window(sf::VideoMode(1800, 1000), "Micro Machines", sf::Style::Default); // Create a window in fullscreen mode.
   sf::Event event; // Create an event that stores the actions that the user does.
   window.setFramerateLimit(60); // Set frame limit to be 60.
   int MousePosX = 0; // This will contain the x-coordinate of the cursor.
@@ -45,9 +44,7 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
   sf::Font font;
   font.loadFromFile("Ubuntu-B.ttf"); // Load a font from a file.
   std::pair <int, int> retValues; // This is the pair that is returned from the function startWindow().
-  int retValue = -1;
-  int mapValue = -1;
-  int ret = -1;
+  int ret = -1; // This is the return value of function EditorWindow
 
   // Create different kinds of texts and set the colors and positions of them.
   sf::Text ExitButton("Exit", font, 100); // Create a text "Exit".
@@ -55,7 +52,7 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
   sf::Text StartButton("Start Game", font, 100);
   sf::Text Title("Game name here", font, 150);
   sf::Text LevelButton("Level Editor", font, 100);
-  ExitButton.setColor(sf::Color::Black); // Set the color of a text to be black.
+  ExitButton.setColor(sf::Color::Black);
   ExitButton.setPosition(window.getSize().x/2-ExitButton.getLocalBounds().width/2, window.getSize().y-ExitButton.getLocalBounds().height*2); // Set the position of a text.
   OptionsButton.setColor(sf::Color::Black);
   OptionsButton.setPosition(window.getSize().x/2-OptionsButton.getLocalBounds().width/2, window.getSize().y-OptionsButton.getLocalBounds().height*3.5);
@@ -163,7 +160,6 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 		  if (retValues.first != 0)
 		    {
 		      Game(window, font, player1, player2, player3, player4, retValues.first, retValues.second); // Go to Game-function that controls the actual game.
-		      retValue = 0;
 		    }
 		}
 	      
@@ -172,10 +168,6 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 	    }
 	}
       window.clear(sf::Color::White); // Paint the window white.
-      if (retValue == 1)
-	{
-	  break;
-	}
       // Draw different textures and display them on the screen.
       window.draw(ExitButton);
       window.draw(OptionsButton);
@@ -195,48 +187,48 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
   
   sf::VideoMode videomode = sf::VideoMode(1800,1000);
 
-  Settings s(videomode.width, videomode.height, 180, 100);
+  Settings s(videomode.width, videomode.height, 180, 100); // Create Settings s that contains information about for example the size of the window.
   int x = s.screenWidth/boxwidth;
   int y = s.screenHeight/boxwidth;
-  std::vector <Level> L;
-  int returnValue = -1;
+  std::vector <Level> L; // This vector contains one created level.
+  int returnValue = -1; // This is the return value of function EndWindow().
   
   try {
     if (mapValue == 1) // If mapValue is 1, we create level according to file map1.txt.
       {
 	Level level("map1.txt", world, s);
-	L.push_back(level);
+	L.push_back(level); // Insert this created level to the vector L.
       }
     else if (mapValue == 2)
       {
-      	Level level("map2.txt", world, s);
+      	Level level("map2.txt", world, s); // If mapValue is 2, we create level accroding to file map2.txt.
 	L.push_back(level);
       }
     else if (mapValue == 3)
       {
-	Level level("map3.txt", world, s);
+	Level level("map3.txt", world, s); // If mapValue is 3, we create level according to file map3.txt.
 	L.push_back(level);
       }
     else if (mapValue == 4)
       {
-	Level level("map4.txt", world, s);
+	Level level("map4.txt", world, s); // If mapValue is 4, we create level according to file map4.txt.
 	L.push_back(level);
       }
-    L[0].createScreenBorders(world);
-    std::vector<int> co = L[0].getCoords(); // co contains the x- and y-coordinates of all starting points of the cars.
+    L[0].createScreenBorders(world); // Create borders for the created world.
+    std::vector<int> co = L[0].getCoords(); // co contains the x- and y-coordinates of all starting points of the cars. We use these to set the initial positions of the cars.
 
     // PlayersAndCars have integer keys (such that 0-->player1, 1-->player2...) and cars as values. With this we can get the car according to the player.
     std::map <int, std::shared_ptr<Car>> PlayersAndCars;
     std::vector<Player> Players; // This vector contains the players.
 
-    if (retValue >= 1) // If retValue (= the number of players) is greater than 1, we create car1.
+    if (retValue >= 1) // If retValue (= the number of players) is greater or equal to 1, we create car1.
       {
-        auto car1 = std::make_shared<Car>(world, s, L[0], b2Vec2(co[0]/boxwidth, 100-co[1]/boxwidth), sf::Color::Red);
+        auto car1 = std::make_shared<Car>(world, s, L[0], b2Vec2(co[0]/boxwidth, 100-co[1]/boxwidth), sf::Color::Red); // Create car1, set it's position and color.
         L[0].addCar(car1); // Add car to the level.
-        PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(0, car1)); // Add the car and corresponding integer (player) to the map.
-        Players.push_back(player1); // Add player1 to the vector players.
+        PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(0, car1)); // Add the car and corresponding integer (player) to the map PlayersAndCars.
+        Players.push_back(player1); // Add player1 to the vector Players.
       }
-    if (retValue >= 2)
+    if (retValue >= 2) // If retValue is greater or equal to 2, we create car2.
       {
         auto car2 = std::make_shared<Car>(world, s, L[0], b2Vec2(co[2]/boxwidth, 100-co[3]/boxwidth), sf::Color::Blue);
         L[0].addCar(car2);
@@ -260,14 +252,14 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
       
     float timeStep = 1.0/60.0;
 
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(60); // Set the limit of the framerate to 60.
     while (window.isOpen()) {
       sf::Event event;
-      while (window.pollEvent(event)) {
-        if (event.type == sf::Event::Closed) {
+      while (window.pollEvent(event)) { // Loop through different events.
+        if (event.type == sf::Event::Closed) { // If the window is closed.
 	  window.close();
-        } else if (event.type == sf::Event::KeyPressed) {
-	  if (event.key.code == sf::Keyboard::Escape) {
+        } else if (event.type == sf::Event::KeyPressed) { // If some key is pressed.
+	  if (event.key.code == sf::Keyboard::Escape) { // If ESC is pressed.
 	    window.close();
 	  }
 	  else if (event.key.code == sf::Keyboard::P) // If the player pauses the game.
@@ -282,8 +274,8 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
 	      int pauseVar = 0; // This is a variable that controls when to exit the pause-loop.
 	      while (1) // Start the pause-loop.
 	        {
-		  int MousePosX = sf::Mouse::getPosition(window).x;
-		  int MousePosY = sf::Mouse::getPosition(window).y;
+		  int MousePosX = sf::Mouse::getPosition(window).x; // The x-coordinate of the cursor.
+		  int MousePosY = sf::Mouse::getPosition(window).y; // The y-coordinate of the cursor.
 		  if (MousePosX >= QuitButton.getPosition().x*1.01 && MousePosX <= QuitButton.getPosition().x+QuitButton.getLocalBounds().width*1.2 && MousePosY >= QuitButton.getPosition().y*1.03 &&
 		      MousePosY <= QuitButton.getPosition().y+QuitButton.getLocalBounds().height*1.5) // If the mouse is on top of the Exit-button.
 		    {
@@ -303,14 +295,14 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
 		    {
 		      MenuButton.setColor(sf::Color::White);
 		    }
-		
+
+		  // Refresh the screen.
 		  window.clear();
-		  // Draw all the player and some other textures to the screen.
 		  L[0].drawTo(window);
 		  window.draw(QuitButton);
 		  window.draw(MenuButton);
 		  window.display();
-		  while (window.pollEvent(event))
+		  while (window.pollEvent(event)) // Loop through events.
 		    {
 		      if (event.type == sf::Event::KeyPressed)
 		        {
@@ -326,7 +318,7 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
 			      break;
 			    }
 		        }
-		      else if (event.type == sf::Event::MouseButtonPressed)
+		      else if (event.type == sf::Event::MouseButtonPressed) // Is some mouse button is pressed.
 		        {
 			  if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= QuitButton.getPosition().x*1.01 &&
 			      MousePosX <= QuitButton.getPosition().x+QuitButton.getLocalBounds().width*1.2 && MousePosY >= QuitButton.getPosition().y*1.03 &&
@@ -387,6 +379,7 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
 	  PlayersAndCars.at(i)->updateMovement();
         }
       world.Step(timeStep, 8, 3);
+      // Refresh the screen.
       window.clear();
       L[0].drawTo(window);
       window.display();
