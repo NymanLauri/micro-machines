@@ -44,7 +44,7 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
   int MousePosY = 0; // This will contain the y-coordinate of the cursor.
   sf::Font font;
   font.loadFromFile("Ubuntu-B.ttf"); // Load a font from a file.
-  std::pair <int, int> retValues;
+  std::pair <int, int> retValues; // This is the pair that is returned from the function startWindow().
   int retValue = -1;
   int mapValue = -1;
   int ret = -1;
@@ -66,7 +66,6 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
   Title.setColor(sf::Color::Red);
   Title.setStyle(sf::Text::Underlined); // Set a text to be underlined.
   Title.setPosition(window.getSize().x/2-Title.getLocalBounds().width/2, window.getSize().y-Title.getLocalBounds().height*8.5);
-
   
   while (window.isOpen()) // The main loop of the menu-window.
     {
@@ -135,7 +134,7 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 	      if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= ExitButton.getPosition().x*1.01 && MousePosX <= ExitButton.getPosition().x+ExitButton.getLocalBounds().width*1.2 &&
 		  MousePosY >= ExitButton.getPosition().y*1.03 && MousePosY <= ExitButton.getPosition().y+ExitButton.getLocalBounds().height*1.5) // If the user clicks on the Exit-button.
 		{
-		  window.close();
+		  window.close(); // Close the window.
 		  break;
 		}
 	      
@@ -191,8 +190,8 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 // This function handles the actual gaming.
 int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &player2, Player &player3, Player &player4, int retValue, int mapValue)
 {
-  b2Vec2 gravity(0.0f, 0.0f);
-  b2World world(gravity);
+  b2Vec2 gravity(0.0f, 0.0f); // Create gravity, which is zero.
+  b2World world(gravity); // Create world.
   
   sf::VideoMode videomode = sf::VideoMode(1800,1000);
 
@@ -203,7 +202,7 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
   int returnValue = -1;
   
   try {
-    if (mapValue == 1)
+    if (mapValue == 1) // If mapValue is 1, we create level according to file map1.txt.
       {
 	Level level("map1.txt", world, s);
 	L.push_back(level);
@@ -224,35 +223,36 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
 	L.push_back(level);
       }
     L[0].createScreenBorders(world);
-    std::vector<int> co = L[0].getCoords();
+    std::vector<int> co = L[0].getCoords(); // co contains the x- and y-coordinates of all starting points of the cars.
 
+    // PlayersAndCars have integer keys (such that 0-->player1, 1-->player2...) and cars as values. With this we can get the car according to the player.
     std::map <int, std::shared_ptr<Car>> PlayersAndCars;
-    std::vector<Player> Players;
+    std::vector<Player> Players; // This vector contains the players.
 
-    if (retValue >= 1)
+    if (retValue >= 1) // If retValue (= the number of players) is greater than 1, we create car1.
       {
-        auto car1 = std::make_shared<Car>(world, s, L[0], b2Vec2(co[0]/boxwidth, 100-co[1]/boxwidth/*0.12*s.worldWidth, 0.5*s.worldHeight*/), sf::Color::Red);
-        L[0].addCar(car1);
-        PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(0, car1));
-        Players.push_back(player1);
+        auto car1 = std::make_shared<Car>(world, s, L[0], b2Vec2(co[0]/boxwidth, 100-co[1]/boxwidth), sf::Color::Red);
+        L[0].addCar(car1); // Add car to the level.
+        PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(0, car1)); // Add the car and corresponding integer (player) to the map.
+        Players.push_back(player1); // Add player1 to the vector players.
       }
     if (retValue >= 2)
       {
-        auto car2 = std::make_shared<Car>(world, s, L[0], b2Vec2(co[2]/boxwidth, 100-co[3]/boxwidth/*0.10*s.worldWidth, 0.5*s.worldHeight*/), sf::Color::Blue);
+        auto car2 = std::make_shared<Car>(world, s, L[0], b2Vec2(co[2]/boxwidth, 100-co[3]/boxwidth), sf::Color::Blue);
         L[0].addCar(car2);
         PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(1, car2));
         Players.push_back(player2);
       }
     if (retValue >= 3)
       {
-        auto car3 = std::make_shared<Car>(world, s, L[0], b2Vec2(co[4]/boxwidth, 100-co[5]/boxwidth/*0.08*s.worldWidth, 0.5*s.worldHeight*/), sf::Color::Green);
+        auto car3 = std::make_shared<Car>(world, s, L[0], b2Vec2(co[4]/boxwidth, 100-co[5]/boxwidth), sf::Color::Green);
         L[0].addCar(car3);
         PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(2, car3));
         Players.push_back(player3);
       }
     if (retValue >= 4)
       {
-        auto car4 = std::make_shared<Car>(world, s, L[0], b2Vec2(co[6]/boxwidth, 100-co[7]/boxwidth/*0.06*s.worldWidth, 0.5*s.worldHeight*/), sf::Color::Yellow);
+        auto car4 = std::make_shared<Car>(world, s, L[0], b2Vec2(co[6]/boxwidth, 100-co[7]/boxwidth), sf::Color::Yellow);
         L[0].addCar(car4);
         PlayersAndCars.insert (std::pair<int, std::shared_ptr<Car>>(3, car4));
         Players.push_back(player4);
@@ -354,21 +354,21 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
         }
       }
       L[0].checkpointChecker();
-      L[0].sortCars();
+      L[0].sortCars(); // Sort the cars such that the car that is leading the game is at index 0 in a list that belongs to the level.
       if(L[0].getLevelLap() > 3) {
-	if (L[0].getCar() == PlayersAndCars.at(0)) // If player 1 has won.
+	if (L[0].getCar() == PlayersAndCars.at(0)) // If the leading car belongs to player 1 and that car has completed all laps.
 	  {
 	    returnValue = EndWindow(window, font, 1);
 	  }
-	else if (L[0].getCar() == PlayersAndCars.at(1)) // If Player 2 has won.
+	else if (L[0].getCar() == PlayersAndCars.at(1)) // If the leading car belongs to player 2 and that car has completed all laps.
 	  {
 	    returnValue = EndWindow(window, font, 2);
 	  }
-	else if (L[0].getCar() == PlayersAndCars.at(2)) // If player 3 has won.
+	else if (L[0].getCar() == PlayersAndCars.at(2)) // If the leading car belongs to player 3 and that car has completed all laps.
 	  {
 	    returnValue = EndWindow(window, font, 3);
 	  }
-	else if (L[0].getCar() == PlayersAndCars.at(3)) // If player 4 has won.
+	else if (L[0].getCar() == PlayersAndCars.at(3)) // If the leading car belongs to player 4 and that car has completed all laps.
 	  {
 	    returnValue == EndWindow(window, font, 4);
 	  }
@@ -377,8 +377,9 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
 	    return 0;
 	  }
       }
-      for (int i = 0; i < Players.size(); ++i)
-        {	
+      for (int i = 0; i < Players.size(); ++i) // Loop through all the player in the vector players.
+        {
+	  // If some key is pressed and that key is some control of player Players[i], apply force to the car associated with that player using the map PlayersAndCars.
 	  if (sf::Keyboard::isKeyPressed(Players[i].getKeys().up)) PlayersAndCars.at(i)->accelerate();
 	  if (sf::Keyboard::isKeyPressed(Players[i].getKeys().down)) PlayersAndCars.at(i)->decelerate();
 	  if (sf::Keyboard::isKeyPressed(Players[i].getKeys().left)) PlayersAndCars.at(i)->turnLeft();

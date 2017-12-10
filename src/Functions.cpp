@@ -21,8 +21,8 @@
 // This window opens, when somebody wins the game.
 int EndWindow(sf::RenderWindow &w, sf::Font f, int player_num)
 {
-  w.setFramerateLimit(60);
-  int var = 0;
+  w.setFramerateLimit(60); // Set the limit of the framerate to be 60.
+  // Define some variables.
   int MousePosX = 0;
   int MousePosY = 0;
   sf::Event e;
@@ -30,6 +30,7 @@ int EndWindow(sf::RenderWindow &w, sf::Font f, int player_num)
   sf::Text MenuButton("Main Menu", f, 100);
   sf::Text ExitButton("Exit", f, 100);
   sf::Text EndText("None", f, 150);
+  
   // We print the right text depending on which player has won the game.
   if (player_num == 1)
     {
@@ -54,10 +55,11 @@ int EndWindow(sf::RenderWindow &w, sf::Font f, int player_num)
   MenuButton.setPosition(w.getSize().x/6-MenuButton.getLocalBounds().width/2, w.getSize().y-MenuButton.getLocalBounds().height*2.5);
   ExitButton.setPosition(w.getSize().x/1.15-ExitButton.getLocalBounds().width/2, w.getSize().y-ExitButton.getLocalBounds().height*2.5);
   EndText.setPosition(w.getSize().x/2-EndText.getLocalBounds().width/2, w.getSize().y/2-EndText.getLocalBounds().height/2);
+  
   while (w.isOpen()) // The actual game loop that controls all the events done by the user.
     {
-      MousePosX = sf::Mouse::getPosition(w).x;
-      MousePosY = sf::Mouse::getPosition(w).y;
+      MousePosX = sf::Mouse::getPosition(w).x; // MousePosX contains the x-coordinate of the cursor.
+      MousePosY = sf::Mouse::getPosition(w).y; // MousePosY contains the y-coordinate of the cursor.
       if (MousePosX >= MenuButton.getPosition().x*1.01 && MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 && MousePosY >= MenuButton.getPosition().y*1.03 &&
 	  MousePosY <= MenuButton.getPosition().y+MenuButton.getLocalBounds().height*1.5) // If the mouse is on top of the "Main menu"-button.
 	{
@@ -77,7 +79,8 @@ int EndWindow(sf::RenderWindow &w, sf::Font f, int player_num)
 	{
 	  ExitButton.setColor(sf::Color::Black);
 	}
-      while (w.pollEvent(e)) // Loop through all events.
+      
+      while (w.pollEvent(e)) // Loop through different events.
 	{
 	  switch (e.type)
 	    {
@@ -89,19 +92,18 @@ int EndWindow(sf::RenderWindow &w, sf::Font f, int player_num)
 	      switch(e.key.code)
 		{
 		case sf::Keyboard::Escape: // If ESC is pressed.
-		  w.close();
+		  w.close(); // Close the window
 		  break;
 
 		default:
 		  break;
 		}
 
-	    case sf::Event::MouseButtonPressed:
+	    case sf::Event::MouseButtonPressed: // If mouse button is pressed.
 	      if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= MenuButton.getPosition().x*1.01 && MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 &&
 		  MousePosY >= MenuButton.getPosition().y*1.03 && MousePosY <= MenuButton.getPosition().y+MenuButton.getLocalBounds().height*1.5) // If the user clicks on the "Main menu"-button.
 		{
-		  var = 1; // This variable controls when to exit this function.
-		  break;
+		  return 1; // When 1 returned, the game()-function knows to return back to the menu()-function.
 		}
 	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= ExitButton.getPosition().x && MousePosX <= ExitButton.getPosition().x+ExitButton.getLocalBounds().width*1.3 &&
 		       MousePosY >= ExitButton.getPosition().y*1.03 && MousePosY <= ExitButton.getPosition().y+ExitButton.getLocalBounds().height*1.5) // If the user clicks on the Exit-button.
@@ -111,10 +113,6 @@ int EndWindow(sf::RenderWindow &w, sf::Font f, int player_num)
 		}
 	    default:
 	      break;
-	    }
-	  if (var == 1)
-	    {
-	      return 1;
 	    }
 	}
       // Refresh the screen.
@@ -127,21 +125,23 @@ int EndWindow(sf::RenderWindow &w, sf::Font f, int player_num)
   return 0;
 }
 
+// We enter this function when "start game"-button is pressed in the first menu-screen.
 std::pair <int, int> StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player &p3, Player &p4)
 {
-  w.setFramerateLimit(60);
+  w.setFramerateLimit(60); // Set the limit of the frame rate to be 60.
   // Create a vector playerKeys that contains keys of all the players. This is used to check that all keys are unqiue, that is, that many players do not try to use same keys.
   std::vector<sf::Keyboard::Key> playerKeys {p1.getKeys().up, p1.getKeys().down, p1.getKeys().left, p1.getKeys().right, p2.getKeys().up, p2.getKeys().down, p2.getKeys().left,
       p2.getKeys().right, p3.getKeys().up, p3.getKeys().down, p3.getKeys().left, p3.getKeys().right, p4.getKeys().up, p4.getKeys().down, p4.getKeys().left, p4.getKeys().right};
   std::sort(playerKeys.begin(), playerKeys.end()); // Sort the vectror playerKeys.
+  // Create some variables.
   int var = 0;
-  std::pair<int, int> returns;
-  int numOfPlayers = 1;
-  int mapNum = 1;
+  std::pair<int, int> returns; // This pair is returned by this function.
+  int numOfPlayers = 1; // This variable will contain the amount of players in the game.
+  int mapNum = 1; // This variable will contain the information of which map we will use.
   int MousePosX = 0;
   int MousePosY = 0;
   sf::Event e;
-  // Create some texts and set their color and locations.
+  // Create some texts and set their colors and locations.
   sf::Text ReturnButton("Main Menu", f, 100);
   sf::Text ExitButton("Exit", f, 100);
   sf::Text StartButton("Start", f, 100);
@@ -184,8 +184,8 @@ std::pair <int, int> StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Pl
 
   while (w.isOpen()) // The actual game loop that controls all the events done by the user.
     {
-      MousePosX = sf::Mouse::getPosition(w).x;
-      MousePosY = sf::Mouse::getPosition(w).y;
+      MousePosX = sf::Mouse::getPosition(w).x; // The x-coordinate of the cursor.
+      MousePosY = sf::Mouse::getPosition(w).y; // The y-coordinate of the cursor.
       if (MousePosX >= ReturnButton.getPosition().x*1.01 && MousePosX <= ReturnButton.getPosition().x+ReturnButton.getLocalBounds().width*1.1 && MousePosY >= ReturnButton.getPosition().y*1.03 &&
 	  MousePosY <= ReturnButton.getPosition().y+ReturnButton.getLocalBounds().height*1.5) // If the mouse is on top of the "Main menu"-button.
 	{
@@ -309,7 +309,7 @@ std::pair <int, int> StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Pl
 		  break;
 		}
 
-	    case sf::Event::MouseButtonPressed:
+	    case sf::Event::MouseButtonPressed: // If some mouse button is pressed.
 	      if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= ReturnButton.getPosition().x*1.01 && MousePosX <= ReturnButton.getPosition().x+ReturnButton.getLocalBounds().width*1.1 &&
 		  MousePosY >= ReturnButton.getPosition().y*1.03 && MousePosY <= ReturnButton.getPosition().y+ReturnButton.getLocalBounds().height*1.5) // If the user clicks on the "Main menu"-button.
 		{
@@ -327,32 +327,28 @@ std::pair <int, int> StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Pl
 		{
 		  if (std::unique(playerKeys.begin(), playerKeys.end()) == playerKeys.end()) // If all the keys in the playerKeys-vector are unique.
 		    {
-		      returns = std::make_pair(numOfPlayers, mapNum);
-		      return returns; // This return value tells the menu()-function to start the game with right amount of players.
+		      returns = std::make_pair(numOfPlayers, mapNum); // We want to return the information of the number of player and the number of map.
+		      return returns; // This return value tells the menu()-function to start the game with right amount of players and in the right map..
 		    }
 		}
 	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Lkm1.getPosition().x && MousePosX <= Lkm1.getPosition().x+Lkm1.getLocalBounds().width &&
 		       MousePosY >= Lkm1.getPosition().y*1.03 && MousePosY <= Lkm1.getPosition().y+Lkm1.getLocalBounds().height*1.5) // If the user clicks on 1 under "Number of players".
 		{
-		  Lkm1.setColor(sf::Color::Red);
 		  numOfPlayers = 1;
 		}
 	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Lkm2.getPosition().x && MousePosX <= Lkm2.getPosition().x+Lkm2.getLocalBounds().width &&
 		       MousePosY >= Lkm2.getPosition().y*1.03 && MousePosY <= Lkm2.getPosition().y+Lkm2.getLocalBounds().height*1.5) // If the user clicks on 2 under "Number of players".
 		{
-		  Lkm2.setColor(sf::Color::Red);
 		  numOfPlayers = 2;
 		}
 	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Lkm3.getPosition().x && MousePosX <= Lkm3.getPosition().x+Lkm3.getLocalBounds().width &&
 		       MousePosY >= Lkm3.getPosition().y*1.03 && MousePosY <= Lkm3.getPosition().y+Lkm3.getLocalBounds().height*1.5) // If the user clicks on 3 under "Number of players".
 		{
-		  Lkm3.setColor(sf::Color::Red);
 		  numOfPlayers = 3;
 		}
 	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Lkm4.getPosition().x && MousePosX <= Lkm4.getPosition().x+Lkm4.getLocalBounds().width &&
 		       MousePosY >= Lkm4.getPosition().y*1.03 && MousePosY <= Lkm4.getPosition().y+Lkm4.getLocalBounds().height*1.5) // If the user clicks on 4 under "Number of players".
 		{
-		  Lkm4.setColor(sf::Color::Red);
 		  numOfPlayers = 4;
 		}
 	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= Map1.getPosition().x && MousePosX <= Map1.getPosition().x+Map1.getLocalBounds().width &&
@@ -381,7 +377,7 @@ std::pair <int, int> StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Pl
 	  if (var == 1)
 	    {
 	      returns = std::make_pair(0, 0);
-	      return returns;
+	      return returns; // When one of the values in the pair is 0, the menu()-function knows not to continue to the game()-function.
 	    }
 	}
       // Refresh the screen.
@@ -401,18 +397,20 @@ std::pair <int, int> StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Pl
       w.draw(Map4);
       w.display();
     }
-  returns = std::make_pair(-1, -1);
+  returns = std::make_pair(0, 0);
   return returns;
 }
+
 // We will enter this function when the user clicks on the Options-button in the first menu-screen.
 int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Player &p3, Player &p4)
 {
-  w.setFramerateLimit(60);
+  w.setFramerateLimit(60); // Set the limit of the frame rate to be 60.
+  // Define some variables.
   int var = 0;
   int MousePosX = 0;
   int MousePosY = 0;
   sf::Event e;
-  // This is a map contains some keyboard keys paired with the corrsedponding std::string.
+  // This is a map that contains some keyboard keys paired with the corrsedponding std::string. Only these keys can be used as controls of players.
   std::map <sf::Keyboard::Key, std::string> Keys{{sf::Keyboard::Q, "Q"}, {sf::Keyboard::W, "W"}, {sf::Keyboard::E, "E"}, {sf::Keyboard::R, "R"}, {sf::Keyboard::T, "T"},
 					         {sf::Keyboard::Y, "Y"}, {sf::Keyboard::U, "U"}, {sf::Keyboard::I, "I"}, {sf::Keyboard::O, "O"}, {sf::Keyboard::P, "P"},
 						 {sf::Keyboard::A, "A"}, {sf::Keyboard::S, "S"}, {sf::Keyboard::D, "D"}, {sf::Keyboard::F, "F"}, {sf::Keyboard::G, "G"},
@@ -502,13 +500,13 @@ int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Playe
   p4left.setPosition(w.getSize().x/1.2-p4left.getLocalBounds().width/2, w.getSize().y/2.25);
   p4right.setPosition(w.getSize().x/1.2-p4right.getLocalBounds().width/2, w.getSize().y/1.75);
   std::vector<sf::Text> Texts {p1up, p1down, p1left, p1right, p2up, p2down, p2left, p2right,
-      p3up, p3down, p3left, p3right, p4up, p4down, p4left, p4right}; // This vector contains some texts so that they are easier to draw.
+      p3up, p3down, p3left, p3right, p4up, p4down, p4left, p4right}; // This vector contains some texts so that they are "easier" to draw.
 
 
   while (w.isOpen()) // This is the actual game loop.
     {
-      MousePosX = sf::Mouse::getPosition(w).x;
-      MousePosY = sf::Mouse::getPosition(w).y;
+      MousePosX = sf::Mouse::getPosition(w).x; // The x-coordinate of the cursor.
+      MousePosY = sf::Mouse::getPosition(w).y; // The y-coordinate of the cursor.
       for (auto it = Texts.begin(); it != Texts.end(); ++it) // Iterate through the vector Texts.
 	{
 	  if (MousePosX >= it->getPosition().x && MousePosX <= it->getPosition().x+it->getLocalBounds().width && MousePosY >= it->getPosition().y*1.03 &&
@@ -544,7 +542,7 @@ int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Playe
 	{
 	  switch (e.type)
 	    {
-	    case sf::Event::Closed:
+	    case sf::Event::Closed: // The window is closed.
 	      w.close();
 	      break;
 
@@ -559,7 +557,7 @@ int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Playe
 		  break;
 		}
 
-	    case sf::Event::MouseButtonPressed:
+	    case sf::Event::MouseButtonPressed: // If some mouse button is pressed.
 	      if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= ReturnButton.getPosition().x*1.01 && MousePosX <= ReturnButton.getPosition().x+ReturnButton.getLocalBounds().width*1.1 &&
 		  MousePosY >= ReturnButton.getPosition().y*1.03 && MousePosY <= ReturnButton.getPosition().y+ReturnButton.getLocalBounds().height*1.5) // If the user clicks on the "Main menu"-button.
 		{
@@ -569,15 +567,15 @@ int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Playe
 	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= ExitButton.getPosition().x && MousePosX <= ExitButton.getPosition().x+ExitButton.getLocalBounds().width*1.3 &&
 		       MousePosY >= ExitButton.getPosition().y*1.03 && MousePosY <= ExitButton.getPosition().y+ExitButton.getLocalBounds().height*1.5) // If the user clicks on the Exit-button.
 		{
-		  w.close();
+		  w.close(); // Close the window.
 		  break;
 		}
 	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1up.getPosition().x && MousePosX <= p1up.getPosition().x+p1up.getLocalBounds().width &&
 		       MousePosY >= p1up.getPosition().y*1.03 && MousePosY <= p1up.getPosition().y+p1up.getLocalBounds().height*1.5) // If the user clicks on the up-key of player 1.
 		{
-		  p1up.setColor(sf::Color::Blue);
-		  WaitForKey(w, p1, 1, Keys); // Go to function WaitForKey (found bottom of this file).
-		  p1up.setString(Keys.at(p1.getKeys().up)); // Set the string of the pressed key to be drawn on the window in place of corresponding key.
+		  p1up.setColor(sf::Color::Blue); // Set the color of this button to be blue.
+		  WaitForKey(w, p1, 1, Keys); // Go to function WaitForKey (found bottom of this file). In this function we wait until the user clicks on some keyboard key.
+		  p1up.setString(Keys.at(p1.getKeys().up)); // Set the string of the pressed key to be drawn on the window in place of corresponding key. Here we use the map "Keys" defined earlier.
 		  Texts[0] = p1up; // Insert the new key to the vector Texts.
 		}
 	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p1down.getPosition().x && MousePosX <= p1down.getPosition().x+p1down.getLocalBounds().width &&
@@ -604,7 +602,8 @@ int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Playe
 		  p1right.setString(Keys.at(p1.getKeys().right));
 		  Texts[3] = p1right;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2up.getPosition().x && MousePosX <= p2up.getPosition().x+p2up.getLocalBounds().width && MousePosY >= p2up.getPosition().y*1.03 && MousePosY <= p2up.getPosition().y+p2up.getLocalBounds().height*1.5) // If the user clicks on the up-key of player 2.
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p2up.getPosition().x && MousePosX <= p2up.getPosition().x+p2up.getLocalBounds().width &&
+		       MousePosY >= p2up.getPosition().y*1.03 && MousePosY <= p2up.getPosition().y+p2up.getLocalBounds().height*1.5) // If the user clicks on the up-key of player 2.
 		{
 		  p2up.setColor(sf::Color::Blue);
 		  WaitForKey(w, p2, 1, Keys);
@@ -643,7 +642,8 @@ int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Playe
 		  p3up.setString(Keys.at(p3.getKeys().up));
 		  Texts[8] = p3up;
 		}
-	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3down.getPosition().x && MousePosX <= p3down.getPosition().x+p3down.getLocalBounds().width && MousePosY >= p3down.getPosition().y*1.03 && MousePosY <= p3down.getPosition().y+p3down.getLocalBounds().height*1.5) // If the user clicks on the down-key of player 3.
+	      else if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= p3down.getPosition().x && MousePosX <= p3down.getPosition().x+p3down.getLocalBounds().width &&
+		       MousePosY >= p3down.getPosition().y*1.03 && MousePosY <= p3down.getPosition().y+p3down.getLocalBounds().height*1.5) // If the user clicks on the down-key of player 3.
 		{
 		  p3down.setColor(sf::Color::Blue);
 		  WaitForKey(w, p3, 2, Keys);
@@ -757,7 +757,7 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 	  }
       }
 
-    w.setFramerateLimit(60); // Set fps to be 200.
+    w.setFramerateLimit(60); // Set fps to be 60.
 
     b2Vec2 gravity(0.f, 0.0f); // Define gravity, in this case it will be zero.
     b2World world(gravity); // Define world.
@@ -772,17 +772,17 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
       // Event loop handles all events which have occurred.
 	
 	
-      while (w.pollEvent(event)) {
+      while (w.pollEvent(event)) { // Loop through different events.
 	switch (event.type) {
-	case sf::Event::Closed:{
+	case sf::Event::Closed:{ // If window is closed.
 	  w.close();
 	  break;
-	  case sf::Event::KeyPressed:
+	  case sf::Event::KeyPressed: // If some keyboard key is pressed.
 	    switch (event.key.code) {
-	    case sf::Keyboard::Escape:
-	      w.close();
+	    case sf::Keyboard::Escape: // If ESC is pressed.
+	      w.close(); // Close the window.
 	      break;
-	    case sf::Keyboard::P:
+	    case sf::Keyboard::P: // If P is pressed, we pause the editor.
 	      {
 		// Create some texts and set their positions etc.
 		sf::Text QuitButton("Exit", fo, 80);
@@ -792,18 +792,19 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 		QuitButton.setPosition(w.getSize().x/2-QuitButton.getLocalBounds().width/2, w.getSize().y-QuitButton.getLocalBounds().height*4);
 		MenuButton.setPosition(w.getSize().x/2-MenuButton.getLocalBounds().width/2, w.getSize().y-MenuButton.getLocalBounds().height*7);
 		int pauseVar = 0; // This is a variable that controls when to exit the pause-loop.
+		
 		while (1) // Start the pause-loop.
 		  {
-		    int MousePosX = sf::Mouse::getPosition(w).x;
-		    int MousePosY = sf::Mouse::getPosition(w).y;
+		    int MousePosX = sf::Mouse::getPosition(w).x; // X-coordinate of the cursor.
+		    int MousePosY = sf::Mouse::getPosition(w).y; // Y-coordinate of the cursor.
 		    if (MousePosX >= QuitButton.getPosition().x*1.01 && MousePosX <= QuitButton.getPosition().x+QuitButton.getLocalBounds().width*1.2 && MousePosY >= QuitButton.getPosition().y*1.03 &&
 			MousePosY <= QuitButton.getPosition().y+QuitButton.getLocalBounds().height*1.5) // If the mouse is on top of the Exit-button.
 		      {
-			QuitButton.setColor(sf::Color::Blue);
+			QuitButton.setColor(sf::Color::Blue); // Set the color of this button to be blue.
 		      }
 		    else
 		      {
-			QuitButton.setColor(sf::Color::White);
+			QuitButton.setColor(sf::Color::White); // Set the color of this button to be white.
 		      }
 				
 		    if (MousePosX >= MenuButton.getPosition().x*1.01 && MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 && MousePosY >= MenuButton.getPosition().y*1.03 &&
@@ -816,7 +817,8 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 			MenuButton.setColor(sf::Color::White);
 		      }
 				
-		    w.clear();
+		    w.clear(); // Clear the window.
+		    // Draw all the tiles to the screen.
 		    for(int i = 0; i < y; i++)
 		      {
 			for(int j = 0; j < x; j++)
@@ -824,11 +826,12 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 			    w.draw(*tiles[i][j]);
 			  }
 		      }
-		    for(auto i: obstacles)
+		    for(auto i: obstacles) // Draw all the obstacles to the screen.
 		      i->drawTo(w);
 		    w.draw(QuitButton);
 		    w.draw(MenuButton);
 		    w.display();
+		    
 		    while (w.pollEvent(event))
 		      {
 			if (event.type == sf::Event::KeyPressed)
@@ -840,6 +843,7 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 			      }
 			    else if (event.key.code == sf::Keyboard::Escape)
 			      {
+				// Free the memory allocated for the tiles.
 				for (int i = 0; i < y; i++)
 				  {
 				    for (int j = 0; j < x; j++)
@@ -850,12 +854,13 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 				return 1;
 			      }
 			  }
-			else if (event.type == sf::Event::MouseButtonPressed)
+			else if (event.type == sf::Event::MouseButtonPressed) // If some mouse button is pressed.
 			  {
 			    if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= QuitButton.getPosition().x*1.01 &&
 				MousePosX <= QuitButton.getPosition().x+QuitButton.getLocalBounds().width*1.2 && MousePosY >= QuitButton.getPosition().y*1.03 &&
 				MousePosY <= QuitButton.getPosition().y+QuitButton.getLocalBounds().height*1.5) // If the user clicks on the Exit-button.
 			      {
+				// Free the memory allocated for the tiles.
 				for (int i = 0; i < y; i++)
 				  {
 				    for (int j = 0; j < x; j++)
@@ -870,6 +875,7 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 				     MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 && MousePosY >= MenuButton.getPosition().y*1.03 &&
 				     MousePosY <= MenuButton.getPosition().y+MenuButton.getLocalBounds().height*1.5) // If the user clicks on the "Main menu"-button.
 			      {
+				// Free the memory allocated for the tiles.
 				for (int i = 0; i < y; i++)
 				  {
 				    for (int j = 0; j < x; j++)
@@ -899,33 +905,33 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 	      }
 	    }
 	      break;
-	    case sf::Keyboard::Space:
+	    case sf::Keyboard::Space: // The user can set starting points for the cars by pressing space.
 	      {
 		sf::Vector2i mpos = sf::Mouse::getPosition (w);
-		int x2 = floor(mpos.x/boxwidth);
-		int y2 = floor(mpos.y/boxwidth);
-		if (startPointCalc == 0)
+		int x2 = floor(mpos.x/boxwidth); // X-position of the cursor.
+		int y2 = floor(mpos.y/boxwidth); // Y-position of the cursor.
+		if (startPointCalc == 0) // If 0 starting points are already in the map.
 		  {
 		    tiles[y2][x2]->setFillColor(sf::Color::Red);
 		    tiles[y2][x2]->setRotation(0);
 		    A[y2][x2] = 1001;
 		    startPointCalc++;
 		  }
-		else if (startPointCalc == 1)
+		else if (startPointCalc == 1) // If 1 starting point is already in the map.
 		  {
 		    tiles[y2][x2]->setFillColor(sf::Color::Red);
 		    tiles[y2][x2]->setRotation(0);
 		    A[y2][x2] = 1002;
 		    startPointCalc++;
 		  }
-		else if (startPointCalc == 2)
+		else if (startPointCalc == 2) // If 2 starting points are already in the map.
 		  {
 		    tiles[y2][x2]->setFillColor(sf::Color::Red);
 		    tiles[y2][x2]->setRotation(0);
 		    A[y2][x2] = 1003;
 		    startPointCalc++;
 		  }
-		else if (startPointCalc == 3)
+		else if (startPointCalc == 3) // If 3 starting point are already in the map.
 		  {
 		    tiles[y2][x2]->setFillColor(sf::Color::Red);
 		    tiles[y2][x2]->setRotation(0);
@@ -934,7 +940,7 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 		  }
 	      }
 	      break;
-	    case sf::Keyboard::R:
+	    case sf::Keyboard::R: // By pressing R the user can remove starting point.
 	      {
 		sf::Vector2i mpos = sf::Mouse::getPosition (w);
 		int x2 = floor(mpos.x/boxwidth);
@@ -960,6 +966,7 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 		  fd.friction = 0.3;
 		  if(!(f2 >> A[i][j]))
 		    throw std::invalid_argument("Error reading from the file.");
+		  // Read the value of a cell in the matrix and according to that value set the color of a tile / create physics objects.
 		  if(A[i][j] == 0){
 		    tiles[i][j]->setFillColor(sf::Color(0, 123, 12, 255));
 		  }
