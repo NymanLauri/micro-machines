@@ -1,11 +1,11 @@
 #include <SFML/Graphics.hpp>
 #include "Box2D/Box2D.h"
-#include <iostream>
 #include <cmath>
 #include <string>
 #include <map>
 #include <vector>
 #include <algorithm>
+#include <iostream>
 #include "fstream"
 #include "Player.hpp"
 #include "KeySettings.hpp"

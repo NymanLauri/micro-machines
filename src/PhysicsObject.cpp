@@ -1,7 +1,6 @@
 #include "PhysicsObject.hpp"
 #include "Settings.hpp"
 #include "Constants.hpp"
-#include <iostream>
 
 // Constructor for circle shapes.
 PhysicsObject::PhysicsObject(b2World& world, const Settings& s, float32 radius, b2BodyDef bodyDef, b2FixtureDef fixtureDef, sf::Color color) : s(s) {

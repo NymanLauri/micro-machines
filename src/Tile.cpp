@@ -1,6 +1,6 @@
 #include "Tile.hpp"
 
-Tile::Tile(const int tileNum, Settings& s, size_t xCoord, size_t yCoord, const float fm) : tileNum(tileNum), frictionMultiplier(fm) {
+Tile::Tile(const int tileNum, Settings& s, size_t xCoord, size_t yCoord, const float fm) : tileNum(tileNum), frictionMultiplier(fm) { // The tile constructor.
     shape = sf::RectangleShape(sf::Vector2f(s.tileWidth, s.tileHeight));
     shape.setPosition(xCoord, yCoord);
 }
@@ -16,7 +16,7 @@ float Tile::getFrictionMultiplier() const {
     return frictionMultiplier;
 }
 
-std::shared_ptr<Tile> Tile::createGrassTile(Settings& s, size_t xCoord, size_t yCoord) {
+std::shared_ptr<Tile> Tile::createGrassTile(Settings& s, size_t xCoord, size_t yCoord) { // This creates a tile for grass.
     std::shared_ptr<Tile> tile = std::make_shared<Tile>(0, s, xCoord, yCoord, 5.0);
     tile->shape.setFillColor(sf::Color(0, 123, 12, 255));
     return tile;

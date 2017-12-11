@@ -1,9 +1,8 @@
 #include "Car.hpp"
 #include "Settings.hpp"
 #include "Constants.hpp"
-#include <iostream>
 #include <algorithm>
-Car::Car(b2World& world, const Settings& s, Level& l, b2Vec2 position, sf::Color color) : s(s), level(l) {
+Car::Car(b2World& world, const Settings& s, Level& l, b2Vec2 position, sf::Color color) : s(s), level(l) { // The constructor of the Car-class.
     // Create the body of the car.
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
@@ -62,7 +61,7 @@ void Car::decelerate() {
     }
 }
 
-void Car::turnLeft() {
+void Car::turnLeft() { // Turn the car to the left.
     turning = true;
     for (size_t i = 0; i < 2; i++) {
         b2RevoluteJoint* joint = tireJoints.at(i);
@@ -75,7 +74,7 @@ void Car::turnLeft() {
     }
 }
 
-void Car::turnRight() {
+void Car::turnRight() { // Turn the car to the right.
     turning = true;
     for (size_t i = 0; i < 2; i++) {
         b2RevoluteJoint* joint = tireJoints.at(i);
@@ -105,13 +104,14 @@ void Car::updateMovement() {
     }
 }
 
-void Car::drawTo(sf::RenderWindow& window) {
+void Car::drawTo(sf::RenderWindow& window) { // Draw the car to the game window.
     bodyObject->drawTo(window);
     for (auto it : tires) {
         it.drawTo(window);
     }
 }
 
+// This function is used to tell the program that a car has passed a certain checkpoint.
 void Car::addCheckpoint(unsigned int checkpoint, unsigned int numLevelCheckpoints){
   if(std::find(this->checkpoints.begin(), this->checkpoints.end(), checkpoint) != this->checkpoints.end()){
     

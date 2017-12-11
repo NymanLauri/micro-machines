@@ -1,8 +1,8 @@
-#include <iostream>
 #include "Box2D/Box2D.h"
 #include <SFML/Graphics.hpp>
 #include "PhysicsObject.hpp"
 #include <cmath>
+#include <iostream>
 #include <vector>
 #include <map>
 #include "Player.hpp"

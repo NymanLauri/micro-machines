@@ -12,7 +12,6 @@ Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
     size_t x = static_cast<int>(s.worldWidth);
     size_t y = static_cast<int>(s.worldHeight);
     std::ifstream levelFile(levelFileName);
-    //std::ifstream levelFile("./Level/level1.txt");
     if (!levelFile)
       throw std::invalid_argument("Could not open the level: " + levelFileName );
     for (size_t j = 0; j < y; j++) {
@@ -32,22 +31,22 @@ Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
                 case 1: // Road tile
 		  tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j, 0));
                     break;
-	        case 1001:
+	        case 1001: // Tile for starting point of car 1.
+		  tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j, 1));
+		  coords.push_back(s.tileWidth*i); // Coords-vector contains the starting points of all the cars.
+		  coords.push_back(s.tileHeight*j);
+		  break;
+	        case 1002: // Tile for starting point of car 2.
 		  tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j, 1));
 		  coords.push_back(s.tileWidth*i);
 		  coords.push_back(s.tileHeight*j);
 		  break;
-	        case 1002:
+	        case 1003: // Tile for starting point of car 3.
 		  tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j, 1));
 		  coords.push_back(s.tileWidth*i);
 		  coords.push_back(s.tileHeight*j);
 		  break;
-		case 1003:
-		  tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j, 1));
-		  coords.push_back(s.tileWidth*i);
-		  coords.push_back(s.tileHeight*j);
-		  break;
-		case 1004:
+	        case 1004: // Tile for starting point of car 4.
 		  tiles.push_back(Tile::createRoadTile(s, s.tileWidth*i, s.tileHeight*j, 1));
 		  coords.push_back(s.tileWidth*i);
 		  coords.push_back(s.tileHeight*j);
@@ -187,16 +186,16 @@ void Level::createScreenBorders(b2World& world) {
     screenBorders.CreateLoop(vertices, 4);
     borderBody->CreateFixture(&screenBorders, 1.0);
 }
-std::vector<int> Level::getCoords()
+std::vector<int> Level::getCoords() // Return the vector containing the starting points of cars.
 {
   return coords;
 }
 
-void Level::addCar(std::shared_ptr<Car> car) {
+void Level::addCar(std::shared_ptr<Car> car) { // Add car to a vector containing all the cars.
     cars.push_back(car);
 }
 
-void Level::addObstacle(std::shared_ptr<PhysicsObject> obstacle) {
+void Level::addObstacle(std::shared_ptr<PhysicsObject> obstacle) { // Add obstacle to a vector containing all obstacles.
     obstacles.push_back(obstacle);
 }
 
@@ -247,11 +246,11 @@ void Level::sortCars() {
     });
 }
 
-int Level::getLevelLap() {
+int Level::getLevelLap() { // Return the lap on which the leading car is.
   return this->cars.at(0)->getLap();
 }
 
-std::shared_ptr<Car> Level::getCar()
+std::shared_ptr<Car> Level::getCar() // Return the leading car.
 {
   return this->cars.at(0);
 }

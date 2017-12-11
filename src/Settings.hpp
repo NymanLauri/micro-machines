@@ -1,3 +1,5 @@
+/* Class for storing information about for example the dimensions of the world. Contains also coefficients for transoforming between meters and pixels. */
+
 #ifndef SETTINGS_HPP
 #define SETTINGS_HPP
 

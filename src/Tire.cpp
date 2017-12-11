@@ -1,7 +1,7 @@
 #include "Tire.hpp"
 #include "Settings.hpp"
 
-Tire::Tire(b2World& world, const Settings& s, Level& l, b2Vec2 position) : s(s), level(l) {
+Tire::Tire(b2World& world, const Settings& s, Level& l, b2Vec2 position) : s(s), level(l) { // The constructor for Tire.
     b2BodyDef tireBodyDef;
     tireBodyDef.type = b2_dynamicBody;
     tireBodyDef.position = position;
@@ -11,11 +11,11 @@ Tire::Tire(b2World& world, const Settings& s, Level& l, b2Vec2 position) : s(s),
     tireObject = std::make_shared<PhysicsObject>(world, s, b2Vec2(0.25, 0.75), tireBodyDef, tireFixtureDef, sf::Color::Black);
 }
 
-void Tire::drawTo(sf::RenderWindow& window) {
+void Tire::drawTo(sf::RenderWindow& window) { // Used for drawing a tire to the screen.
     tireObject->drawTo(window);
 }
 
-b2Body* const Tire::getBody() const {
+b2Body* const Tire::getBody() const { // Return the body a tire.
     return tireObject->getBody();
 }
 

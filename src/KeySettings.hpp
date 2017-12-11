@@ -3,7 +3,7 @@
 
 #include <SFML/Window.hpp>
 
-struct KeySettings {
+struct KeySettings { // Structure that contains the keys of a player.
     sf::Keyboard::Key up;
     sf::Keyboard::Key down;
     sf::Keyboard::Key left;
