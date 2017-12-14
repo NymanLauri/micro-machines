@@ -33,13 +33,13 @@ file(GLOB main_SRC
 )
 
 # Use all source files in creating the project.
-add_executable(main_test ${main_SRC})
-TARGET_LINK_LIBRARIES(main_test Box2D)
+add_executable(main ${main_SRC})
+TARGET_LINK_LIBRARIES(main Box2D)
 
 # Find sfml and link it to the project.
 find_package(SFML 2 REQUIRED network audio graphics window system)
 if(SFML_FOUND)
   include_directories(${SFML_INCLUDE_DIR})
-  target_link_libraries(main_test ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
+  target_link_libraries(main ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
 endif()
 
