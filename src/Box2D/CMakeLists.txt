@@ -1,3 +1,4 @@
+# Set macros for all of the box2d source files.
 set(BOX2D_Collision_SRCS
 	Collision/b2BroadPhase.cpp
 	Collision/b2CollideCircle.cpp
@@ -123,6 +124,7 @@ set(BOX2D_General_HDRS
 )
 include_directories( ../ )
 
+# Building a shared library.
 if(BOX2D_BUILD_SHARED)
 	add_library(Box2D_shared SHARED
 		${BOX2D_General_HDRS}
@@ -148,6 +150,7 @@ if(BOX2D_BUILD_SHARED)
 	)
 endif()
 
+# Building a static library.
 if(BOX2D_BUILD_STATIC)
 	add_library(Box2D STATIC
 		${BOX2D_General_HDRS}
@@ -182,6 +185,7 @@ endif()
 #source_group(Include FILES ${BOX2D_General_HDRS})
 #source_group(Rope FILES ${BOX2D_Rope_SRCS} ${BOX2D_Rope_HDRS})
 
+# In the default build (UNIX) install box2d with the source files. 
 if(BOX2D_INSTALL)
 	# install headers
 	install(FILES ${BOX2D_General_HDRS} DESTINATION include/Box2D)

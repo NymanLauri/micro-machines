@@ -12,16 +12,19 @@ void Tile::drawTo(sf::RenderWindow& window) const {
     if (tileNum != 0) window.draw(shape);
 }
 
+// Return a tile's friction multiplier.
 float Tile::getFrictionMultiplier() const {
     return frictionMultiplier;
 }
 
+// Create a grass tile.
 std::shared_ptr<Tile> Tile::createGrassTile(Settings& s, size_t xCoord, size_t yCoord) { // This creates a tile for grass.
     std::shared_ptr<Tile> tile = std::make_shared<Tile>(0, s, xCoord, yCoord, 5.0);
     tile->shape.setFillColor(sf::Color(0, 123, 12, 255));
     return tile;
 }
 
+// Create a road tile.
 std::shared_ptr<Tile> Tile::createRoadTile(Settings& s, size_t xCoord, size_t yCoord, int col) {
     std::shared_ptr<Tile> tile = std::make_shared<Tile>(1, s, xCoord, yCoord, 1.0);
     if (col == 0)
@@ -31,27 +34,24 @@ std::shared_ptr<Tile> Tile::createRoadTile(Settings& s, size_t xCoord, size_t yC
     return tile;
 }
 
+// Create an ice tile.
 std::shared_ptr<Tile> Tile::createIceTile(Settings& s, size_t xCoord, size_t yCoord) {
     std::shared_ptr<Tile> tile = std::make_shared<Tile>(2, s, xCoord, yCoord, 0.5);
     tile->shape.setFillColor(sf::Color::White);
     return tile;
 }
 
+// Create a checkpoint tile.
 std::shared_ptr<Tile> Tile::createCheckpointTile(Settings& s, size_t xCoord, size_t yCoord) {
     std::shared_ptr<Tile> tile = std::make_shared<Tile>(100, s, xCoord, yCoord, 1.0);
     tile->shape.setFillColor(sf::Color::Yellow);
-    //count++;
-    //tile->checkpointNum = count;
     return tile;
 }
 
+// Create an oil tile.
 std::shared_ptr<Tile> Tile::createOilTile(Settings& s, size_t xCoord, size_t yCoord) {
     std::shared_ptr<Tile> tile = std::make_shared<Tile>(3, s, xCoord, yCoord, 125.0);
     tile->shape.setFillColor(sf::Color::Black);
-    //sf::Texture oilTexture;
-    //oilTexture.loadFromFile("media/small_oil_cropped_backgroud.png");
-    //tile->addTexture(oilTexture);
     return tile;
 }
 
-//unsigned int Tile::count = 0;

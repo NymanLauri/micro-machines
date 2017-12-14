@@ -167,7 +167,7 @@ Level::Level(std::string levelFileName, b2World& world, Settings& s) : s(s) {
             }
         }
     }
-    //std::sort(checkpointVector.begin(), checkpointVector.end());
+    // Sort checkpointVector according to the number read from a level.
     std::sort(checkpointVector.begin(), checkpointVector.end(), [](std::pair<unsigned int, b2Vec2> &left, std::pair<unsigned int, b2Vec2> &right) {
     return left.first < right.first;
 });
@@ -219,6 +219,7 @@ void Level::drawTo(sf::RenderWindow& window) {
     for (auto it : cars) it->drawTo(window);
 }
 
+// Check if a car is close enough to a checkpoint (<10m, or approximately the width of the track) and try to add a checkpoint to a car's checkpoint vector if a checkpoint is close enough.
 void Level::checkpointChecker() {
   for(auto it : checkpointVector){
     for(auto ite : cars){
@@ -229,6 +230,7 @@ void Level::checkpointChecker() {
   }
 }
 
+// Sort cars based on a car's lap. If two car's laps are the same, sort a car based on the length of a car's checkpointVector's size (which car is furthest on the lap).
 void Level::sortCars() {
   std::sort(this->cars.begin(), this->cars.end(), [](std::shared_ptr<Car> &left, std::shared_ptr<Car> &right) {
       if (left->getLap() > right->getLap()){

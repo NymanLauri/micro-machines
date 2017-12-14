@@ -113,12 +113,16 @@ void Car::drawTo(sf::RenderWindow& window) { // Draw the car to the game window.
 
 // This function is used to tell the program that a car has passed a certain checkpoint.
 void Car::addCheckpoint(unsigned int checkpoint, unsigned int numLevelCheckpoints){
+  // Do nothing if a car already has a certain checkpoint.
   if(std::find(this->checkpoints.begin(), this->checkpoints.end(), checkpoint) != this->checkpoints.end()){
     
   }
+  // Checkpoints are ordered (by the pointer's index std::find(...) - this->checkpoints.begin()). Checking if a checkpoint is
+  // the correct next checkpoint (assuming correct order of checkpoints) is comparing the checkpoint's index by the car's checkpoint vector's length.
   else {
     if(this->checkpoints.size()  == checkpoint) {
       this->checkpoints.push_back(checkpoint);
+      // If the added checkpoint fills the car's checkpoint vector, add a lap and reinitialize
       if(this->checkpoints.size() == numLevelCheckpoints){
 	this->addLap();
 	this->checkpoints.clear();

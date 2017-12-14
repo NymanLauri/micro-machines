@@ -26,15 +26,15 @@ class Level {
         void drawTo(sf::RenderWindow& window);
         void checkpointChecker();
         std::vector<int> getCoords();
-  void sortCars();
-  int getLevelLap();
-  std::shared_ptr<Car> getCar();
+        void sortCars();
+        int getLevelLap();
+        std::shared_ptr<Car> getCar();
     private:
         unsigned int currentLap;
-  std::vector<std::pair<unsigned int, b2Vec2>> checkpointVector;
+        std::vector<std::pair<unsigned int, b2Vec2>> checkpointVector;
         std::vector<std::shared_ptr<Tile>> tiles;
-  std::vector<std::shared_ptr<Car>> cars;
-  std::vector<int> coords;
+        std::vector<std::shared_ptr<Car>> cars;
+        std::vector<int> coords;
         std::vector<std::shared_ptr<PhysicsObject>> obstacles;
         const Settings& s;
 };
