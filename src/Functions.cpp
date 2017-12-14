@@ -88,17 +88,6 @@ int EndWindow(sf::RenderWindow &w, sf::Font f, int player_num)
 	      w.close();
 	      break;
 
-	    case sf::Event::KeyPressed: // If some key is pressed.
-	      switch(e.key.code)
-		{
-		case sf::Keyboard::Escape: // If ESC is pressed.
-		  w.close(); // Close the window.
-		  break;
-
-		default:
-		  break;
-		}
-
 	    case sf::Event::MouseButtonPressed: // If mouse button is pressed.
 	      if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= MenuButton.getPosition().x*1.01 && MousePosX <= MenuButton.getPosition().x+MenuButton.getLocalBounds().width*1.1 &&
 		  MousePosY >= MenuButton.getPosition().y*1.03 && MousePosY <= MenuButton.getPosition().y+MenuButton.getLocalBounds().height*1.5) // If the user clicks on the "Main menu"-button.
@@ -296,18 +285,6 @@ std::pair <int, int> StartWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Pl
 	      var = 1;
 	      w.close();
 	      break;
-
-	    case sf::Event::KeyPressed: // If some key is pressed.
-	      switch(e.key.code)
-		{
-		case sf::Keyboard::Escape: // If ESC is pressed.
-		  var = 1;
-		  w.close();
-		  break;
-
-		default:
-		  break;
-		}
 
 	    case sf::Event::MouseButtonPressed: // If some mouse button is pressed.
 	      if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= ReturnButton.getPosition().x*1.01 && MousePosX <= ReturnButton.getPosition().x+ReturnButton.getLocalBounds().width*1.1 &&
@@ -545,18 +522,6 @@ int OptionsWindow(sf::RenderWindow &w, sf::Font f, Player &p1, Player &p2, Playe
 	    case sf::Event::Closed: // The window is closed.
 	      w.close();
 	      break;
-
-	    case sf::Event::KeyPressed: // If some keyboard key is pressed.
-	      switch(e.key.code)
-		{
-		case sf::Keyboard::Escape: // If ESC is pressed.
-		  w.close(); // Close the window.
-		  break;
-
-		default:
-		  break;
-		}
-
 	    case sf::Event::MouseButtonPressed: // If some mouse button is pressed.
 	      if (e.mouseButton.button == sf::Mouse::Left && MousePosX >= ReturnButton.getPosition().x*1.01 && MousePosX <= ReturnButton.getPosition().x+ReturnButton.getLocalBounds().width*1.1 &&
 		  MousePosY >= ReturnButton.getPosition().y*1.03 && MousePosY <= ReturnButton.getPosition().y+ReturnButton.getLocalBounds().height*1.5) // If the user clicks on the "Main menu"-button.
@@ -777,11 +742,8 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 	  w.close();
 	  break;
 	  case sf::Event::KeyPressed: // If some keyboard key is pressed.
-	    switch (event.key.code) {
-	    case sf::Keyboard::Escape: // If ESC is pressed.
-	      w.close(); // Close the window.
-	      break;
-	    case sf::Keyboard::P: // If P is pressed, we pause the editor.
+	    switch (event.key.code) { 
+	    case sf::Keyboard::Escape: // If Escape is pressed, we pause the editor.
 	      {
 		// Create some texts and set their positions etc.
 		sf::Text QuitButton("Exit", fo, 80);
@@ -835,23 +797,11 @@ int EditorWindow(sf::RenderWindow &w, sf::Font fo)
 		      {
 			if (event.type == sf::Event::KeyPressed) // If some key is pressed.
 			  {
-			    if (event.key.code == sf::Keyboard::P) // If the user presses p to continue the game.
+			    if (event.key.code == sf::Keyboard::Escape) // If the user presses Escape to continue the game.
 			      {
 				pauseVar = 1;
 				break;
-			      }
-			    else if (event.key.code == sf::Keyboard::Escape) // If ESC is pressed.
-			      {
-				// Free the memory allocated for the tiles.
-				for (int i = 0; i < y; i++)
-				  {
-				    for (int j = 0; j < x; j++)
-				      {
-					delete tiles[i][j];
-				      }
-				  }
-				return 1;
-			      }
+			      } 
 			  }
 			else if (event.type == sf::Event::MouseButtonPressed) // If some mouse button is pressed.
 			  {

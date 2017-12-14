@@ -116,17 +116,6 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
 	      window.close(); // Close the window.
 	      break;
 
-	    case sf::Event::KeyPressed: // If some keyboard key is pressed.
-	      switch(event.key.code)
-		{
-		case sf::Keyboard::Escape: // If ESC is pressed.
-		  window.close();
-		  break;
-
-		default:
-		  break;
-		}
-	      
 	    case sf::Event::MouseButtonPressed: // If some mouse button is pressed.
 	      if (event.mouseButton.button == sf::Mouse::Left && MousePosX >= ExitButton.getPosition().x*1.01 && MousePosX <= ExitButton.getPosition().x+ExitButton.getLocalBounds().width*1.2 &&
 		  MousePosY >= ExitButton.getPosition().y*1.03 && MousePosY <= ExitButton.getPosition().y+ExitButton.getLocalBounds().height*1.5) // If the user clicks on the Exit-button.
@@ -259,10 +248,8 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
         if (event.type == sf::Event::Closed) { // If the window is closed.
 	  window.close();
         } else if (event.type == sf::Event::KeyPressed) { // If some key is pressed.
-	  if (event.key.code == sf::Keyboard::Escape) { // If ESC is pressed.
-	    window.close();
-	  }
-	  else if (event.key.code == sf::Keyboard::P) // If the player pauses the game.
+
+          if (event.key.code == sf::Keyboard::Escape) // If the player pauses the game.
 	    {
 	      // Create some texts and set their positions etc.
 	      sf::Text QuitButton("Exit", font, 80);
@@ -306,17 +293,11 @@ int Game(sf::RenderWindow &window, sf::Font font, Player &player1, Player &playe
 		    {
 		      if (event.type == sf::Event::KeyPressed)
 		        {
-			  if (event.key.code == sf::Keyboard::P) // If the user presses p to continue the game.
+			  if (event.key.code == sf::Keyboard::Escape) // If the user presses Escape to continue the game.
 			    {
 			      pauseVar = 1;
 			      break;
-			    }
-			  else if (event.key.code == sf::Keyboard::Escape) // If the user clicks ESC.
-			    {
-			      window.close();
-			      pauseVar = 1;
-			      break;
-			    }
+			    } 
 		        }
 		      else if (event.type == sf::Event::MouseButtonPressed) // Is some mouse button is pressed.
 		        {
