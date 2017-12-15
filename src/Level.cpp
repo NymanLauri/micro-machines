@@ -245,6 +245,7 @@ void Level::sortCars() {
       if (left->getLap() == right->getLap() && left->checkpointVecSize() < right->checkpointVecSize()){
 	return false;
       }
+      return true;
     });
 }
 
