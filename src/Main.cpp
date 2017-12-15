@@ -50,7 +50,7 @@ int menu(Player &player1, Player &player2, Player &player3, Player &player4)
   sf::Text ExitButton("Exit", font, 100); // Create a text "Exit".
   sf::Text OptionsButton("Options", font, 100);
   sf::Text StartButton("Start Game", font, 100);
-  sf::Text Title("Game name here", font, 150);
+  sf::Text Title("Gears of Car", font, 150);
   sf::Text LevelButton("Level Editor", font, 100);
   ExitButton.setColor(sf::Color::Black);
   ExitButton.setPosition(window.getSize().x/2-ExitButton.getLocalBounds().width/2, window.getSize().y-ExitButton.getLocalBounds().height*2); // Set the position of a text.
