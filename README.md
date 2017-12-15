@@ -1,21 +1,15 @@
-# Sample README file for C++ programming project
+# Gears of Car (A Micro Machines clone)
 
-This is an initial git repository for your programming project.
-It contains an initial directory structure that we wish you could
-use as follows:
+This project is a clone of the Micro Machines racing game. The program is built in `src/` using cmake and make. The full build instructions and a more thorough description of the project are in the documentation.
 
-  * `plan/' -- Here is your project plan. You may use different sources,
-    but we hope to get the pan **also as pdf file**.
+  * `plan/` -- Initial project plan.
 
-  * `doc/` -- here are the documentation sources related to your project.
-    You may use different tools for documentation (e.g. latex),
-    but we hope to get the final version of the document
-    **also as pdf file**.
+  * `doc/` -- Full documentation of the project.
 
-  * `src/` -- here are the C++ source files. You can have subfolders as needed.
+  * `src/` -- Source code.
 
-  * `README.md` -- This file that you should modify to represent
-    your project.
+  * `test/` -- Some test programs used earlier in the development. They are built using make. Some tests are outdated and may not compile; the code is left there for review purposes.
 
-You may also add other new directories as needed, for example
-for testing tools.
+  * `misc/` -- Some very early SFML and Box2D test code not directly related to the project.
+
+  * `reviews/` -- Peer review comments.
